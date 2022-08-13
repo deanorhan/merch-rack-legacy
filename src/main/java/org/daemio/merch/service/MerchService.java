@@ -58,7 +58,7 @@ public class MerchService {
 
         var merch = repo.findById(merchId);
         if (merch.isEmpty()) {
-            throw new MerchNotFoundException();
+            throw new MerchNotFoundProblem();
         }
 
         return merch.get();

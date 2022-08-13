@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.daemio.merch.domain.Merch;
-import org.daemio.merch.error.MerchNotFoundException;
+import org.daemio.merch.error.MerchNotFoundProblem;
 import org.daemio.merch.mapper.MerchMapper;
 import org.daemio.merch.model.MerchPage;
 import org.daemio.merch.repository.MerchRepository;
@@ -96,7 +96,7 @@ public class MerchServiceTest {
     public void givenMerchNotThere_whenGettingMerchItem_thenThrowNotFoundException() {
         when(merchRepository.findById(anyInt())).thenReturn(Optional.empty());
 
-        assertThrows(MerchNotFoundException.class,
+        assertThrows(MerchNotFoundProblem.class,
             () -> service.getMerch(1), "Exception not thrown when no merch");
     }
 }
