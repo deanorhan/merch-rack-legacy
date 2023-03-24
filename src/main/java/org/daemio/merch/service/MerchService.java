@@ -6,7 +6,7 @@ import java.util.List;
 import org.daemio.merch.domain.Merch;
 import org.daemio.merch.domain.MerchStatus;
 import org.daemio.merch.domain.Merch_;
-import org.daemio.merch.error.MerchNotFoundException;
+import org.daemio.merch.error.MerchNotFoundProblem;
 import org.daemio.merch.mapper.MerchMapper;
 import org.daemio.merch.model.MerchPage;
 import org.daemio.merch.repository.MerchRepository;
