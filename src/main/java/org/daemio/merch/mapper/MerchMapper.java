@@ -5,7 +5,7 @@ import org.daemio.merch.model.MerchPage;
 import org.mapstruct.Mapper;
 import org.springframework.data.domain.Page;
 
-@Mapper(componentModel = "spring")
+@Mapper
 public interface MerchMapper {
     
     default MerchPage pageToResponse(Page<Merch> page) {
