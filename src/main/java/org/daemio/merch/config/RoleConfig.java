@@ -1,18 +1,20 @@
 package org.daemio.merch.config;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import lombok.Getter;
 
 @Component
+@ConfigurationProperties("app.security.role")
 @Getter
 public class RoleConfig {
     
-    @Value("${app.security.role.admin:ADMIN}")
+    @Value("${admin:ADMIN}")
     private String admin;
-    @Value("${app.security.role.admin:FAN}")
+    @Value("${fan:FAN}")
     private String fan;
-    @Value("${app.security.role.vendor:VENDOR}")
+    @Value("${vendor:VENDOR}")
     private String vendor;
 }

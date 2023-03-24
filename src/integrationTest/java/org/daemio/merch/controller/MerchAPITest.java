@@ -33,7 +33,7 @@ import io.restassured.http.ContentType;
     webEnvironment = WebEnvironment.RANDOM_PORT
 )
 @ActiveProfiles("integ-test")
-public class MerchControllerAPITest {
+public class MerchAPITest {
     
     @LocalServerPort
     private int port;

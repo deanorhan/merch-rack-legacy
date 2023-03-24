@@ -2,7 +2,6 @@ package org.daemio.merch.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -13,7 +12,9 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import lombok.extern.slf4j.Slf4j;
 
-@Configuration
+import static org.springframework.security.config.Customizer.withDefaults;
+
+
 @EnableWebSecurity
 @Slf4j
 public class WebSecurityConfig {
@@ -25,20 +26,25 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         log.info("Initializing security chain");
 
-        http.cors().disable();
-        http.csrf().disable();
+        http.cors(t -> t.disable())
+            .csrf(t -> t.disable());
 
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-        http.authorizeRequests()
-            .antMatchers(HttpMethod.POST, "/merch").hasRole(roleConfig.getVendor())
-            .anyRequest().permitAll()
-            .and().httpBasic();
+        http.authorizeHttpRequests(auth -> {
+            auth.antMatchers(HttpMethod.POST, "/merch").hasRole(roleConfig.getVendor())
+                .anyRequest().permitAll();
+        });
+
+        http.httpBasic(withDefaults());
+
+        
 
         return http.build();
     }
 
     @Bean
+    @SuppressWarnings("deprecation")
     public InMemoryUserDetailsManager userDetails() {
         return new InMemoryUserDetailsManager(User.withDefaultPasswordEncoder()
             .username("test")
