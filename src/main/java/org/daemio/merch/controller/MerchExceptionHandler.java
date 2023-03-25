@@ -1,9 +1,9 @@
 package org.daemio.merch.controller;
 
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.zalando.problem.spring.web.advice.ProblemHandling;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @RestControllerAdvice
-public class MerchExceptionHandler implements ProblemHandling {
+public class MerchExceptionHandler extends ResponseEntityExceptionHandler  {
 
 }
