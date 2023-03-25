@@ -99,7 +99,7 @@ public class MerchControllerTest {
             .andExpect(jsonPath("$.id").value(merchId));
     }
 
-    @DisplayName("given a merch id where the item does not exist, whne calling for merch " +
+    @DisplayName("given a merch id where the item does not exist, when calling for merch " +
         "by this id then the service sould return a 404 Not Found")
     @Test
     public void givenMerchNotThere_whenGetMerchItem_thenGetNotFoundResponse() throws Exception {

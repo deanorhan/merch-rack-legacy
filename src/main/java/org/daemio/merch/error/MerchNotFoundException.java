@@ -1,5 +1,19 @@
 package org.daemio.merch.error;
 
-public class MerchNotFoundException extends RuntimeException {
+import java.time.Instant;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.ErrorResponseException;
+
+public class MerchNotFoundException extends ErrorResponseException {
     
+    public MerchNotFoundException() {
+        super(HttpStatus.NOT_FOUND);
+        populateDetail();
+    }
+
+    private void populateDetail() {
+        getBody().setTitle("Merch Not Found");
+        getBody().setProperty("timestamp", Instant.now());
+    }
 }
