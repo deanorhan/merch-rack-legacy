@@ -2,6 +2,7 @@ package org.daemio.merch.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -14,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
-
+@Configuration
 @EnableWebSecurity
 @Slf4j
 public class WebSecurityConfig {
@@ -32,7 +33,7 @@ public class WebSecurityConfig {
         http.sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         http.authorizeHttpRequests(auth -> {
-            auth.antMatchers(HttpMethod.POST, "/merch").hasRole(roleConfig.getVendor())
+            auth.requestMatchers(HttpMethod.POST, "/merch").hasRole(roleConfig.getVendor())
                 .anyRequest().permitAll();
         });
 
