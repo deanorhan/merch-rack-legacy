@@ -18,6 +18,10 @@ public record MerchModel (
     Instant modifiedTime) {
 
     public MerchModel() { 
-        this(null, null,  null, null);
+        this(null, null);
+    }
+
+    public MerchModel(String title, BigDecimal price) {
+        this(title, price, null, null);
     }
 }

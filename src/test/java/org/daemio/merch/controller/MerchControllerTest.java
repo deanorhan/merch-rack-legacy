@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,12 +28,13 @@ import org.daemio.merch.config.RoleConfig;
 import org.daemio.merch.config.WebSecurityConfig;
 import org.daemio.merch.domain.Merch;
 import org.daemio.merch.error.MerchNotFoundException;
+import org.daemio.merch.mapper.MerchMapperImpl;
 import org.daemio.merch.model.MerchModel;
 import org.daemio.merch.model.MerchPage;
 import org.daemio.merch.service.MerchService;
 
 @WebMvcTest(MerchController.class)
-@Import({WebSecurityConfig.class, RoleConfig.class})
+@Import({ WebSecurityConfig.class, RoleConfig.class, MerchMapperImpl.class })
 @DisplayName("Merch controller tests")
 public class MerchControllerTest {
 
@@ -121,9 +123,11 @@ public class MerchControllerTest {
 
         when(merchService.saveMerch(any())).thenReturn(merch);
 
+        var merchRequest = new MerchModel("some merch", BigDecimal.valueOf(10.00));
+
         mvc.perform(post("/merch")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(merch)))
+                .content(mapper.writeValueAsString(merchRequest)))
             .andExpect(status().isCreated())
             .andExpect(header().exists(HttpHeaders.LOCATION))
             .andExpect(header().string(HttpHeaders.LOCATION, "/merch/87"));
