@@ -1,6 +1,8 @@
 package org.daemio.merch.controller;
 
 import java.net.URI;
+import jakarta.validation.Valid;
+import jakarta.validation.Validator;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -19,6 +21,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.daemio.merch.domain.Merch;
+import org.daemio.merch.domain.MerchStatus;
+import org.daemio.merch.mapper.MerchMapper;
+import org.daemio.merch.model.MerchModel;
 import org.daemio.merch.model.MerchPage;
 import org.daemio.merch.service.MerchService;
 
@@ -29,6 +34,10 @@ public class MerchController {
     
     @Autowired
     private transient MerchService merchService;
+    @Autowired
+    private transient MerchMapper merchMapper;
+    @Autowired
+    private transient Validator validator;
 
     @GetMapping
     public ResponseEntity<MerchPage> getMerchList(
@@ -43,10 +52,12 @@ public class MerchController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> saveNewMerch(@RequestBody Merch newMerch) {
+    public ResponseEntity<Void> saveNewMerch(@Valid @RequestBody MerchModel newMerchModel) {
         log.info("Saving some merch");
 
-        var merch = merchService.saveMerch(newMerch);
+        var newMerch = merchMapper.modelToEntity(newMerchModel);
+
+        var merch = merchService.saveMerch(newMerch.setStatus(MerchStatus.LOADED));
         var location = String.format("/merch/%d", merch.getId());
 
         return ResponseEntity

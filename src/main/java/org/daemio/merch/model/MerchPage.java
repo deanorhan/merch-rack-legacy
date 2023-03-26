@@ -14,9 +14,14 @@ import org.daemio.merch.domain.Merch;
 @NoArgsConstructor
 public class MerchPage {
     
-    private List<Merch> merch = new ArrayList<>();
+    private List<MerchModel> merch = new ArrayList<>();
 
     private int page;
     private int size;
     private int totalPages;
+
+    // @JsonIgnore
+    public void addMerch(MerchModel merchModel) {
+        merch.add(merchModel);
+    }
 }

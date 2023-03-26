@@ -27,6 +27,7 @@ import org.daemio.merch.config.RoleConfig;
 import org.daemio.merch.config.WebSecurityConfig;
 import org.daemio.merch.domain.Merch;
 import org.daemio.merch.error.MerchNotFoundException;
+import org.daemio.merch.model.MerchModel;
 import org.daemio.merch.model.MerchPage;
 import org.daemio.merch.service.MerchService;
 
@@ -47,7 +48,7 @@ public class MerchControllerTest {
         "succussfully and the response should be an array of merch")
     @Test
     public void whenGetMerch_thenReturnSuccessfulList() throws Exception {
-        var merch = new Merch();
+        var merch = new MerchModel();
         var expectedResponse = new MerchPage();
         expectedResponse.setMerch(Arrays.asList(merch));
 
@@ -66,7 +67,7 @@ public class MerchControllerTest {
     @Test
     public void givenPageNo_whenGetMerch_thenReturnSuccessfulList() throws Exception {
         var page = 2;
-        var merch = new Merch();
+        var merch = new MerchModel();
         var expectedResponse = new MerchPage();
         expectedResponse.setMerch(Arrays.asList(merch));
         expectedResponse.setPage(page);
