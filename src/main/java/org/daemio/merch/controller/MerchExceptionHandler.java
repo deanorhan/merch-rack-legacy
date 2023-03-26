@@ -1,28 +1,10 @@
 package org.daemio.merch.controller;
 
-import java.net.URI;
-import java.time.Instant;
-import java.util.HashMap;
-
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ProblemDetail;
-import org.springframework.http.ResponseEntity;
-import org.springframework.lang.Nullable;
-import org.springframework.web.ErrorResponse;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.context.request.WebRequest;
 
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import jakarta.validation.ConstraintViolationException;
-import lombok.extern.slf4j.Slf4j;
-
 @RestControllerAdvice
-@Slf4j
 public class MerchExceptionHandler extends ResponseEntityExceptionHandler  {
 
     // @ExceptionHandler(ConstraintViolationException.class)
