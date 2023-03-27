@@ -3,11 +3,11 @@ package org.daemio.merch.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.daemio.merch.domain.Merch;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import org.daemio.merch.domain.Merch;
 
 @Getter
 @Setter

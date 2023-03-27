@@ -2,9 +2,10 @@ package org.daemio.merch.controller;
 
 import java.net.URI;
 
-import org.daemio.merch.domain.Merch;
-import org.daemio.merch.model.MerchPage;
-import org.daemio.merch.service.MerchService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import lombok.extern.slf4j.Slf4j;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -17,10 +18,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import lombok.extern.slf4j.Slf4j;
+import org.daemio.merch.domain.Merch;
+import org.daemio.merch.model.MerchPage;
+import org.daemio.merch.service.MerchService;
 
 @RestController
 @RequestMapping("/merch")

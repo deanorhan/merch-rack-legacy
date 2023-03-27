@@ -3,6 +3,11 @@ package org.daemio.merch.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
 import org.daemio.merch.domain.Merch;
 import org.daemio.merch.domain.MerchStatus;
 import org.daemio.merch.domain.Merch_;
@@ -10,11 +15,6 @@ import org.daemio.merch.error.MerchNotFoundException;
 import org.daemio.merch.mapper.MerchMapper;
 import org.daemio.merch.model.MerchPage;
 import org.daemio.merch.repository.MerchRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
-import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j

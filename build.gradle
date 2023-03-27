@@ -112,9 +112,10 @@ spotbugsMain {
 
 spotless {
 	java {
-		importOrder('java|javax', '', 'org.daemio', '\\#', '\\#org.daemio')
-
+		importOrder('\\#|\\#org.daemio', 'java|javax|jakarta', '', 'org.daemio')
 		removeUnusedImports()
+
+		formatAnnotations()
 	}
 }
 

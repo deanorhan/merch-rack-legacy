@@ -13,11 +13,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import org.daemio.merch.domain.Merch;
-import org.daemio.merch.error.MerchNotFoundException;
-import org.daemio.merch.mapper.MerchMapper;
-import org.daemio.merch.model.MerchPage;
-import org.daemio.merch.repository.MerchRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,6 +23,12 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+
+import org.daemio.merch.domain.Merch;
+import org.daemio.merch.error.MerchNotFoundException;
+import org.daemio.merch.mapper.MerchMapper;
+import org.daemio.merch.model.MerchPage;
+import org.daemio.merch.repository.MerchRepository;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Merch service tests")
