@@ -7,6 +7,8 @@ import org.springframework.web.ErrorResponseException;
 
 public class MerchNotFoundException extends ErrorResponseException {
     
+    private static final long serialVersionUID = 1L;
+
     public MerchNotFoundException() {
         super(HttpStatus.NOT_FOUND);
         populateDetail();

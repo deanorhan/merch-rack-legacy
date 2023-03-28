@@ -28,7 +28,7 @@ import org.daemio.merch.service.MerchService;
 public class MerchController {
     
     @Autowired
-    private MerchService merchService;
+    private transient MerchService merchService;
 
     @GetMapping
     public ResponseEntity<MerchPage> getMerchList(

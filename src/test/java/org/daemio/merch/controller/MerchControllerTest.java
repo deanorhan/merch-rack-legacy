@@ -105,7 +105,7 @@ public class MerchControllerTest {
     public void givenMerchNotThere_whenGetMerchItem_thenGetNotFoundResponse() throws Exception {
         var merchId = 7;
 
-        when(merchService.getMerch(merchId)).thenThrow(MerchNotFoundException.class);
+        when(merchService.getMerch(merchId)).thenThrow(new MerchNotFoundException());
 
         mvc.perform(get("/merch/{merchId}", merchId))
             .andExpect(status().isNotFound());

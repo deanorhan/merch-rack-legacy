@@ -21,9 +21,9 @@ import org.daemio.merch.repository.MerchRepository;
 public class MerchService {
 
     @Autowired
-    private MerchRepository repo;
+    private transient MerchRepository repo;
     @Autowired
-    private MerchMapper mapper;
+    private transient MerchMapper mapper;
     
     public List<Merch> getMerchList() {
         log.info("Getting a merch list from data");
@@ -46,9 +46,7 @@ public class MerchService {
     public MerchPage getMerchPage(Pageable pageable, List<MerchStatus> statusList) {
         log.info("Getting a page of merch from data");
 
-        var results = repo.findAll((root, query, builder) -> {
-            return root.get(Merch_.status).in(statusList);
-        }, pageable);
+        var results = repo.findAll((root, query, builder) -> root.get(Merch_.status).in(statusList), pageable);
 
         return mapper.pageToResponse(results);
     }
