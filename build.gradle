@@ -118,6 +118,8 @@ jacocoTestReport {
       ])
     }))
   }
+
+  shouldRunAfter integrationTest 
 }
 
 pmd {
