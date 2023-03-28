@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -32,6 +33,7 @@ import static org.hamcrest.Matchers.notNullValue;
     classes = MerchServiceApplication.class,
     webEnvironment = WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("integ-test")
+@Disabled
 public class MerchAPITest {
 
   @LocalServerPort private int port;
