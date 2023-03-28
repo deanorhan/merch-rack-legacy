@@ -13,6 +13,7 @@ import org.daemio.merch.domain.MerchStatus;
 import org.daemio.merch.domain.Merch_;
 import org.daemio.merch.error.MerchNotFoundException;
 import org.daemio.merch.mapper.MerchMapper;
+import org.daemio.merch.model.MerchModel;
 import org.daemio.merch.model.MerchPage;
 import org.daemio.merch.repository.MerchRepository;
 
@@ -51,7 +52,7 @@ public class MerchService {
         return mapper.pageToResponse(results);
     }
 
-    public Merch getMerch(int merchId) {
+    public MerchModel getMerch(int merchId) {
         log.info("Getting a piece of merch from data");
 
         var merch = repo.findById(merchId);
@@ -59,12 +60,15 @@ public class MerchService {
             throw new MerchNotFoundException();
         }
 
-        return merch.get();
+        return mapper.entityToModel(merch.get());
     }
 
-    public Merch saveMerch(Merch merch) {
+    public MerchModel saveMerch(MerchModel merchRequest) {
+        var merch = mapper.modelToEntity(merchRequest);
+        merch.setStatus(MerchStatus.LOADED);
+
         merch.getImages().forEach(i -> i.setMerch(merch));
 
-        return repo.save(merch);
+        return mapper.entityToModel(repo.save(merch));
     }
 }

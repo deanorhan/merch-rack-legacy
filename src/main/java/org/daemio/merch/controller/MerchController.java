@@ -1,6 +1,7 @@
 package org.daemio.merch.controller;
 
 import java.net.URI;
+import jakarta.validation.Valid;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -10,6 +11,7 @@ import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.daemio.merch.domain.Merch;
+import org.daemio.merch.model.MerchModel;
 import org.daemio.merch.model.MerchPage;
 import org.daemio.merch.service.MerchService;
 
@@ -43,11 +45,12 @@ public class MerchController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> saveNewMerch(@RequestBody Merch newMerch) {
+    public ResponseEntity<Void> saveNewMerch(@Valid @RequestBody MerchModel newMerchModel) {
         log.info("Saving some merch");
 
-        var merch = merchService.saveMerch(newMerch);
-        var location = String.format("/merch/%d", merch.getId());
+        var merch = merchService.saveMerch(newMerchModel);
+
+        var location = String.format("/merch/%d", merch.getMerchId());
 
         return ResponseEntity
             .created(URI.create(location))
@@ -58,11 +61,11 @@ public class MerchController {
     @ApiResponses({
         @ApiResponse(responseCode = "404", description = "Merch not found")
     })
-    @GetMapping("/{merchId}")
-    public ResponseEntity<Merch> getMerchItem(@PathVariable int merchId) {
+    @GetMapping(path = "/{merchId}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_PROBLEM_JSON_VALUE })
+    public ResponseEntity<MerchModel> getMerchItem(@PathVariable int merchId) {
         log.info("Getting piece of merch");
 
-        Merch merch = merchService.getMerch(merchId);
+        var merch = merchService.getMerch(merchId);
 
         return ResponseEntity.ok(merch);
     }

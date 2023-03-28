@@ -1,7 +1,7 @@
 package org.daemio.merch.domain;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import jakarta.persistence.CascadeType;
@@ -56,9 +56,9 @@ public class Merch {
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdTime;
+    private Instant createdTime;
 
     @LastModifiedDate
     @Column(name = "modified_at")
-    private LocalDateTime modifiedTime;
+    private Instant modifiedTime;
 }

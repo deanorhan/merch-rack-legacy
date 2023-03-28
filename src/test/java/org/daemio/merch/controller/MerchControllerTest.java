@@ -9,11 +9,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.Arrays;
+import java.util.stream.Stream;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -25,13 +32,14 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import org.daemio.merch.config.RoleConfig;
 import org.daemio.merch.config.WebSecurityConfig;
-import org.daemio.merch.domain.Merch;
 import org.daemio.merch.error.MerchNotFoundException;
+import org.daemio.merch.mapper.MerchMapperImpl;
+import org.daemio.merch.model.MerchModel;
 import org.daemio.merch.model.MerchPage;
 import org.daemio.merch.service.MerchService;
 
 @WebMvcTest(MerchController.class)
-@Import({WebSecurityConfig.class, RoleConfig.class})
+@Import({ WebSecurityConfig.class, RoleConfig.class, MerchMapperImpl.class })
 @DisplayName("Merch controller tests")
 public class MerchControllerTest {
 
@@ -47,7 +55,7 @@ public class MerchControllerTest {
         "succussfully and the response should be an array of merch")
     @Test
     public void whenGetMerch_thenReturnSuccessfulList() throws Exception {
-        var merch = new Merch();
+        var merch = new MerchModel();
         var expectedResponse = new MerchPage();
         expectedResponse.setMerch(Arrays.asList(merch));
 
@@ -66,7 +74,7 @@ public class MerchControllerTest {
     @Test
     public void givenPageNo_whenGetMerch_thenReturnSuccessfulList() throws Exception {
         var page = 2;
-        var merch = new Merch();
+        var merch = new MerchModel();
         var expectedResponse = new MerchPage();
         expectedResponse.setMerch(Arrays.asList(merch));
         expectedResponse.setPage(page);
@@ -88,15 +96,17 @@ public class MerchControllerTest {
     @Test
     public void whenGetMerchItem_thenReturnSuccessfulItem() throws Exception {
         var merchId = 7;
-        var merch = new Merch();
-        merch.setId(merchId);
+        var merch = new MerchModel();
+        merch.setTitle("Some dumb title");
+        merch.setCreatedTime(Instant.now());
+        merch.setModifiedTime(Instant.now());
 
         when(merchService.getMerch(merchId)).thenReturn(merch);
 
         mvc.perform(get("/merch/{merchId}", merchId))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$.id").value(merchId));
+            .andExpect(jsonPath("$.title").value(merch.getTitle()));
     }
 
     @DisplayName("given a merch id where the item does not exist, when calling for merch " +
@@ -114,17 +124,42 @@ public class MerchControllerTest {
     @WithMockUser(roles = { "VENDOR" })
     @Test
     public void whenPostMerch_thenGetBackLocation() throws Exception {
-        var merchId = 87;
-        var merch = new Merch();
-        merch.setId(merchId);
+        long merchId = 87;
+        when(merchService.saveMerch(any())).thenReturn(MerchModel.builder().merchId(merchId).build());
 
-        when(merchService.saveMerch(any())).thenReturn(merch);
+        var merchRequest = MerchModel.builder()
+                .title("some merch")
+                .price(BigDecimal.valueOf(10.00))
+                .build();
 
         mvc.perform(post("/merch")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(merch)))
+                .content(mapper.writeValueAsString(merchRequest)))
             .andExpect(status().isCreated())
             .andExpect(header().exists(HttpHeaders.LOCATION))
-            .andExpect(header().string(HttpHeaders.LOCATION, "/merch/87"));
+            .andExpect(header().string(HttpHeaders.LOCATION, String.format("/merch/%d", merchId)));
+    }
+
+    @DisplayName("Controller validates the request object")
+    @WithMockUser(roles = { "VENDOR" })
+    @ParameterizedTest(name = "{index} => Missing {1}")
+    @MethodSource("argumentsForValidation")
+    public void merchController_validates_request(String requestJson, String invalidParameter) throws JsonProcessingException, Exception {
+        mvc.perform(post("/merch")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestJson))
+            .andExpect(status().isBadRequest())
+            .andExpect(content().contentType(MediaType.APPLICATION_PROBLEM_JSON))
+            .andExpect(jsonPath("$.errors").exists())
+            .andExpect(jsonPath("$.errors.%s", invalidParameter).exists());
+    }
+
+    private static Stream<Arguments> argumentsForValidation() throws JsonProcessingException {
+        final ObjectMapper mapper = new ObjectMapper();
+
+        return Stream.of(
+            Arguments.of(mapper.writeValueAsString(MerchModel.builder().title("title").build()), "price"),
+            Arguments.of(mapper.writeValueAsString(MerchModel.builder().price(BigDecimal.valueOf(10.00)).build()), "title")
+        );
     }
 }

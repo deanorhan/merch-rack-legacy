@@ -9,6 +9,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -44,6 +45,8 @@ public class MerchServiceTest {
     @InjectMocks
     private MerchService service;
 
+    private MerchMapper mapper = Mappers.getMapper(MerchMapper.class);
+
     @DisplayName("when calling for a list of merch, then should return a list")
     @Test
     public void whenGettingList_thenReturnList() {
@@ -60,11 +63,15 @@ public class MerchServiceTest {
 
     @Test
     public void whenGettingPagedList_theReturnList() {
-        var merchList = Arrays.asList(new Merch());
-        var expectedResult = new MerchPage();
-        expectedResult.setMerch(merchList);
+        var merch = new Merch();
+        merch.setCreatedTime(Instant.now());
+        merch.setModifiedTime(Instant.now());
 
-        when(page.getContent()).thenReturn(merchList);
+        var expectedResult = new MerchPage();
+        expectedResult.setMerch(List.of(mapper.entityToModel(merch)));
+
+        // Mocking here needs to change
+        when(page.getContent()).thenReturn(List.of(merch));
         when(merchRepository.findAll(any(PageRequest.class))).thenReturn(page);
 
         var actualResult = service.getMerchPage(PageRequest.of(0, 1));
@@ -82,13 +89,15 @@ public class MerchServiceTest {
         var merchId = 5;
         Merch expectedResult = new Merch();
         expectedResult.setId(merchId);
+        expectedResult.setCreatedTime(Instant.now());
+        expectedResult.setModifiedTime(Instant.now());
 
         when(merchRepository.findById(merchId)).thenReturn(Optional.of(expectedResult));
 
-        Merch actualResult = service.getMerch(merchId);
+        var actualResult = service.getMerch(merchId);
 
         assertNotNull(actualResult, "Merch item is null");
-        assertEquals(expectedResult.getId(), actualResult.getId(), "Ids of the merch do not match");
+        assertEquals(Long.valueOf(expectedResult.getId()), actualResult.getMerchId(), "Ids of the merch do not match");
     }
 
     @DisplayName("given some merch id and the merch item does not exist, when calling for " +

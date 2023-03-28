@@ -41,6 +41,8 @@ public class MerchAPITest {
     @Autowired
     private MerchRepository merchRepository;
 
+    private Merch merch;
+
     @BeforeEach
     public void setup() {
         Merch merch = new Merch();
@@ -48,7 +50,7 @@ public class MerchAPITest {
         merch.setStatus(MerchStatus.SOLD_OUT);
         merch.setPrice(BigDecimal.valueOf(5));
 
-        merchRepository.save(merch);
+        this.merch = merchRepository.save(merch);
     }
 
     @AfterEach
@@ -91,17 +93,15 @@ public class MerchAPITest {
 
     @Test
     public void whenCallingForMerch_thenGetMerchItem() {
-        var merchId = merchRepository.findAll().get(0).getId();
-        
         given()
             .port(port)
-            .pathParam("merchId", merchId)
+            .pathParam("merchId", merch.getId())
         .when()
             .get("/merch/{merchId}")
         .then()
             .statusCode(HttpStatus.OK.value())
             .contentType(ContentType.JSON)
-            .body("id", is(merchId))
+            .body("title", is(merch.getTitle()))
             .body("createdTime", is(notNullValue()))
             .body("modifiedTime", is(notNullValue()));
     }
