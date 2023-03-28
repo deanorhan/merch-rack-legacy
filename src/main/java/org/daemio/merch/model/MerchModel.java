@@ -2,12 +2,11 @@ package org.daemio.merch.model;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(value = { "createdTime", "modifiedTime" },
         allowGetters = true, ignoreUnknown = true)

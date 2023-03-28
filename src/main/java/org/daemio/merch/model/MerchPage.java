@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import org.daemio.merch.domain.Merch;
 
 @Getter
 @Setter

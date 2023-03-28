@@ -1,5 +1,6 @@
 package org.daemio.merch.mapper;
 
+import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.data.domain.Page;
@@ -8,7 +9,6 @@ import org.daemio.merch.domain.Merch;
 import org.daemio.merch.model.MerchModel;
 import org.daemio.merch.model.MerchPage;
 import org.daemio.merch.util.DateUtils;
-import org.mapstruct.InheritInverseConfiguration;
 
 @Mapper(imports = { DateUtils.class })
 public interface MerchMapper {
