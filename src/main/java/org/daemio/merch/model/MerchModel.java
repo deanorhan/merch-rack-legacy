@@ -22,7 +22,7 @@ public class MerchModel {
 
     private Long merchId;
 
-    @NotBlank(message = "Title can not be empty")
+    @NotBlank
     private String title;
 
     @NotNull @Positive private BigDecimal price;

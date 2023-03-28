@@ -4,10 +4,7 @@ import java.net.URI;
 import jakarta.validation.Valid;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
-import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -23,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.daemio.merch.model.MerchModel;
 import org.daemio.merch.model.MerchPage;
 import org.daemio.merch.service.MerchService;
+import org.springdoc.core.annotations.ParameterObject;
 
 @RestController
 @RequestMapping("/merch")
@@ -32,7 +30,8 @@ public class MerchController {
     @Autowired
     private transient MerchService merchService;
 
-    @GetMapping
+    @Operation(summary = "Get a list of merch")
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<MerchPage> getMerchList(
             @ParameterObject
             @PageableDefault(page = 0, size = 25)
@@ -44,7 +43,8 @@ public class MerchController {
         return ResponseEntity.ok(page);
     }
 
-    @PostMapping
+    @Operation(summary = "Save a new piece of merch")
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> saveNewMerch(@Valid @RequestBody MerchModel newMerchModel) {
         log.info("Saving some merch");
 
@@ -58,10 +58,7 @@ public class MerchController {
     }
 
     @Operation(summary = "Get a piece of merch by id")
-    @ApiResponses({
-        @ApiResponse(responseCode = "404", description = "Merch not found")
-    })
-    @GetMapping(path = "/{merchId}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_PROBLEM_JSON_VALUE })
+    @GetMapping(path = "/{merchId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<MerchModel> getMerchItem(@PathVariable int merchId) {
         log.info("Getting piece of merch");
 
