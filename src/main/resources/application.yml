@@ -5,6 +5,12 @@ app:
       fan: FAN
       vendor: "VENDOR"
 
+management:
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
 spring:
   profiles:
     active: ${DEPLOY_ENV:default}
@@ -26,8 +32,3 @@ spring:
   web:
     resources:
       add-mappings: false
-
-management:
-  endpoint:
-    health:
-      enabled: true

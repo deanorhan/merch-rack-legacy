@@ -13,6 +13,9 @@ plugins {
 	id 'com.diffplug.spotless' version '6.17.0'
 	// Fucking buildship
 	// id 'eclipse'
+
+	// Leaving this in even though it doesn't run on gradle 8
+	id 'org.springdoc.openapi-gradle-plugin' version '1.6.0'
 }
 
 group = 'org.daemio'
@@ -60,7 +63,7 @@ dependencies {
 
 	runtimeOnly 'com.h2database:h2'
 
-	implementation 'org.springdoc:springdoc-openapi-ui:1.6.15'
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4'
 	
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
