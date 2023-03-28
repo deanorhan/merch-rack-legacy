@@ -1,9 +1,10 @@
 package org.daemio.merch.mapper;
 
-import org.daemio.merch.domain.Merch;
-import org.daemio.merch.model.MerchPage;
 import org.mapstruct.Mapper;
 import org.springframework.data.domain.Page;
+
+import org.daemio.merch.domain.Merch;
+import org.daemio.merch.model.MerchPage;
 
 @Mapper
 public interface MerchMapper {

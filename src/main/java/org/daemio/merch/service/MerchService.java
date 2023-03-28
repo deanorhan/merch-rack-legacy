@@ -3,6 +3,11 @@ package org.daemio.merch.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
 import org.daemio.merch.domain.Merch;
 import org.daemio.merch.domain.MerchStatus;
 import org.daemio.merch.domain.Merch_;
@@ -10,20 +15,15 @@ import org.daemio.merch.error.MerchNotFoundException;
 import org.daemio.merch.mapper.MerchMapper;
 import org.daemio.merch.model.MerchPage;
 import org.daemio.merch.repository.MerchRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
-import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
 public class MerchService {
 
     @Autowired
-    private MerchRepository repo;
+    private transient MerchRepository repo;
     @Autowired
-    private MerchMapper mapper;
+    private transient MerchMapper mapper;
     
     public List<Merch> getMerchList() {
         log.info("Getting a merch list from data");
@@ -46,9 +46,7 @@ public class MerchService {
     public MerchPage getMerchPage(Pageable pageable, List<MerchStatus> statusList) {
         log.info("Getting a page of merch from data");
 
-        var results = repo.findAll((root, query, builder) -> {
-            return root.get(Merch_.status).in(statusList);
-        }, pageable);
+        var results = repo.findAll((root, query, builder) -> root.get(Merch_.status).in(statusList), pageable);
 
         return mapper.pageToResponse(results);
     }

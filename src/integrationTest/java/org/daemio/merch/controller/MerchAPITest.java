@@ -8,11 +8,7 @@ import static org.hamcrest.Matchers.notNullValue;
 
 import java.math.BigDecimal;
 
-import org.daemio.merch.MerchServiceApplication;
-import org.daemio.merch.domain.Image;
-import org.daemio.merch.domain.Merch;
-import org.daemio.merch.domain.MerchStatus;
-import org.daemio.merch.repository.MerchRepository;
+import io.restassured.http.ContentType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,7 +22,11 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 
-import io.restassured.http.ContentType;
+import org.daemio.merch.MerchServiceApplication;
+import org.daemio.merch.domain.Image;
+import org.daemio.merch.domain.Merch;
+import org.daemio.merch.domain.MerchStatus;
+import org.daemio.merch.repository.MerchRepository;
 
 @SpringBootTest(
     classes = MerchServiceApplication.class,

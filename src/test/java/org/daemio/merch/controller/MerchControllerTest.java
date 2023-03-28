@@ -11,12 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.Arrays;
 
-import org.daemio.merch.config.RoleConfig;
-import org.daemio.merch.config.WebSecurityConfig;
-import org.daemio.merch.domain.Merch;
-import org.daemio.merch.error.MerchNotFoundException;
-import org.daemio.merch.model.MerchPage;
-import org.daemio.merch.service.MerchService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +23,12 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.daemio.merch.config.RoleConfig;
+import org.daemio.merch.config.WebSecurityConfig;
+import org.daemio.merch.domain.Merch;
+import org.daemio.merch.error.MerchNotFoundException;
+import org.daemio.merch.model.MerchPage;
+import org.daemio.merch.service.MerchService;
 
 @WebMvcTest(MerchController.class)
 @Import({WebSecurityConfig.class, RoleConfig.class})
@@ -105,7 +105,7 @@ public class MerchControllerTest {
     public void givenMerchNotThere_whenGetMerchItem_thenGetNotFoundResponse() throws Exception {
         var merchId = 7;
 
-        when(merchService.getMerch(merchId)).thenThrow(MerchNotFoundException.class);
+        when(merchService.getMerch(merchId)).thenThrow(new MerchNotFoundException());
 
         mvc.perform(get("/merch/{merchId}", merchId))
             .andExpect(status().isNotFound());
