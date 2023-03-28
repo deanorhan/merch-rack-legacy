@@ -19,7 +19,6 @@ public class MerchPage {
     private int size;
     private int totalPages;
 
-    // @JsonIgnore
     public void addMerch(MerchModel merchModel) {
         merch.add(merchModel);
     }

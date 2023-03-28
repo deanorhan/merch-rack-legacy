@@ -7,20 +7,29 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
-@JsonIgnoreProperties(value = { "createdTime", "modifiedTime" },
-        allowGetters = true, ignoreUnknown = true)
-public record MerchModel (
-    @NotBlank(message = "Title can not be empty") String title, 
-    @NotNull @Positive BigDecimal price,
-    Instant createdTime,
-    Instant modifiedTime) {
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@JsonIgnoreProperties(value = { "createdTime", "modifiedTime" }, allowGetters = true, ignoreUnknown = true)
+public class MerchModel {
 
-    public MerchModel() { 
-        this(null, null);
-    }
+    private Long merchId;
 
-    public MerchModel(String title, BigDecimal price) {
-        this(title, price, null, null);
-    }
+    @NotBlank(message = "Title can not be empty")
+    private String title;
+
+    @NotNull @Positive private BigDecimal price;
+
+    @EqualsAndHashCode.Exclude
+    private Instant createdTime;
+
+    @EqualsAndHashCode.Exclude
+    private Instant modifiedTime;
 }

@@ -1,6 +1,16 @@
 package org.daemio.merch.controller;
 
+import java.util.stream.Collectors;
+
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ProblemDetail;
+import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @RestControllerAdvice
@@ -16,25 +26,16 @@ public class MerchExceptionHandler extends ResponseEntityExceptionHandler  {
     //             .build();
     // }
 
-    // @Override
-    // @Nullable
-    // protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
-    //         HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-    //     log.info(" yeah.......");
+    @Override
+    @Nullable protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+            HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+        var body = ProblemDetail.forStatusAndDetail(status, "Invalid request content.");
 
-    //     ex.getBindingResult().getFieldErrors().forEach(f -> log.info("field {}", f));
-
-    //     var body = ProblemDetail.forStatusAndDetail(status, "Invalid request content.");
-
-    //     var fieldErrors = new HashMap<String, String>();
-    //     ex.getBindingResult().getFieldErrors().forEach(f -> {
-    //         fieldErrors.put(f.getField(), f.getDefaultMessage());
-    //     });
+        var fieldErrors = ex.getBindingResult().getFieldErrors().stream()
+            .collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage));
         
-    //     body.setProperty("errors", fieldErrors);
+        body.setProperty("errors", fieldErrors);
 
-	// 	return createResponseEntity(body, headers, status, request);
-
-    //     // return handleExceptionInternal(ex, null, headers, status, request);
-    // }
+        return handleExceptionInternal(ex, body, headers, status, request);
+    }
 }
