@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
@@ -23,11 +24,11 @@ public class WebSecurityConfig {
     private transient RoleConfig roleConfig;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         log.info("Initializing security chain");
 
-        http.cors(t -> t.disable())
-            .csrf(t -> t.disable());
+        http.cors(AbstractHttpConfigurer::disable)
+            .csrf(AbstractHttpConfigurer::disable);
 
         http.sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
@@ -45,7 +46,7 @@ public class WebSecurityConfig {
 
     @Bean
     @SuppressWarnings("deprecation")
-    public InMemoryUserDetailsManager userDetails() {
+    InMemoryUserDetailsManager userDetails() {
         return new InMemoryUserDetailsManager(User.withDefaultPasswordEncoder()
             .username("test")
             .password("pass")

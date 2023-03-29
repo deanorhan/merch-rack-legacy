@@ -1,12 +1,12 @@
 package org.daemio.merch.controller;
 
 import java.util.stream.Collectors;
+import jakarta.annotation.Nullable;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.Nullable;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -33,7 +33,7 @@ public class MerchExceptionHandler extends ResponseEntityExceptionHandler  {
 
         var fieldErrors = ex.getBindingResult().getFieldErrors().stream()
             .collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage));
-        
+
         body.setProperty("errors", fieldErrors);
 
         return handleExceptionInternal(ex, body, headers, status, request);

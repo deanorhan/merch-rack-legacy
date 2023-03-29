@@ -4,8 +4,6 @@ plugins {
 	id 'java'
 	id 'jacoco'
 	id 'io.freefair.lombok' version '8.0.1'
-	// Still investigating this one, could be powerful
-	// id 'org.openrewrite.rewrite' version '5.38.0'
 	id 'org.owasp.dependencycheck' version '8.2.1'
 	id 'com.github.andygoossens.gradle-modernizer-plugin' version '1.7.0'
 	id 'pmd'
@@ -100,22 +98,13 @@ jacocoTestReport {
     }
 }
 
-// rewrite {
-// 	activeRecipe(
-// 		'org.openrewrite.java.RemoveUnusedImports',
-// 		'org.openrewrite.java.cleanup.AddSerialVersionUidToSerializable',
-// 		'org.openrewrite.java.cleanup.MissingOverrideAnnotation'
-// 		'org.openrewrite.java.format.AutoFormat'
-// 	)
-// }
-
 pmd {
 	sourceSets = [ sourceSets.main ]
 }
 
 spotless {
 	java {
-		importOrder('\\#|\\#org.daemio', 'java|javax|jakarta', '', 'org.daemio')
+		importOrder('java|javax|jakarta', '', 'org.daemio', '\\#')
 		removeUnusedImports()
 
 		formatAnnotations()
