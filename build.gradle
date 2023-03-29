@@ -92,8 +92,7 @@ tasks.withType(Test) {
 }
 
 jacocoTestReport {
-	dependsOn test
-	dependsOn integrationTest
+	dependsOn tasks.withType(Test)
 	executionData tasks.withType(Test)
 
   reports {

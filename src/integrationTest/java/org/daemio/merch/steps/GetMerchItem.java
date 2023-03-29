@@ -1,8 +1,5 @@
 package org.daemio.merch.steps;
 
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.is;
-
 import java.math.BigDecimal;
 
 import io.cucumber.java.en.Given;
@@ -16,6 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.daemio.merch.domain.Merch;
 import org.daemio.merch.domain.MerchStatus;
 import org.daemio.merch.repository.MerchRepository;
+
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.is;
 
 @DisplayName("Get a merch item steps")
 public class GetMerchItem {
@@ -58,7 +58,8 @@ public class GetMerchItem {
 
     @Then("It's the merch item defined by the merch id")
     public void It_s_the_merch_item_defined_by_the_merch_id() {
-        response.body("id", is(merch.getId()))
+        response
+            .body("merchId", is(merch.getId()))
             .body("title", is(merch.getTitle()));
     }
 }
