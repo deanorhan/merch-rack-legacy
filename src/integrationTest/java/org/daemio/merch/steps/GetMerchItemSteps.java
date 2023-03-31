@@ -21,7 +21,7 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
 
 @DisplayName("Get a merch item steps")
-public class GetMerchItem {
+public class GetMerchItemSteps {
 
   @Autowired private MerchRepository merchRepository;
 
