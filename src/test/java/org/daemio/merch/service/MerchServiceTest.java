@@ -1,14 +1,5 @@
 package org.daemio.merch.service;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.when;
-
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
@@ -31,82 +22,96 @@ import org.daemio.merch.mapper.MerchMapper;
 import org.daemio.merch.model.MerchPage;
 import org.daemio.merch.repository.MerchRepository;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.when;
+
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Merch service tests")
 public class MerchServiceTest {
 
-    @Mock
-    private MerchRepository merchRepository;
-    @Spy
-    private MerchMapper merchMapper = Mappers.getMapper(MerchMapper.class);
-    @Mock
-    private Page<Merch> page;
+  @Mock private MerchRepository merchRepository;
+  @Spy private MerchMapper merchMapper = Mappers.getMapper(MerchMapper.class);
+  @Mock private Page<Merch> page;
 
-    @InjectMocks
-    private MerchService service;
+  @InjectMocks private MerchService service;
 
-    private MerchMapper mapper = Mappers.getMapper(MerchMapper.class);
+  private MerchMapper mapper = Mappers.getMapper(MerchMapper.class);
 
-    @DisplayName("when calling for a list of merch, then should return a list")
-    @Test
-    public void whenGettingList_thenReturnList() {
-        List <Merch> expectedResult = Arrays.asList(new Merch());
-        when(merchRepository.findAll()).thenReturn(expectedResult);
+  @DisplayName("when calling for a list of merch, then should return a list")
+  @Test
+  public void whenGettingList_thenReturnList() {
+    List<Merch> expectedResult = Arrays.asList(new Merch());
+    when(merchRepository.findAll()).thenReturn(expectedResult);
 
-        List<Merch> actualResult = service.getMerchList();
+    List<Merch> actualResult = service.getMerchList();
 
-        assertNotNull(actualResult, "Merch list is null");
-        assertNotEquals(0, actualResult.size(), "Merch list is empty");
-        assertArrayEquals(actualResult.toArray(), expectedResult.toArray(),
-            "Merch list is not what was expected");
-    }
+    assertNotNull(actualResult, "Merch list is null");
+    assertNotEquals(0, actualResult.size(), "Merch list is empty");
+    assertArrayEquals(
+        actualResult.toArray(), expectedResult.toArray(), "Merch list is not what was expected");
+  }
 
-    @Test
-    public void whenGettingPagedList_theReturnList() {
-        var merch = new Merch();
-        merch.setCreatedTime(Instant.now());
-        merch.setModifiedTime(Instant.now());
+  @Test
+  public void whenGettingPagedList_theReturnList() {
+    var merch = new Merch();
+    merch.setCreatedTime(Instant.now());
+    merch.setModifiedTime(Instant.now());
 
-        var expectedResult = new MerchPage();
-        expectedResult.setMerch(List.of(mapper.entityToModel(merch)));
+    var expectedResult = new MerchPage();
+    expectedResult.setMerch(List.of(mapper.entityToModel(merch)));
 
-        // Mocking here needs to change
-        when(page.getContent()).thenReturn(List.of(merch));
-        when(merchRepository.findAll(any(PageRequest.class))).thenReturn(page);
+    // Mocking here needs to change
+    when(page.getContent()).thenReturn(List.of(merch));
+    when(merchRepository.findAll(any(PageRequest.class))).thenReturn(page);
 
-        var actualResult = service.getMerchPage(PageRequest.of(0, 1));
+    var actualResult = service.getMerchPage(PageRequest.of(0, 1));
 
-        assertNotNull(actualResult, "Merch list is null");
-        assertNotEquals(0, actualResult.getMerch().size(), "Merch list is empty");
-        assertArrayEquals(actualResult.getMerch().toArray(), expectedResult.getMerch().toArray(),
-            "Merch list is not what was expected");
-    }
+    assertNotNull(actualResult, "Merch list is null");
+    assertNotEquals(0, actualResult.getMerch().size(), "Merch list is empty");
+    assertArrayEquals(
+        actualResult.getMerch().toArray(),
+        expectedResult.getMerch().toArray(),
+        "Merch list is not what was expected");
+  }
 
-    @DisplayName("given some merch id and a merch item exists with that id, " +
-        "when calling for merch with the given id, then return that specific merch item")
-    @Test
-    public void whenGettingSpecificMerch_thenReturnMerchItem() {
-        var merchId = 5;
-        Merch expectedResult = new Merch();
-        expectedResult.setId(merchId);
-        expectedResult.setCreatedTime(Instant.now());
-        expectedResult.setModifiedTime(Instant.now());
+  @DisplayName(
+      "given some merch id and a merch item exists with that id, "
+          + "when calling for merch with the given id, then return that specific merch item")
+  @Test
+  public void whenGettingSpecificMerch_thenReturnMerchItem() {
+    var merchId = 5;
+    Merch expectedResult = new Merch();
+    expectedResult.setId(merchId);
+    expectedResult.setCreatedTime(Instant.now());
+    expectedResult.setModifiedTime(Instant.now());
 
-        when(merchRepository.findById(merchId)).thenReturn(Optional.of(expectedResult));
+    when(merchRepository.findById(merchId)).thenReturn(Optional.of(expectedResult));
 
-        var actualResult = service.getMerch(merchId);
+    var actualResult = service.getMerch(merchId);
 
-        assertNotNull(actualResult, "Merch item is null");
-        assertEquals(Long.valueOf(expectedResult.getId()), actualResult.getMerchId(), "Ids of the merch do not match");
-    }
+    assertNotNull(actualResult, "Merch item is null");
+    assertEquals(
+        Long.valueOf(expectedResult.getId()),
+        actualResult.getMerchId(),
+        "Ids of the merch do not match");
+  }
 
-    @DisplayName("given some merch id and the merch item does not exist, when calling for " +
-        "the merch item then throw the merch not found exception")
-    @Test
-    public void givenMerchNotThere_whenGettingMerchItem_thenThrowNotFoundException() {
-        when(merchRepository.findById(anyInt())).thenReturn(Optional.empty());
+  @DisplayName(
+      "given some merch id and the merch item does not exist, when calling for "
+          + "the merch item then throw the merch not found exception")
+  @Test
+  public void givenMerchNotThere_whenGettingMerchItem_thenThrowNotFoundException() {
+    when(merchRepository.findById(anyInt())).thenReturn(Optional.empty());
 
-        assertThrows(MerchNotFoundException.class,
-            () -> service.getMerch(1), "Exception not thrown when no merch");
-    }
+    assertThrows(
+        MerchNotFoundException.class,
+        () -> service.getMerch(1),
+        "Exception not thrown when no merch");
+  }
 }

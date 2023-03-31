@@ -7,19 +7,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 @Getter
 @Setter
 @NoArgsConstructor
 public class MerchPage {
-    
-    private List<MerchModel> merch = new ArrayList<>();
 
-    private int page;
-    private int size;
-    private int totalPages;
+  private List<MerchModel> merch = new ArrayList<>();
 
-    public void addMerch(MerchModel merchModel) {
-        merch.add(merchModel);
-    }
+  private int page;
+  private int size;
+  private int totalPages;
+
+  public void addMerch(MerchModel merchModel) {
+    merch.add(merchModel);
+  }
 }

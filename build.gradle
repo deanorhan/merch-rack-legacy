@@ -1,19 +1,19 @@
 plugins {
-	id 'org.springframework.boot'
-	id 'io.spring.dependency-management'
-	id 'java'
-	id 'jacoco'
-	id 'io.freefair.lombok' version '8.0.1'
-	id 'org.owasp.dependencycheck' version '8.2.1'
-	id 'com.github.andygoossens.gradle-modernizer-plugin' version '1.7.0'
-	id 'pmd'
-	id 'com.github.ben-manes.versions' version '0.46.0'
-	id 'com.diffplug.spotless' version '6.17.0'
-	// Fucking buildship
-	// id 'eclipse'
+  id 'org.springframework.boot'
+  id 'io.spring.dependency-management'
+  id 'java'
+  id 'jacoco'
+  id 'io.freefair.lombok' version '8.0.1'
+  id 'org.owasp.dependencycheck' version '8.2.1'
+  id 'com.github.andygoossens.gradle-modernizer-plugin' version '1.7.0'
+  id 'pmd'
+  id 'com.github.ben-manes.versions' version '0.46.0'
+  id 'com.diffplug.spotless' version '6.17.0'
+  // Fucking buildship
+  // id 'eclipse'
 
-	// Leaving this in even though it doesn't run on gradle 8
-	id 'org.springdoc.openapi-gradle-plugin' version '1.6.0'
+  // Leaving this in even though it doesn't run on gradle 8
+  id 'org.springdoc.openapi-gradle-plugin' version '1.6.0'
 }
 
 group = 'org.daemio'
@@ -21,94 +21,106 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
 sourceSets {
-	integrationTest {
-		java {
-			compileClasspath += main.output + test.output
-			runtimeClasspath += main.output + test.output
-		}
-	}
+  integrationTest {
+    java {
+      compileClasspath += main.output + test.output
+      runtimeClasspath += main.output + test.output
+    }
+  }
 }
 
 configurations {
-	integrationTestImplementation.extendsFrom testImplementation
-	integrationTestRuntimeOnly.extendsFrom testRuntimeOnly
+  integrationTestImplementation.extendsFrom testImplementation
+  integrationTestRuntimeOnly.extendsFrom testRuntimeOnly
 }
 
 compileJava {
-	options.compilerArgs += "-Amapstruct.defaultComponentModel=spring"
+  options.compilerArgs += "-Amapstruct.defaultComponentModel=spring"
 }
 
 repositories {
-	mavenCentral()
+  mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-actuator'
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
+  implementation 'org.springframework.boot:spring-boot-starter-actuator'
+  implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+  implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+  implementation 'org.springframework.boot:spring-boot-starter-security'
+  implementation 'org.springframework.boot:spring-boot-starter-validation'
+  implementation 'org.springframework.boot:spring-boot-starter-web'
 
-	implementation 'org.mapstruct:mapstruct:1.5.3.Final'
-	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
+  implementation 'org.mapstruct:mapstruct:1.5.3.Final'
+  annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
 
-	annotationProcessor 'org.hibernate.orm:hibernate-jpamodelgen:6.2.0.CR4'
-	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+  annotationProcessor 'org.hibernate.orm:hibernate-jpamodelgen:6.2.0.Final'
+  annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
-	// Bumping version due to CVE-2022-1471
-	implementation 'org.yaml:snakeyaml:2.0'
+  // Bumping version due to CVE-2022-1471
+  implementation 'org.yaml:snakeyaml:2.0'
 
-	runtimeOnly 'com.h2database:h2'
+  runtimeOnly 'com.h2database:h2'
 
-	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4'
-	
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.security:spring-security-test'
+  implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4'
 
-	integrationTestImplementation 'io.rest-assured:rest-assured:5.3.0'
+  testImplementation 'org.springframework.boot:spring-boot-starter-test'
+  testImplementation 'org.springframework.security:spring-security-test'
+
+  integrationTestImplementation 'io.rest-assured:rest-assured:5.3.0'
 }
 
 task integrationTest(type: Test) {
-	description = 'Runs integration tests.'
-	group = 'verification'
+  description = 'Runs integration tests.'
+  group = 'verification'
 
-	testClassesDirs = sourceSets.integrationTest.output.classesDirs
-	classpath = sourceSets.integrationTest.runtimeClasspath
-	shouldRunAfter test
+  testClassesDirs = sourceSets.integrationTest.output.classesDirs
+  classpath = sourceSets.integrationTest.runtimeClasspath
+  shouldRunAfter test
 }
 
 tasks.withType(Test) {
-	useJUnitPlatform()
+  useJUnitPlatform()
 }
 
 jacocoTestReport {
-	executionData tasks.withType(Test)
+  executionData tasks.withType(Test)
 
-	reports {
-		xml.required = true
-	}
+  reports {
+    xml.required = true
+  }
 
-	afterEvaluate {
-        classDirectories.setFrom(files(classDirectories.files.collect {
-            fileTree(dir: it, exclude: [
-                "**/*_.class"
-            ])
-        }))
-    }
+  afterEvaluate {
+    classDirectories.setFrom(files(classDirectories.files.collect {
+      fileTree(dir: it, exclude: [
+        "**/*_.class"
+      ])
+    }))
+  }
 }
 
 pmd {
-	sourceSets = [ sourceSets.main ]
+  sourceSets = [ sourceSets.main ]
 }
 
 spotless {
-	java {
-		importOrder('java|javax|jakarta', '', 'org.daemio', '\\#')
-		removeUnusedImports()
+  java {
+    removeUnusedImports()
 
-		formatAnnotations()
-	}
+    googleJavaFormat('1.16.0')
+
+    importOrder('java|javax|jakarta', '', 'org.daemio', '\\#')
+    indentWithSpaces(2)
+    trimTrailingWhitespace()
+
+    formatAnnotations()
+  }
+
+  format 'misc', {
+    target '*.gradle', '*.md', '.gitignore'
+
+    trimTrailingWhitespace()
+    indentWithSpaces(2)
+  }
 }
 
 check.dependsOn integrationTest
@@ -121,6 +133,6 @@ check.dependsOn integrationTest
 // 			def entries = cp.entries;
 // 			def src = new org.gradle.plugins.ide.eclipse.model.SourceFolder('build/generated/sources/annotationProcessor/java/main/', null)
 // 			entries.add(src)
-// 		} 
+// 		}
 // 	}
 // }

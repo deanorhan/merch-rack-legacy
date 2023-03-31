@@ -1,14 +1,5 @@
 package org.daemio.merch.controller;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Arrays;
@@ -38,128 +29,138 @@ import org.daemio.merch.model.MerchModel;
 import org.daemio.merch.model.MerchPage;
 import org.daemio.merch.service.MerchService;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 @WebMvcTest(MerchController.class)
-@Import({ WebSecurityConfig.class, RoleConfig.class, MerchMapperImpl.class })
+@Import({WebSecurityConfig.class, RoleConfig.class, MerchMapperImpl.class})
 @DisplayName("Merch controller tests")
 public class MerchControllerTest {
 
-    @Autowired
-    private MockMvc mvc;
-    @Autowired
-    private ObjectMapper mapper;
+  @Autowired private MockMvc mvc;
+  @Autowired private ObjectMapper mapper;
 
-    @MockBean
-    private MerchService merchService;
+  @MockBean private MerchService merchService;
 
-    @DisplayName("when calling for a list of merch then the service should return " +
-        "succussfully and the response should be an array of merch")
-    @Test
-    public void whenGetMerch_thenReturnSuccessfulList() throws Exception {
-        var merch = new MerchModel();
-        var expectedResponse = new MerchPage();
-        expectedResponse.setMerch(Arrays.asList(merch));
+  @DisplayName(
+      "when calling for a list of merch then the service should return "
+          + "succussfully and the response should be an array of merch")
+  @Test
+  public void whenGetMerch_thenReturnSuccessfulList() throws Exception {
+    var merch = new MerchModel();
+    var expectedResponse = new MerchPage();
+    expectedResponse.setMerch(Arrays.asList(merch));
 
-        when(merchService.getMerchPage(any())).thenReturn(expectedResponse);
+    when(merchService.getMerchPage(any())).thenReturn(expectedResponse);
 
-        mvc.perform(get("/merch"))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$.merch").isArray())
-            .andExpect(content().json(mapper.writeValueAsString(expectedResponse)));
-    }
+    mvc.perform(get("/merch"))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+        .andExpect(jsonPath("$.merch").isArray())
+        .andExpect(content().json(mapper.writeValueAsString(expectedResponse)));
+  }
 
-    @DisplayName("given some page number when calling for a list of merch then the " +
-        "service should return succesfully and the response should indicate the page " +
-        "and have a list of merch")
-    @Test
-    public void givenPageNo_whenGetMerch_thenReturnSuccessfulList() throws Exception {
-        var page = 2;
-        var merch = new MerchModel();
-        var expectedResponse = new MerchPage();
-        expectedResponse.setMerch(Arrays.asList(merch));
-        expectedResponse.setPage(page);
-        expectedResponse.setSize(25);
-        expectedResponse.setTotalPages(2);
+  @DisplayName(
+      "given some page number when calling for a list of merch then the "
+          + "service should return succesfully and the response should indicate the page "
+          + "and have a list of merch")
+  @Test
+  public void givenPageNo_whenGetMerch_thenReturnSuccessfulList() throws Exception {
+    var page = 2;
+    var merch = new MerchModel();
+    var expectedResponse = new MerchPage();
+    expectedResponse.setMerch(Arrays.asList(merch));
+    expectedResponse.setPage(page);
+    expectedResponse.setSize(25);
+    expectedResponse.setTotalPages(2);
 
-        when(merchService.getMerchPage(any())).thenReturn(expectedResponse);
+    when(merchService.getMerchPage(any())).thenReturn(expectedResponse);
 
-        mvc.perform(get("/merch").queryParam("page", Integer.toString(page)))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$.merch").isArray())
-            .andExpect(content().json(mapper.writeValueAsString(expectedResponse)));
-    }
+    mvc.perform(get("/merch").queryParam("page", Integer.toString(page)))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+        .andExpect(jsonPath("$.merch").isArray())
+        .andExpect(content().json(mapper.writeValueAsString(expectedResponse)));
+  }
 
-    @DisplayName("given a merch id and the merch item exists, when calling for merch " +
-        "by this id then the service should return successfully and the response should be " +
-        "the specified merch item")
-    @Test
-    public void whenGetMerchItem_thenReturnSuccessfulItem() throws Exception {
-        var merchId = 7;
-        var merch = new MerchModel();
-        merch.setTitle("Some dumb title");
-        merch.setCreatedTime(Instant.now());
-        merch.setModifiedTime(Instant.now());
+  @DisplayName(
+      "given a merch id and the merch item exists, when calling for merch "
+          + "by this id then the service should return successfully and the response should be "
+          + "the specified merch item")
+  @Test
+  public void whenGetMerchItem_thenReturnSuccessfulItem() throws Exception {
+    var merchId = 7;
+    var merch = new MerchModel();
+    merch.setTitle("Some dumb title");
+    merch.setCreatedTime(Instant.now());
+    merch.setModifiedTime(Instant.now());
 
-        when(merchService.getMerch(merchId)).thenReturn(merch);
+    when(merchService.getMerch(merchId)).thenReturn(merch);
 
-        mvc.perform(get("/merch/{merchId}", merchId))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$.title").value(merch.getTitle()));
-    }
+    mvc.perform(get("/merch/{merchId}", merchId))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+        .andExpect(jsonPath("$.title").value(merch.getTitle()));
+  }
 
-    @DisplayName("given a merch id where the item does not exist, when calling for merch " +
-        "by this id then the service sould return a 404 Not Found")
-    @Test
-    public void givenMerchNotThere_whenGetMerchItem_thenGetNotFoundResponse() throws Exception {
-        var merchId = 7;
+  @DisplayName(
+      "given a merch id where the item does not exist, when calling for merch "
+          + "by this id then the service sould return a 404 Not Found")
+  @Test
+  public void givenMerchNotThere_whenGetMerchItem_thenGetNotFoundResponse() throws Exception {
+    var merchId = 7;
 
-        when(merchService.getMerch(merchId)).thenThrow(new MerchNotFoundException());
+    when(merchService.getMerch(merchId)).thenThrow(new MerchNotFoundException());
 
-        mvc.perform(get("/merch/{merchId}", merchId))
-            .andExpect(status().isNotFound());
-    }
+    mvc.perform(get("/merch/{merchId}", merchId)).andExpect(status().isNotFound());
+  }
 
-    @WithMockUser(roles = { "VENDOR" })
-    @Test
-    public void whenPostMerch_thenGetBackLocation() throws Exception {
-        long merchId = 87;
-        when(merchService.saveMerch(any())).thenReturn(MerchModel.builder().merchId(merchId).build());
+  @WithMockUser(roles = {"VENDOR"})
+  @Test
+  public void whenPostMerch_thenGetBackLocation() throws Exception {
+    long merchId = 87;
+    when(merchService.saveMerch(any())).thenReturn(MerchModel.builder().merchId(merchId).build());
 
-        var merchRequest = MerchModel.builder()
-                .title("some merch")
-                .price(BigDecimal.valueOf(10.00))
-                .build();
+    var merchRequest =
+        MerchModel.builder().title("some merch").price(BigDecimal.valueOf(10.00)).build();
 
-        mvc.perform(post("/merch")
+    mvc.perform(
+            post("/merch")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(merchRequest)))
-            .andExpect(status().isCreated())
-            .andExpect(header().exists(HttpHeaders.LOCATION))
-            .andExpect(header().string(HttpHeaders.LOCATION, String.format("/merch/%d", merchId)));
-    }
+        .andExpect(status().isCreated())
+        .andExpect(header().exists(HttpHeaders.LOCATION))
+        .andExpect(header().string(HttpHeaders.LOCATION, String.format("/merch/%d", merchId)));
+  }
 
-    @DisplayName("Controller validates the request object")
-    @WithMockUser(roles = { "VENDOR" })
-    @ParameterizedTest(name = "{index} => Missing {1}")
-    @MethodSource("argumentsForValidation")
-    public void merchController_validates_request(String requestJson, String invalidParameter) throws JsonProcessingException, Exception {
-        mvc.perform(post("/merch")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(requestJson))
-            .andExpect(status().isBadRequest())
-            .andExpect(content().contentType(MediaType.APPLICATION_PROBLEM_JSON))
-            .andExpect(jsonPath("$.errors").exists())
-            .andExpect(jsonPath("$.errors.%s", invalidParameter).exists());
-    }
+  @DisplayName("Controller validates the request object")
+  @WithMockUser(roles = {"VENDOR"})
+  @ParameterizedTest(name = "{index} => Missing {1}")
+  @MethodSource("argumentsForValidation")
+  public void merchController_validates_request(String requestJson, String invalidParameter)
+      throws JsonProcessingException, Exception {
+    mvc.perform(post("/merch").contentType(MediaType.APPLICATION_JSON).content(requestJson))
+        .andExpect(status().isBadRequest())
+        .andExpect(content().contentType(MediaType.APPLICATION_PROBLEM_JSON))
+        .andExpect(jsonPath("$.errors").exists())
+        .andExpect(jsonPath("$.errors.%s", invalidParameter).exists());
+  }
 
-    private static Stream<Arguments> argumentsForValidation() throws JsonProcessingException {
-        final ObjectMapper mapper = new ObjectMapper();
+  private static Stream<Arguments> argumentsForValidation() throws JsonProcessingException {
+    final ObjectMapper mapper = new ObjectMapper();
 
-        return Stream.of(
-            Arguments.of(mapper.writeValueAsString(MerchModel.builder().title("title").build()), "price"),
-            Arguments.of(mapper.writeValueAsString(MerchModel.builder().price(BigDecimal.valueOf(10.00)).build()), "title")
-        );
-    }
+    return Stream.of(
+        Arguments.of(
+            mapper.writeValueAsString(MerchModel.builder().title("title").build()), "price"),
+        Arguments.of(
+            mapper.writeValueAsString(
+                MerchModel.builder().price(BigDecimal.valueOf(10.00)).build()),
+            "title"));
+  }
 }

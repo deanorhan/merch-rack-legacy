@@ -21,54 +21,53 @@ import org.daemio.merch.repository.MerchRepository;
 @Slf4j
 public class MerchService {
 
-    @Autowired
-    private transient MerchRepository repo;
-    @Autowired
-    private transient MerchMapper mapper;
-    
-    public List<Merch> getMerchList() {
-        log.info("Getting a merch list from data");
+  @Autowired private transient MerchRepository repo;
+  @Autowired private transient MerchMapper mapper;
 
-        List<Merch> list = new ArrayList<>();
+  public List<Merch> getMerchList() {
+    log.info("Getting a merch list from data");
 
-        repo.findAll().forEach(list::add);
+    List<Merch> list = new ArrayList<>();
 
-        return list;
+    repo.findAll().forEach(list::add);
+
+    return list;
+  }
+
+  public MerchPage getMerchPage(Pageable pageable) {
+    log.info("Getting a page of merch from data");
+
+    var results = repo.findAll(pageable);
+
+    return mapper.pageToResponse(results);
+  }
+
+  public MerchPage getMerchPage(Pageable pageable, List<MerchStatus> statusList) {
+    log.info("Getting a page of merch from data");
+
+    var results =
+        repo.findAll((root, query, builder) -> root.get(Merch_.status).in(statusList), pageable);
+
+    return mapper.pageToResponse(results);
+  }
+
+  public MerchModel getMerch(int merchId) {
+    log.info("Getting a piece of merch from data");
+
+    var merch = repo.findById(merchId);
+    if (merch.isEmpty()) {
+      throw new MerchNotFoundException();
     }
 
-    public MerchPage getMerchPage(Pageable pageable) {
-        log.info("Getting a page of merch from data");
+    return mapper.entityToModel(merch.get());
+  }
 
-        var results = repo.findAll(pageable);
+  public MerchModel saveMerch(MerchModel merchRequest) {
+    var merch = mapper.modelToEntity(merchRequest);
+    merch.setStatus(MerchStatus.LOADED);
 
-        return mapper.pageToResponse(results);
-    }
+    merch.getImages().forEach(i -> i.setMerch(merch));
 
-    public MerchPage getMerchPage(Pageable pageable, List<MerchStatus> statusList) {
-        log.info("Getting a page of merch from data");
-
-        var results = repo.findAll((root, query, builder) -> root.get(Merch_.status).in(statusList), pageable);
-
-        return mapper.pageToResponse(results);
-    }
-
-    public MerchModel getMerch(int merchId) {
-        log.info("Getting a piece of merch from data");
-
-        var merch = repo.findById(merchId);
-        if (merch.isEmpty()) {
-            throw new MerchNotFoundException();
-        }
-
-        return mapper.entityToModel(merch.get());
-    }
-
-    public MerchModel saveMerch(MerchModel merchRequest) {
-        var merch = mapper.modelToEntity(merchRequest);
-        merch.setStatus(MerchStatus.LOADED);
-
-        merch.getImages().forEach(i -> i.setMerch(merch));
-
-        return mapper.entityToModel(repo.save(merch));
-    }
+    return mapper.entityToModel(repo.save(merch));
+  }
 }

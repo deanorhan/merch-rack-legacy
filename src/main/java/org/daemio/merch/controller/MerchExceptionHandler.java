@@ -14,28 +14,33 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @RestControllerAdvice
-public class MerchExceptionHandler extends ResponseEntityExceptionHandler  {
+public class MerchExceptionHandler extends ResponseEntityExceptionHandler {
 
-    // @ExceptionHandler(ConstraintViolationException.class)
-    // ErrorResponse handleBookmarkNotFoundException(ConstraintViolationException e) {
-    //     return ErrorResponse.builder(e, HttpStatus.BAD_REQUEST, e.getMessage())
-    //             .title("Bookmark not found")
-    //             .type(URI.create("https://api.bookmarks.com/errors/not-found"))
-    //             .property("errorCategory", "Generic")
-    //             .property("timestamp", Instant.now())
-    //             .build();
-    // }
+  // @ExceptionHandler(ConstraintViolationException.class)
+  // ErrorResponse handleBookmarkNotFoundException(ConstraintViolationException e)
+  // {
+  // return ErrorResponse.builder(e, HttpStatus.BAD_REQUEST, e.getMessage())
+  // .title("Bookmark not found")
+  // .type(URI.create("https://api.bookmarks.com/errors/not-found"))
+  // .property("errorCategory", "Generic")
+  // .property("timestamp", Instant.now())
+  // .build();
+  // }
 
-    @Override
-    @Nullable protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
-            HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-        var body = ProblemDetail.forStatusAndDetail(status, "Invalid request content.");
+  @Override
+  @Nullable protected ResponseEntity<Object> handleMethodArgumentNotValid(
+      MethodArgumentNotValidException ex,
+      HttpHeaders headers,
+      HttpStatusCode status,
+      WebRequest request) {
+    var body = ProblemDetail.forStatusAndDetail(status, "Invalid request content.");
 
-        var fieldErrors = ex.getBindingResult().getFieldErrors().stream()
+    var fieldErrors =
+        ex.getBindingResult().getFieldErrors().stream()
             .collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage));
 
-        body.setProperty("errors", fieldErrors);
+    body.setProperty("errors", fieldErrors);
 
-        return handleExceptionInternal(ex, body, headers, status, request);
-    }
+    return handleExceptionInternal(ex, body, headers, status, request);
+  }
 }
