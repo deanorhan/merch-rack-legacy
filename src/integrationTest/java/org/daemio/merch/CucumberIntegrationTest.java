@@ -13,6 +13,4 @@ import static io.cucumber.junit.platform.engine.Constants.*;
 @SelectClasspathResource("features")
 @ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "org.daemio.merch")
 @SuiteDisplayName("Cucumber tests")
-public class CucumberIntegrationTest {
-
-}
+public class CucumberIntegrationTest {}

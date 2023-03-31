@@ -98,21 +98,21 @@ public class MerchAPITest {
         .when()
         .get("/merch/{merchId}")
         .then()
-            .statusCode(HttpStatus.OK.value())
-            .contentType(ContentType.JSON)
-            .body("merchId", is(merch.getId()))
-            .body("title", is(merch.getTitle()))
-            .body("createdTime", is(notNullValue()))
-            .body("modifiedTime", is(notNullValue()));
-    }
+        .statusCode(HttpStatus.OK.value())
+        .contentType(ContentType.JSON)
+        .body("merchId", is(merch.getId()))
+        .body("title", is(merch.getTitle()))
+        .body("createdTime", is(notNullValue()))
+        .body("modifiedTime", is(notNullValue()));
+  }
 
-    @Test
-    public void givenMerchNotThere_whenCallingForMerch_thenGetNotFound() {
-        var merchId = 17;
+  @Test
+  public void givenMerchNotThere_whenCallingForMerch_thenGetNotFound() {
+    var merchId = 17;
 
-        given()
-            .port(port)
-            .pathParam("merchId", merchId)
+    given()
+        .port(port)
+        .pathParam("merchId", merchId)
         .when()
         .get("/merch/{merchId}")
         .then()
