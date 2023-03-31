@@ -7,6 +7,7 @@ plugins {
 	id 'org.owasp.dependencycheck' version '8.2.1'
 	id 'com.github.andygoossens.gradle-modernizer-plugin' version '1.7.0'
 	id 'pmd'
+	id 'checkstyle'
 	id 'com.github.ben-manes.versions' version '0.46.0'
 	id 'com.diffplug.spotless' version '6.17.0'
 	// Fucking buildship
@@ -102,10 +103,17 @@ pmd {
 	sourceSets = [ sourceSets.main ]
 }
 
+checkstyle {
+	configFile file('checkstyle.xml')
+}
+
 spotless {
 	java {
 		importOrder('java|javax|jakarta', '', 'org.daemio', '\\#')
 		removeUnusedImports()
+
+		indentWithSpaces()
+		trimTrailingWhitespace()
 
 		formatAnnotations()
 	}
