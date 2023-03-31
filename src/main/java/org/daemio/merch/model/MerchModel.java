@@ -17,19 +17,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@JsonIgnoreProperties(value = {"createdTime", "modifiedTime"}, allowGetters = true, ignoreUnknown = true)
+@JsonIgnoreProperties(
+    value = {"createdTime", "modifiedTime"},
+    allowGetters = true,
+    ignoreUnknown = true)
 public class MerchModel {
 
-    private Long merchId;
+  private Long merchId;
 
-    @NotBlank
-    private String title;
+  @NotBlank private String title;
 
-    @NotNull @Positive private BigDecimal price;
+  @NotNull @Positive private BigDecimal price;
 
-    @EqualsAndHashCode.Exclude
-    private Instant createdTime;
+  @EqualsAndHashCode.Exclude private Instant createdTime;
 
-    @EqualsAndHashCode.Exclude
-    private Instant modifiedTime;
+  @EqualsAndHashCode.Exclude private Instant modifiedTime;
 }

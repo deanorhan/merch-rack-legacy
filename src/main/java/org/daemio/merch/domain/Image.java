@@ -17,24 +17,26 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "images", indexes = {@Index(name = "merch_idx", columnList = "merch_id")})
+@Table(
+    name = "images",
+    indexes = {@Index(name = "merch_idx", columnList = "merch_id")})
 @Getter
 @Setter
 public class Image {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "image_id")
-    private int id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "image_id")
+  private int id;
 
-    @Hidden
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "merch_id", nullable = false)
-    private Merch merch;
+  @Hidden
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "merch_id", nullable = false)
+  private Merch merch;
 
-    @NotBlank
-    @Column(nullable = false)
-    private String uri;
+  @NotBlank
+  @Column(nullable = false)
+  private String uri;
 
-    private String title;
+  private String title;
 }

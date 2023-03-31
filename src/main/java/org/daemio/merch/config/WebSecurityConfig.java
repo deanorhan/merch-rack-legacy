@@ -20,30 +20,37 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @Slf4j
 public class WebSecurityConfig {
 
-    @Autowired
-    private transient RoleConfig roleConfig;
+  @Autowired private transient RoleConfig roleConfig;
 
-    @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        log.info("Initializing security chain");
+  @Bean
+  SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    log.info("Initializing security chain");
 
-        http.cors(AbstractHttpConfigurer::disable).csrf(AbstractHttpConfigurer::disable);
+    http.cors(AbstractHttpConfigurer::disable).csrf(AbstractHttpConfigurer::disable);
 
-        http.sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+    http.sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-        http.authorizeHttpRequests(auth -> {
-            auth.requestMatchers(HttpMethod.POST, "/merch").hasRole(roleConfig.getVendor()).anyRequest().permitAll();
+    http.authorizeHttpRequests(
+        auth -> {
+          auth.requestMatchers(HttpMethod.POST, "/merch")
+              .hasRole(roleConfig.getVendor())
+              .anyRequest()
+              .permitAll();
         });
 
-        http.httpBasic(withDefaults());
+    http.httpBasic(withDefaults());
 
-        return http.build();
-    }
+    return http.build();
+  }
 
-    @Bean
-    @SuppressWarnings("deprecation")
-    InMemoryUserDetailsManager userDetails() {
-        return new InMemoryUserDetailsManager(User.withDefaultPasswordEncoder().username("test").password("pass")
-                .roles(roleConfig.getVendor()).build());
-    }
+  @Bean
+  @SuppressWarnings("deprecation")
+  InMemoryUserDetailsManager userDetails() {
+    return new InMemoryUserDetailsManager(
+        User.withDefaultPasswordEncoder()
+            .username("test")
+            .password("pass")
+            .roles(roleConfig.getVendor())
+            .build());
+  }
 }

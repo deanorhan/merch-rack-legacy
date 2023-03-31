@@ -27,39 +27,38 @@ import org.daemio.merch.service.MerchService;
 @Slf4j
 public class MerchController {
 
-    @Autowired
-    private transient MerchService merchService;
+  @Autowired private transient MerchService merchService;
 
-    @Operation(summary = "Get a list of merch")
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<MerchPage> getMerchList(
-            @ParameterObject @PageableDefault(page = 0, size = 25) Pageable pageable) {
+  @Operation(summary = "Get a list of merch")
+  @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<MerchPage> getMerchList(
+      @ParameterObject @PageableDefault(page = 0, size = 25) Pageable pageable) {
 
-        log.info("Getting some merch");
+    log.info("Getting some merch");
 
-        var page = merchService.getMerchPage(pageable);
-        return ResponseEntity.ok(page);
-    }
+    var page = merchService.getMerchPage(pageable);
+    return ResponseEntity.ok(page);
+  }
 
-    @Operation(summary = "Save a new piece of merch")
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> saveNewMerch(@Valid @RequestBody MerchModel newMerchModel) {
-        log.info("Saving some merch");
+  @Operation(summary = "Save a new piece of merch")
+  @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<Void> saveNewMerch(@Valid @RequestBody MerchModel newMerchModel) {
+    log.info("Saving some merch");
 
-        var merch = merchService.saveMerch(newMerchModel);
+    var merch = merchService.saveMerch(newMerchModel);
 
-        var location = String.format("/merch/%d", merch.getMerchId());
+    var location = String.format("/merch/%d", merch.getMerchId());
 
-        return ResponseEntity.created(URI.create(location)).build();
-    }
+    return ResponseEntity.created(URI.create(location)).build();
+  }
 
-    @Operation(summary = "Get a piece of merch by id")
-    @GetMapping(path = "/{merchId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<MerchModel> getMerchItem(@PathVariable int merchId) {
-        log.info("Getting piece of merch");
+  @Operation(summary = "Get a piece of merch by id")
+  @GetMapping(path = "/{merchId}", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<MerchModel> getMerchItem(@PathVariable int merchId) {
+    log.info("Getting piece of merch");
 
-        var merch = merchService.getMerch(merchId);
+    var merch = merchService.getMerch(merchId);
 
-        return ResponseEntity.ok(merch);
-    }
+    return ResponseEntity.ok(merch);
+  }
 }

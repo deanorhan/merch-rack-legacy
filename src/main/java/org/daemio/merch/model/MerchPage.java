@@ -12,13 +12,13 @@ import lombok.Setter;
 @NoArgsConstructor
 public class MerchPage {
 
-    private List<MerchModel> merch = new ArrayList<>();
+  private List<MerchModel> merch = new ArrayList<>();
 
-    private int page;
-    private int size;
-    private int totalPages;
+  private int page;
+  private int size;
+  private int totalPages;
 
-    public void addMerch(MerchModel merchModel) {
-        merch.add(merchModel);
-    }
+  public void addMerch(MerchModel merchModel) {
+    merch.add(merchModel);
+  }
 }

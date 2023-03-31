@@ -7,15 +7,15 @@ import org.springframework.web.ErrorResponseException;
 
 public class MerchNotFoundException extends ErrorResponseException {
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    public MerchNotFoundException() {
-        super(HttpStatus.NOT_FOUND);
-        populateDetail();
-    }
+  public MerchNotFoundException() {
+    super(HttpStatus.NOT_FOUND);
+    populateDetail();
+  }
 
-    private void populateDetail() {
-        getBody().setTitle("Merch Not Found");
-        getBody().setProperty("timestamp", Instant.now());
-    }
+  private void populateDetail() {
+    getBody().setTitle("Merch Not Found");
+    getBody().setProperty("timestamp", Instant.now());
+  }
 }

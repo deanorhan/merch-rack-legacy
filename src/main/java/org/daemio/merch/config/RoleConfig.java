@@ -10,10 +10,12 @@ import org.springframework.stereotype.Component;
 @Getter
 public class RoleConfig {
 
-    @Value("${admin:ADMIN}")
-    private String admin;
-    @Value("${fan:FAN}")
-    private String fan;
-    @Value("${vendor:VENDOR}")
-    private String vendor;
+  @Value("${admin:ADMIN}")
+  private String admin;
+
+  @Value("${fan:FAN}")
+  private String fan;
+
+  @Value("${vendor:VENDOR}")
+  private String vendor;
 }

@@ -7,7 +7,7 @@ plugins {
 	id 'org.owasp.dependencycheck' version '8.2.1'
 	id 'com.github.andygoossens.gradle-modernizer-plugin' version '1.7.0'
 	id 'pmd'
-	id 'checkstyle'
+	// id 'checkstyle'
 	id 'com.github.ben-manes.versions' version '0.46.0'
 	id 'com.diffplug.spotless' version '6.17.0'
 	// Fucking buildship
@@ -91,24 +91,29 @@ jacocoTestReport {
 	}
 
 	afterEvaluate {
-        classDirectories.setFrom(files(classDirectories.files.collect {
-            fileTree(dir: it, exclude: [
-                "**/*_.class"
-            ])
-        }))
-    }
+		classDirectories.setFrom(files(classDirectories.files.collect {
+			fileTree(dir: it, exclude: [
+				"**/*_.class"
+			])
+		}))
+	}
 }
 
 pmd {
 	sourceSets = [ sourceSets.main ]
 }
 
+// checkstyle {
+// 	toolVersion "10.9.3"
+// 	configFile file('checkstyle.xml')
+// }
+
 spotless {
 	java {
-		importOrder('java|javax|jakarta', '', 'org.daemio', '\\#')
 		removeUnusedImports()
 
-        eclipse().configFile('.vscode/eclipse-style.xml')
+    googleJavaFormat()
+    importOrder('java|javax|jakarta', '', 'org.daemio', '\\#')
 
 		indentWithSpaces()
 		trimTrailingWhitespace()

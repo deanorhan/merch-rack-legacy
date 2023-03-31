@@ -10,7 +10,7 @@ import static java.time.temporal.ChronoUnit.SECONDS;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class DateUtils {
 
-    public static Instant truncateToSeconds(Instant instant) {
-        return instant.truncatedTo(SECONDS);
-    }
+  public static Instant truncateToSeconds(Instant instant) {
+    return instant.truncatedTo(SECONDS);
+  }
 }
