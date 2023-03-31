@@ -96,6 +96,7 @@ tasks.withType(Test) {
 jacocoTestReport {
   dependsOn tasks.withType(Test)
   executionData tasks.withType(Test)
+  shouldRunAfter integrationTest
 
   reports {
     xml.required = true
@@ -136,6 +137,7 @@ spotless {
 }
 
 check.dependsOn integrationTest
+check.dependsOn jacocoTestReport
 
 // This and the eclipse plugin inclusion are only here because buildship is shit
 // eclipse {
