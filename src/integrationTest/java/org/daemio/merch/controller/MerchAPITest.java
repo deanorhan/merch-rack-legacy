@@ -8,16 +8,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.ActiveProfiles;
 
-import org.daemio.merch.MerchServiceApplication;
 import org.daemio.merch.domain.Image;
 import org.daemio.merch.domain.Merch;
 import org.daemio.merch.domain.MerchStatus;
@@ -29,10 +25,10 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.matchesRegex;
 import static org.hamcrest.Matchers.notNullValue;
 
-@SpringBootTest(
-    classes = MerchServiceApplication.class,
-    webEnvironment = WebEnvironment.RANDOM_PORT)
-@ActiveProfiles("integ-test")
+// @SpringBootTest(
+//     classes = MerchServiceApplication.class,
+//     webEnvironment = WebEnvironment.RANDOM_PORT)
+// @ActiveProfiles("integ-test")
 @Disabled
 public class MerchAPITest {
 

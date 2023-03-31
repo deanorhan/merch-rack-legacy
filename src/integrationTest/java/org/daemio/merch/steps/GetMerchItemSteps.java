@@ -31,9 +31,11 @@ public class GetMerchItem {
 
   @Given("A merch item exists")
   public void a_merch_item_exists() {
+    merchRepository.deleteAll();
+
     Merch merch = new Merch();
     merch.setTitle("Amazing band shirt");
-    merch.setStatus(MerchStatus.SOLD_OUT);
+    merch.setStatus(MerchStatus.LOADED);
     merch.setPrice(BigDecimal.valueOf(5));
 
     this.merch = mapper.entityToModel(merchRepository.save(merch));
