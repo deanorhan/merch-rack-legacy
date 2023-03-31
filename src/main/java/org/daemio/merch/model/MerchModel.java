@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@JsonIgnoreProperties(value = { "createdTime", "modifiedTime" }, allowGetters = true, ignoreUnknown = true)
+@JsonIgnoreProperties(value = {"createdTime", "modifiedTime"}, allowGetters = true, ignoreUnknown = true)
 public class MerchModel {
 
     private Long merchId;

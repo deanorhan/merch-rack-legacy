@@ -25,7 +25,7 @@ public class MerchService {
     private transient MerchRepository repo;
     @Autowired
     private transient MerchMapper mapper;
-    
+
     public List<Merch> getMerchList() {
         log.info("Getting a merch list from data");
 

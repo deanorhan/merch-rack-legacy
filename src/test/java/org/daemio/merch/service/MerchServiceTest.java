@@ -1,14 +1,5 @@
 package org.daemio.merch.service;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.when;
-
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
@@ -31,6 +22,15 @@ import org.daemio.merch.mapper.MerchMapper;
 import org.daemio.merch.model.MerchPage;
 import org.daemio.merch.repository.MerchRepository;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.when;
+
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Merch service tests")
 public class MerchServiceTest {
@@ -50,15 +50,14 @@ public class MerchServiceTest {
     @DisplayName("when calling for a list of merch, then should return a list")
     @Test
     public void whenGettingList_thenReturnList() {
-        List <Merch> expectedResult = Arrays.asList(new Merch());
+        List<Merch> expectedResult = Arrays.asList(new Merch());
         when(merchRepository.findAll()).thenReturn(expectedResult);
 
         List<Merch> actualResult = service.getMerchList();
 
         assertNotNull(actualResult, "Merch list is null");
         assertNotEquals(0, actualResult.size(), "Merch list is empty");
-        assertArrayEquals(actualResult.toArray(), expectedResult.toArray(),
-            "Merch list is not what was expected");
+        assertArrayEquals(actualResult.toArray(), expectedResult.toArray(), "Merch list is not what was expected");
     }
 
     @Test
@@ -79,11 +78,11 @@ public class MerchServiceTest {
         assertNotNull(actualResult, "Merch list is null");
         assertNotEquals(0, actualResult.getMerch().size(), "Merch list is empty");
         assertArrayEquals(actualResult.getMerch().toArray(), expectedResult.getMerch().toArray(),
-            "Merch list is not what was expected");
+                "Merch list is not what was expected");
     }
 
-    @DisplayName("given some merch id and a merch item exists with that id, " +
-        "when calling for merch with the given id, then return that specific merch item")
+    @DisplayName("given some merch id and a merch item exists with that id, "
+            + "when calling for merch with the given id, then return that specific merch item")
     @Test
     public void whenGettingSpecificMerch_thenReturnMerchItem() {
         var merchId = 5;

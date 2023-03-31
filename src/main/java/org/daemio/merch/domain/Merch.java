@@ -29,13 +29,13 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
-@Table(name = "merch", indexes = { @Index(name = "status_idx", columnList = "status") })
+@Table(name = "merch", indexes = {@Index(name = "status_idx", columnList = "status")})
 @Getter
 @Setter
 @Accessors(chain = true)
-@EntityListeners({ AuditingEntityListener.class })
+@EntityListeners({AuditingEntityListener.class})
 public class Merch {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "merch_id")
@@ -50,7 +50,7 @@ public class Merch {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "merch", fetch = FetchType.EAGER)
     private List<Image> images = new ArrayList<>();
-    
+
     @NotNull @Positive @Column(nullable = false)
     private BigDecimal price;
 

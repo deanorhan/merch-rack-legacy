@@ -26,16 +26,14 @@ import org.daemio.merch.service.MerchService;
 @RequestMapping("/merch")
 @Slf4j
 public class MerchController {
-    
+
     @Autowired
     private transient MerchService merchService;
 
     @Operation(summary = "Get a list of merch")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<MerchPage> getMerchList(
-            @ParameterObject
-            @PageableDefault(page = 0, size = 25)
-            Pageable pageable) {
+            @ParameterObject @PageableDefault(page = 0, size = 25) Pageable pageable) {
 
         log.info("Getting some merch");
 
@@ -52,9 +50,7 @@ public class MerchController {
 
         var location = String.format("/merch/%d", merch.getMerchId());
 
-        return ResponseEntity
-            .created(URI.create(location))
-            .build();
+        return ResponseEntity.created(URI.create(location)).build();
     }
 
     @Operation(summary = "Get a piece of merch by id")

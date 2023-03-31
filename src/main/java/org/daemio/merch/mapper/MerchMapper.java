@@ -10,7 +10,7 @@ import org.daemio.merch.model.MerchModel;
 import org.daemio.merch.model.MerchPage;
 import org.daemio.merch.util.DateUtils;
 
-@Mapper(imports = { DateUtils.class })
+@Mapper(imports = {DateUtils.class})
 public interface MerchMapper {
 
     @Mapping(target = "id", source = "merchId")
@@ -25,7 +25,7 @@ public interface MerchMapper {
     @Mapping(target = "createdTime", expression = "java(DateUtils.truncateToSeconds(entity.getCreatedTime()))")
     @Mapping(target = "modifiedTime", expression = "java(DateUtils.truncateToSeconds(entity.getCreatedTime()))")
     MerchModel entityToModel(Merch entity);
-    
+
     default MerchPage pageToResponse(Page<Merch> page) {
         MerchPage response = new MerchPage();
 

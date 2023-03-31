@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties("app.security.role")
 @Getter
 public class RoleConfig {
-    
+
     @Value("${admin:ADMIN}")
     private String admin;
     @Value("${fan:FAN}")
