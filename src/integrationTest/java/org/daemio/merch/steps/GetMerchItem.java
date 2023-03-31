@@ -8,10 +8,13 @@ import io.cucumber.java.en.When;
 import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
 import org.junit.jupiter.api.DisplayName;
+import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.daemio.merch.domain.Merch;
 import org.daemio.merch.domain.MerchStatus;
+import org.daemio.merch.mapper.MerchMapper;
+import org.daemio.merch.model.MerchModel;
 import org.daemio.merch.repository.MerchRepository;
 
 import static io.restassured.RestAssured.given;
@@ -22,10 +25,11 @@ public class GetMerchItem {
 
     @Autowired
     private MerchRepository merchRepository;
-    
-    private Merch merch;
+
+    private MerchMapper mapper = Mappers.getMapper(MerchMapper.class);
+    private MerchModel merch;
     private ValidatableResponse response;
-    
+
     @Given("A merch item exists")
     public void a_merch_item_exists() {
         Merch merch = new Merch();
@@ -33,19 +37,19 @@ public class GetMerchItem {
         merch.setStatus(MerchStatus.SOLD_OUT);
         merch.setPrice(BigDecimal.valueOf(5));
 
-        this.merch = merchRepository.save(merch);
+        this.merch = mapper.entityToModel(merchRepository.save(merch));
     }
 
     @Given("A merch item doesn't exists")
     public void a_merch_item_doesn_t_exists() {
-        merch = new Merch();
-        merch.setId(-1);
+        merch = new MerchModel();
+        merch.setMerchId(-1L);
     }
 
     @When("I call the merch item endpoint with a merch id")
     public void i_call_the_merch_item_endpoint_with_a_merch_id() {
         response = given()
-                .pathParam("merchId", merch.getId())
+                .pathParam("merchId", merch.getMerchId())
             .when()
                 .get("/merch/{merchId}")
             .then();
@@ -59,7 +63,7 @@ public class GetMerchItem {
     @Then("It's the merch item defined by the merch id")
     public void It_s_the_merch_item_defined_by_the_merch_id() {
         response
-            .body("merchId", is(merch.getId()))
+            .body("merchId", is(merch.getMerchId().intValue()))
             .body("title", is(merch.getTitle()));
     }
 }

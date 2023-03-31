@@ -13,19 +13,19 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 @SpringBootTest(classes = MerchServiceApplication.class, webEnvironment = WebEnvironment.RANDOM_PORT)
 @Slf4j
 public class CucumberSpringConfiguration {
-    
-	@LocalServerPort
+
+    @LocalServerPort
     private int port;
 
     @Before
-	public void setUp() {
-		log.info("Setting up RestAssured with port {}", port);
-		RestAssured.port = port;
-	}
+    public void setUp() {
+        log.info("Setting up RestAssured with port {}", port);
+        RestAssured.port = port;
+    }
 
-	@After
-	public void tearDown() {
-		log.info("Reseting RestAssured");
-		RestAssured.reset();
-	}
+    @After
+    public void tearDown() {
+        log.info("Reseting RestAssured");
+        RestAssured.reset();
+    }
 }

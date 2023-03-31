@@ -106,13 +106,13 @@ public class MerchAPITest {
             .body("modifiedTime", is(notNullValue()));
     }
 
-  @Test
-  public void givenMerchNotThere_whenCallingForMerch_thenGetNotFound() {
-    var merchId = 17;
+    @Test
+    public void givenMerchNotThere_whenCallingForMerch_thenGetNotFound() {
+        var merchId = 17;
 
-    given()
-        .port(port)
-        .pathParam("merchId", merchId)
+        given()
+            .port(port)
+            .pathParam("merchId", merchId)
         .when()
         .get("/merch/{merchId}")
         .then()
