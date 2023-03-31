@@ -63,8 +63,17 @@ dependencies {
 
   implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4'
 
+  testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
+  testImplementation 'org.junit.platform:junit-platform-suite:1.9.2'
+
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
   testImplementation 'org.springframework.security:spring-security-test'
+
+  testImplementation 'net.datafaker:datafaker:1.8.1'
+
+  testImplementation 'io.cucumber:cucumber-java:7.11.2'
+  testImplementation 'io.cucumber:cucumber-junit-platform-engine:7.11.2'
+  testImplementation 'io.cucumber:cucumber-spring:7.11.2'
 
   integrationTestImplementation 'io.rest-assured:rest-assured:5.3.0'
 }
@@ -72,10 +81,12 @@ dependencies {
 task integrationTest(type: Test) {
   description = 'Runs integration tests.'
   group = 'verification'
+  shouldRunAfter test
 
   testClassesDirs = sourceSets.integrationTest.output.classesDirs
   classpath = sourceSets.integrationTest.runtimeClasspath
-  shouldRunAfter test
+
+  systemProperty "cucumber.plugin", "pretty, html:${buildDir}/reports/tests/cucumber/integration.html, json:${buildDir}/reports/tests/cucumber/integration.json, junit:${buildDir}/reports/tests/cucumber/integration.xml"
 }
 
 tasks.withType(Test) {
@@ -83,7 +94,9 @@ tasks.withType(Test) {
 }
 
 jacocoTestReport {
+  dependsOn tasks.withType(Test)
   executionData tasks.withType(Test)
+  shouldRunAfter integrationTest
 
   reports {
     xml.required = true
@@ -124,6 +137,7 @@ spotless {
 }
 
 check.dependsOn integrationTest
+check.dependsOn jacocoTestReport
 
 // This and the eclipse plugin inclusion are only here because buildship is shit
 // eclipse {
