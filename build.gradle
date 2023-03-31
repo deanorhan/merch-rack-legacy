@@ -103,10 +103,6 @@ pmd {
 	sourceSets = [ sourceSets.main ]
 }
 
-checkstyle {
-	configFile file('checkstyle.xml')
-}
-
 spotless {
 	java {
 		importOrder('java|javax|jakarta', '', 'org.daemio', '\\#')
