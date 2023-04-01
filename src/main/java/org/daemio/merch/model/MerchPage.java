@@ -3,16 +3,15 @@ package org.daemio.merch.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import lombok.Getter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 public class MerchPage {
 
-  private List<MerchModel> merch = new ArrayList<>();
+  @EqualsAndHashCode.Exclude private List<MerchModel> merch = new ArrayList<>();
 
   private int page;
   private int size;
