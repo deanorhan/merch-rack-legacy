@@ -8,7 +8,10 @@ import io.swagger.v3.oas.annotations.info.License;
     info =
         @Info(
             title = "Merch Service",
-            version = "1.0.0",
+            version = "0.1.0",
             description = "Where you get all the merch",
-            license = @License(name = "Apache 2.0", url = "http://foo.bar")))
+            license =
+                @License(
+                    name = "Apache 2.0",
+                    url = "http://www.apache.org/licenses/LICENSE-2.0.html")))
 public class OpenAPIConfig {}

@@ -1,0 +1,297 @@
+---
+openapi: 3.0.1
+info:
+  title: Merch Service
+  description: Where you get all the merch
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 0.1.0
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+paths:
+  "/merch":
+    get:
+      tags:
+      - merch
+      summary: Get a list of merch
+      operationId: getMerchList
+      parameters:
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 25
+      - name: sort
+        in: query
+        description: 'Sorting criteria in the format: property,(asc|desc). Default
+          sort order is ascending. Multiple sort criteria are supported.'
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/MerchPage"
+    post:
+      tags:
+      - merch
+      summary: Save a new piece of merch
+      operationId: saveNewMerch
+      security:
+      - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/MerchModel"
+        required: true
+      responses:
+        '201':
+          description: Created
+          headers:
+            Location:
+              description: URI to the saved merch
+              style: simple
+              schema: 
+                type: string
+        '400':
+          "$ref": "#/components/responses/BadRequest"
+        '401':
+          "$ref": "#/components/responses/Unauthorized"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+  "/merch/{merchId}/status":
+    patch:
+      tags:
+      - merch
+      summary: Update the status of a piece of merch
+      operationId: updateMerchStatus
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: merchId
+        in: path
+        description: id of the merch
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: OK
+        '400':
+          "$ref": "#/components/responses/BadRequest"
+        '401':
+          "$ref": "#/components/responses/Unauthorized"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+  "/merch/{merchId}":
+    get:
+      tags:
+      - merch
+      summary: Get a piece of merch by id
+      operationId: getMerchItem
+      parameters:
+      - name: merchId
+        in: path
+        description: id of the merch
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/MerchModel"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+    put:
+      tags:
+        - merch
+      summary: Update a piece of merch fully
+      operationId: updateMerchItem
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: merchId
+        in: path
+        description: id of the merch
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/MerchModel"
+        '400':
+          "$ref": "#/components/responses/BadRequest"
+        '401':
+          "$ref": "#/components/responses/Unauthorized"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+    patch:
+      tags:
+        - merch
+      summary: Update a piece of merch with the delta
+      operationId: patchMerchItem
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: merchId
+        in: path
+        description: id of the merch
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/MerchModel"
+        '400':
+          "$ref": "#/components/responses/BadRequest"
+        '401':
+          "$ref": "#/components/responses/Unauthorized"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+    delete:
+      tags:
+        - merch
+      summary: Delete a piece pf merch not bought
+      operationId: deleteMerchItem
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: merchId
+        in: path
+        description: id of the merch
+        required: true
+        schema:
+          type: integer
+      responses:
+        '204':
+          description: Deleted
+        '400':
+          "$ref": "#/components/responses/BadRequest"
+        '401':
+          "$ref": "#/components/responses/Unauthorized"
+        '403':
+          "$ref": "#/components/responses/Unauthorized"
+        '404':
+          "$ref": "#/components/responses/NotFound"
+components:
+  securitySchemes:
+    bearerAuth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  responses:
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json+problem:
+          schema:
+            "$ref": "#/components/schemas/ProblemDetail"
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json+problem:
+          schema:
+            "$ref": "#/components/schemas/ProblemDetail"
+    BadRequest:
+      description: Bad request
+      content:
+        application/json+problem:
+          schema:
+            "$ref": "#/components/schemas/ProblemDetail"
+    NotFound:
+      description: Resource was not found
+      content:
+        application/json+problem:
+          schema:
+            "$ref": "#/components/schemas/ProblemDetail"
+  schemas:
+    MerchModel:
+      required:
+      - price
+      - title
+      type: object
+      properties:
+        merchId:
+          type: integer
+          format: int64
+        title:
+          type: string
+          description: Title of the piece of merch
+        price:
+          type: number
+          description: Price of the piece of merch
+    ProblemDetail:
+      type: object
+      properties:
+        type:
+          type: string
+          format: uri
+        title:
+          type: string
+        status:
+          type: integer
+          format: int32
+        detail:
+          type: string
+        instance:
+          type: string
+          format: uri
+        properties:
+          type: object
+          additionalProperties:
+            type: object
+    MerchPage:
+      type: object
+      properties:
+        merch:
+          type: array
+          items:
+            "$ref": "#/components/schemas/MerchModel"
+        page:
+          type: integer
+          format: int32
+        size:
+          type: integer
+          format: int32
+        totalPages:
+          type: integer
+          format: int32
