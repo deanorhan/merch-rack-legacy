@@ -4,16 +4,20 @@ import java.math.BigDecimal;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
-
+import org.springframework.test.context.ActiveProfiles;
 import org.daemio.merch.domain.Merch;
 import org.daemio.merch.domain.MerchStatus;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@DataJpaTest(properties = {"spring.jpa.defer-datasource-initialization=true"})
+@DataJpaTest
+@ActiveProfiles("unit-test")
 @EnableJpaAuditing
+@AutoConfigureTestDatabase(replace = Replace.NONE)
 public class MerchRepositoryTest {
 
   @Autowired private MerchRepository repo;

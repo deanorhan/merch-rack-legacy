@@ -1,0 +1,28 @@
+databaseChangeLog:
+  - changeSet:
+      id: create_merch_table
+      author: daemio
+      changes:
+        - createTable:
+            tableName: merch
+            remarks: pieces of merch
+            columns:
+            - column:
+                name: merch_id
+                type: varbinary(16)
+                constraints:
+                  primaryKey: true
+                  nullable: false
+                remarks: auto generated uuid
+            - column:
+                name: title
+                type: varchar(255)
+                constraints:
+                  nullable: false
+                remarks: title of the piece of merch
+            - column:
+                name: price
+                type: number(40, 2)
+                constraints:
+                  nullable: false
+                remarks: price for the piece of merch
