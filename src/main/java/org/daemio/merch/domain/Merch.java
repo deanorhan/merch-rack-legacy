@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -35,13 +36,13 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Getter
 @Setter
 @Accessors(chain = true)
-@EntityListeners({AuditingEntityListener.class})
+@EntityListeners(AuditingEntityListener.class)
 public class Merch {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.UUID)
   @Column(name = "merch_id")
-  private Integer id;
+  private UUID id;
 
   @NotBlank
   @Column(nullable = false)
@@ -56,11 +57,11 @@ public class Merch {
   @NotNull @Positive @Column(nullable = false)
   private BigDecimal price;
 
-  @CreatedDate
   @Column(name = "created_at", nullable = false, updatable = false)
+  @CreatedDate
   private Instant createdTime;
 
-  @LastModifiedDate
   @Column(name = "modified_at")
+  @LastModifiedDate
   private Instant modifiedTime;
 }

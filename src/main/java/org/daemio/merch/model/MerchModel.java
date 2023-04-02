@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
     ignoreUnknown = true)
 public class MerchModel {
 
-  private Long merchId;
+  private String merchId;
 
   @NotBlank private String title;
 

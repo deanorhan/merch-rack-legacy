@@ -6,9 +6,12 @@ import io.cucumber.spring.CucumberContextConfiguration;
 import io.restassured.RestAssured;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.test.context.ActiveProfiles;
 
 import org.daemio.merch.repository.MerchRepository;
 
@@ -16,6 +19,8 @@ import org.daemio.merch.repository.MerchRepository;
 @SpringBootTest(
     classes = MerchServiceApplication.class,
     webEnvironment = WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("integ-test")
+@AutoConfigureTestDatabase(replace = Replace.NONE)
 @Slf4j
 public class CucumberSpringConfiguration {
 

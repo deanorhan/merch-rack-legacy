@@ -79,11 +79,14 @@ dependencies {
   testImplementation 'io.cucumber:cucumber-junit-platform-engine:7.11.2'
   testImplementation 'io.cucumber:cucumber-spring:7.11.2'
 
+  // testImplementation 'com.tngtech.archunit:archunit-junit5-api:1.0.1'
+  // testRuntimeOnly 'com.tngtech.archunit:archunit-junit5-engine:1.0.1'
+
   integrationTestImplementation 'io.rest-assured:rest-assured:5.3.0'
 
   // Dependencies specific to the Liquibase life cycle
   liquibaseRuntime 'org.liquibase:liquibase-core:4.20.0'
-  liquibaseRuntime 'info.picocli:picocli:4.6.3'
+  liquibaseRuntime 'info.picocli:picocli:4.7.1'
   liquibaseRuntime 'org.xerial:sqlite-jdbc:3.41.2.1'
 }
 

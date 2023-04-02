@@ -18,7 +18,7 @@ import lombok.Setter;
 
 @Entity
 @Table(
-    name = "images",
+    name = "image",
     indexes = {@Index(name = "merch_idx", columnList = "merch_id")})
 @Getter
 @Setter

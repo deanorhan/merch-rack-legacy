@@ -9,7 +9,7 @@ databaseChangeLog:
             columns:
             - column:
                 name: merch_id
-                type: varbinary(16)
+                type: uuid
                 constraints:
                   primaryKey: true
                   nullable: false
@@ -22,7 +22,26 @@ databaseChangeLog:
                 remarks: title of the piece of merch
             - column:
                 name: price
-                type: number(40, 2)
+                type: currency # number(40, 2)
                 constraints:
                   nullable: false
                 remarks: price for the piece of merch
+            - column:
+                name: status
+                type: integer
+                constraints:
+                  nullable: false
+                remarks: the state the merch is in
+            - column:
+                name: created_at
+                type: timestamp
+                constraints:
+                  nullable: false
+                  updatable: false
+                remarks: time the merch was created
+            - column:
+                name: modified_at
+                type: timestamp
+                constraints:
+                  nullable: false
+                remarks: time the merch was modified last
