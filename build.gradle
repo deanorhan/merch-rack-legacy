@@ -79,6 +79,9 @@ dependencies {
   testImplementation 'io.cucumber:cucumber-junit-platform-engine:7.11.2'
   testImplementation 'io.cucumber:cucumber-spring:7.11.2'
 
+  testImplementation 'org.testcontainers:testcontainers:1.17.6'
+  testImplementation 'org.testcontainers:junit-jupiter:1.17.6'
+
   // testImplementation 'com.tngtech.archunit:archunit-junit5-api:1.0.1'
   // testRuntimeOnly 'com.tngtech.archunit:archunit-junit5-engine:1.0.1'
 
