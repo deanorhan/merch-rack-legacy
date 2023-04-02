@@ -1,13 +1,11 @@
 spring:
-  jpa:
-    database-platform: org.hibernate.community.dialect.SQLiteDialect
-    show-sql: true
-
   datasource:
     driver-class-name: org.sqlite.JDBC
     url: jdbc:sqlite:sqlitesample.db
     username:
     password:
+  jpa:
+    database-platform: org.hibernate.community.dialect.SQLiteDialect
   liquibase:
     drop-first: true
     enabled: true

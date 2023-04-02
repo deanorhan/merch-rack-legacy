@@ -65,7 +65,7 @@ public class MerchRepositoryTest {
     savedMerch.setTitle(faker.book().title());
     log.info("2 Modified at {}", modifiedTime);
 
-    var updatedMerch = repo.save(savedMerch);
+    var updatedMerch = repo.saveAndFlush(savedMerch);
     log.info("3 Modified at {}", modifiedTime);
     log.info("4 Modified at {}", updatedMerch.getModifiedTime());
 

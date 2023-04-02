@@ -1,11 +1,10 @@
 spring:
-  jpa:
-    database-platform: org.hibernate.community.dialect.SQLiteDialect
-    show-sql: true
   datasource:
     driver-class-name: org.sqlite.JDBC
     url: 'jdbc:sqlite::memory:'
     username:
     password:
+  jpa:
+    database-platform: org.hibernate.community.dialect.SQLiteDialect
   liquibase:
     enabled: true

@@ -23,15 +23,12 @@ spring:
     active: ${DEPLOY_ENV:default}
   application:
     name: merch-service
-  datasource:
-    username: 
-    password: 
-    url: 
   jackson:
     serialization:
       fail-on-empty-beans: false
   jpa:
     open-in-view: false
+    show-sql: true
   # security:
   #   oauth2:
   #     resourceserver:
