@@ -15,6 +15,18 @@ databaseChangeLog:
                   nullable: false
                 remarks: auto generated uuid
             - column:
+                name: status
+                type: integer
+                constraints:
+                  nullable: false
+                remarks: the state the merch is in
+            - column:
+                name: vendor
+                type: uuid
+                constraints:
+                  nullable: true
+                remarks: vendor selling this merch
+            - column:
                 name: title
                 type: varchar(255)
                 constraints:
@@ -27,21 +39,19 @@ databaseChangeLog:
                   nullable: false
                 remarks: price for the piece of merch
             - column:
-                name: status
-                type: integer
-                constraints:
-                  nullable: false
-                remarks: the state the merch is in
+                name: description
+                type: clob
+                remarks: long description of this merch
             - column:
                 name: created_at
-                type: timestamp
+                type: ${timestamp.type}
                 constraints:
                   nullable: false
                   updatable: false
                 remarks: time the merch was created
             - column:
                 name: modified_at
-                type: timestamp
+                type: ${timestamp.type}
                 constraints:
                   nullable: false
                 remarks: time the merch was modified last

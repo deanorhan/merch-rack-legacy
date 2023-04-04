@@ -15,10 +15,14 @@ databaseChangeLog:
                   nullable: false
                 remarks: auto generated uuid
             - column:
+                name: merch
+                type: varbinary(16)
+                constraints:
+                  foreignKeyName: merch_id_fk
+                  references: merch(merch_id)
+            - column:
                 name: title
                 type: varchar(255)
-                constraints:
-                  nullable: false
                 remarks: title to use for the image
             - column:
                 name: uri
@@ -26,3 +30,16 @@ databaseChangeLog:
                 constraints:
                   nullable: false
                 remarks: uri to the image location
+            - column:
+                name: created_at
+                type: ${timestamp.type}
+                constraints:
+                  nullable: false
+                  updatable: false
+                remarks: time the merch was created
+            - column:
+                name: modified_at
+                type: ${timestamp.type}
+                constraints:
+                  nullable: false
+                remarks: time the merch was modified last

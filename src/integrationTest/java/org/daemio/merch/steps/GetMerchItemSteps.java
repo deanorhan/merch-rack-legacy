@@ -35,7 +35,7 @@ public final class GetMerchItemSteps {
     merch.setStatus(MerchStatus.LOADED);
     merch.setPrice(BigDecimal.valueOf(5));
 
-    this.merch = mapper.entityToModel(merchRepository.save(merch));
+    this.merch = mapper.entityToModel(merchRepository.saveAndFlush(merch));
     scenarioData.given().pathParam("merchId", this.merch.getMerchId());
   }
 

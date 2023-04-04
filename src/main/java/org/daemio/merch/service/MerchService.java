@@ -53,7 +53,7 @@ public class MerchService {
   }
 
   public MerchModel getMerch(String merchId) {
-    log.info("Getting a piece of merch from data");
+    log.info("Getting a piece of merch from data {}", merchId);
 
     var merch = repo.findById(UUID.fromString(merchId));
     if (merch.isEmpty()) {
@@ -67,7 +67,7 @@ public class MerchService {
     var merch = mapper.modelToEntity(merchRequest);
     merch.setStatus(MerchStatus.LOADED);
 
-    merch.getImages().forEach(i -> i.setMerch(merch));
+    // merch.getImages().forEach(i -> i.setMerch(merch));
 
     return mapper.entityToModel(repo.save(merch));
   }
