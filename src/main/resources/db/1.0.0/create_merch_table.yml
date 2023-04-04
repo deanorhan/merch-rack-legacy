@@ -16,7 +16,7 @@ databaseChangeLog:
                 remarks: auto generated uuid
             - column:
                 name: status
-                type: integer
+                type: tinyint
                 constraints:
                   nullable: false
                 remarks: the state the merch is in
@@ -34,7 +34,7 @@ databaseChangeLog:
                 remarks: title of the piece of merch
             - column:
                 name: price
-                type: currency # number(40, 2)
+                type: currency
                 constraints:
                   nullable: false
                 remarks: price for the piece of merch

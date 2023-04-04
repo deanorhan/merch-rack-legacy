@@ -38,3 +38,6 @@ out/
 
 # Env file for local dev
 .env
+
+### SQLite ###
+sqlite*.db

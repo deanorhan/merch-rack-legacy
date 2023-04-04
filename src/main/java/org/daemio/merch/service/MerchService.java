@@ -14,8 +14,6 @@ import org.daemio.merch.dto.MerchResource;
 import org.daemio.merch.error.MerchNotFoundException;
 import org.daemio.merch.mapper.MerchMapper;
 import org.daemio.merch.model.Merch;
-import org.daemio.merch.model.MerchStatus;
-import org.daemio.merch.model.Merch_;
 import org.daemio.merch.repository.MerchRepository;
 
 @Service
@@ -43,14 +41,14 @@ public class MerchService {
     return mapper.pageToResponse(results);
   }
 
-  public MerchPage getMerchPage(Pageable pageable, List<MerchStatus> statusList) {
-    log.info("Getting a page of merch from data");
+  // public MerchPage getMerchPage(Pageable pageable, List<MerchStatus> statusList) {
+  //   log.info("Getting a page of merch from data");
 
-    var results =
-        repo.findAll((root, query, builder) -> root.get(Merch_.status).in(statusList), pageable);
+  //   var results =
+  //       repo.findAll((root, query, builder) -> root.get(Merch_.status).in(statusList), pageable);
 
-    return mapper.pageToResponse(results);
-  }
+  //   return mapper.pageToResponse(results);
+  // }
 
   public MerchResource getMerch(String merchId) {
     return getMerch(UUID.fromString(merchId));

@@ -1,9 +1,9 @@
 databaseChangeLog:
-  -  property:
+  - property:
       dbms:  sqlite
       name:  timestamp.type
       value:  integer
-  -  property:
+  - property:
       dbms:  mysql,postgresql
       name:  timestamp.type
       value:  timestamp

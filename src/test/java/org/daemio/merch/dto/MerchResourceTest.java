@@ -1,4 +1,4 @@
-package org.daemio.merch.model;
+package org.daemio.merch.dto;
 
 import com.jparams.verifier.tostring.NameStyle;
 import com.jparams.verifier.tostring.ToStringVerifier;
@@ -6,9 +6,7 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 import org.junit.jupiter.api.Test;
 
-import org.daemio.merch.dto.MerchResource;
-
-public class MerchModelTest {
+public class MerchResourceTest {
 
   @Test
   public void testEquals() {
@@ -21,6 +19,13 @@ public class MerchModelTest {
 
   @Test
   public void testToString() {
-    ToStringVerifier.forClass(MerchResource.class).withClassName(NameStyle.SIMPLE_NAME).verify();
+    ToStringVerifier.forClass(MerchResource.class)
+        .withClassName(NameStyle.SIMPLE_NAME)
+        .withIgnoredFields("description")
+        .verify();
+
+    ToStringVerifier.forClass(MerchResource.MerchResourceBuilder.class)
+        .withIgnoredFields("description")
+        .verify();
   }
 }

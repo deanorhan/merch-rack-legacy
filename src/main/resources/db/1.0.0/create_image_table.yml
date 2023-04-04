@@ -9,14 +9,14 @@ databaseChangeLog:
             columns:
             - column:
                 name: image_id
-                type: varbinary(16)
+                type: uuid
                 constraints:
                   primaryKey: true
                   nullable: false
                 remarks: auto generated uuid
             - column:
                 name: merch
-                type: varbinary(16)
+                type: uuid
                 constraints:
                   foreignKeyName: merch_id_fk
                   references: merch(merch_id)

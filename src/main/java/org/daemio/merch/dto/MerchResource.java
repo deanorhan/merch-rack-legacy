@@ -13,6 +13,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.builder.ToStringExclude;
 
 import org.daemio.merch.model.MerchStatus;
 
@@ -39,6 +40,7 @@ public class MerchResource {
   @NotNull @Positive private BigDecimal price;
 
   @Schema(description = "Long decription of the piece of merch")
+  @ToStringExclude
   private String description;
 
   @EqualsAndHashCode.Exclude private Instant createdTime;
