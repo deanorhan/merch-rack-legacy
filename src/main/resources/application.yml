@@ -5,11 +5,18 @@ app:
       fan: FAN
       vendor: "VENDOR"
 
+logging:
+  level:
+    root: info
+    '[org.daemio]': info
+
 management:
   endpoint:
     health:
       probes:
         enabled: true
+      roles: 'ROLE_ADMIN'
+      show-details: when-authorized
 
 spring:
   profiles:
@@ -21,12 +28,17 @@ spring:
       fail-on-empty-beans: false
   jpa:
     open-in-view: false
+    show-sql: true
   # security:
   #   oauth2:
   #     resourceserver:
   #       jwt:
   #         issuer-uri: http://localhost:8083/auth/realms/baeldung
   #         jwk-set-uri: http://localhost:8083/auth/realms/baeldung/protocol/openid-connect/certs
+  liquibase:
+    change-log: classpath:db/changelog.yaml
+    drop-first: false
+    enabled: false
   mvc:
     throw-exception-if-no-handler-found: true
   web:

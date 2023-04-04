@@ -47,14 +47,14 @@ public class MerchController {
 
     var merch = merchService.saveMerch(newMerchModel);
 
-    var location = String.format("/merch/%d", merch.getMerchId());
+    var location = String.format("/merch/%s", merch.getMerchId());
 
     return ResponseEntity.created(URI.create(location)).build();
   }
 
   @Operation(summary = "Get a piece of merch by id")
   @GetMapping(path = "/{merchId}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<MerchModel> getMerchItem(@PathVariable int merchId) {
+  public ResponseEntity<MerchModel> getMerchItem(@PathVariable String merchId) {
     log.info("Getting piece of merch");
 
     var merch = merchService.getMerch(merchId);

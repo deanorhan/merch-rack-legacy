@@ -2,35 +2,78 @@ package org.daemio.merch.repository;
 
 import java.math.BigDecimal;
 
+import lombok.extern.slf4j.Slf4j;
+import net.datafaker.Faker;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ActiveProfiles;
 
+import org.daemio.merch.config.PersistenceConfig;
 import org.daemio.merch.domain.Merch;
 import org.daemio.merch.domain.MerchStatus;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
-@DataJpaTest(properties = {"spring.jpa.defer-datasource-initialization=true"})
-@EnableJpaAuditing
+@DataJpaTest
+@ActiveProfiles("unit-test")
+@Import(PersistenceConfig.class)
+@AutoConfigureTestDatabase(replace = Replace.NONE)
+@Slf4j
 public class MerchRepositoryTest {
+
+  private final Faker faker = new Faker();
 
   @Autowired private MerchRepository repo;
 
   @Test
-  public void checkAllIsWell() {
-    assertNotNull(repo, "Repository was not injected");
-  }
-
-  @Test
-  public void whenSavingMerch_thenAuditDatesSet() {
+  public void shouldSaveMerch() {
     var merch =
-        new Merch().setTitle("Tiele").setStatus(MerchStatus.LOADED).setPrice(BigDecimal.valueOf(7));
+        new Merch()
+            .setTitle(faker.book().title())
+            .setStatus(MerchStatus.LOADED)
+            .setPrice(BigDecimal.valueOf(faker.number().randomDouble(2, 10, 50)));
 
     var savedMerch = repo.save(merch);
 
-    assertNotNull(savedMerch.getCreatedTime(), "Created time was not set");
-    assertNotNull(savedMerch.getModifiedTime(), "Modified time was not set");
+    assertThat(savedMerch)
+        .usingRecursiveComparison()
+        .ignoringFields("merchId", "createdTime", "modifiedTime")
+        .isEqualTo(merch);
+
+    assertThat(savedMerch.getId()).isNotNull();
+    assertThat(savedMerch.getCreatedTime()).isNotNull();
+    assertThat(savedMerch.getModifiedTime()).isNotNull();
+  }
+
+  @Test
+  public void shouldUpdateMerch() {
+    var merch =
+        new Merch()
+            .setTitle(faker.book().title())
+            .setStatus(MerchStatus.LOADED)
+            .setPrice(BigDecimal.valueOf(faker.number().randomDouble(2, 10, 50)));
+
+    repo.save(merch);
+    log.info("1 Modified at {}", merch.getModifiedTime());
+
+    var savedMerch = repo.findById(merch.getId()).get();
+    var modifiedTime = savedMerch.getModifiedTime();
+    savedMerch.setTitle(faker.book().title());
+    log.info("2 Modified at {}", modifiedTime);
+
+    var updatedMerch = repo.saveAndFlush(savedMerch);
+    log.info("3 Modified at {}", modifiedTime);
+    log.info("4 Modified at {}", updatedMerch.getModifiedTime());
+
+    assertThat(updatedMerch)
+        .usingRecursiveComparison()
+        .ignoringFields("modifiedTime")
+        .isEqualTo(savedMerch);
+
+    assertThat(updatedMerch.getModifiedTime()).isAfter(modifiedTime);
   }
 }

@@ -3,6 +3,7 @@ package org.daemio.merch.controller;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -95,13 +96,13 @@ public class MerchControllerTest {
           + "the specified merch item")
   @Test
   public void whenGetMerchItem_thenReturnSuccessfulItem() throws Exception {
-    var merchId = 7;
+    var merchId = UUID.randomUUID();
     var merch = new MerchModel();
     merch.setTitle("Some dumb title");
     merch.setCreatedTime(Instant.now());
     merch.setModifiedTime(Instant.now());
 
-    when(merchService.getMerch(merchId)).thenReturn(merch);
+    when(merchService.getMerch(merchId.toString())).thenReturn(merch);
 
     mvc.perform(get("/merch/{merchId}", merchId))
         .andExpect(status().isOk())
@@ -114,9 +115,9 @@ public class MerchControllerTest {
           + "by this id then the service sould return a 404 Not Found")
   @Test
   public void givenMerchNotThere_whenGetMerchItem_thenGetNotFoundResponse() throws Exception {
-    var merchId = 7;
+    var merchId = UUID.randomUUID();
 
-    when(merchService.getMerch(merchId)).thenThrow(new MerchNotFoundException());
+    when(merchService.getMerch(merchId.toString())).thenThrow(new MerchNotFoundException());
 
     mvc.perform(get("/merch/{merchId}", merchId)).andExpect(status().isNotFound());
   }
@@ -124,8 +125,9 @@ public class MerchControllerTest {
   @WithMockUser(roles = {"VENDOR"})
   @Test
   public void whenPostMerch_thenGetBackLocation() throws Exception {
-    long merchId = 87;
-    when(merchService.saveMerch(any())).thenReturn(MerchModel.builder().merchId(merchId).build());
+    var merchId = UUID.randomUUID();
+    when(merchService.saveMerch(any()))
+        .thenReturn(MerchModel.builder().merchId(merchId.toString()).build());
 
     var merchRequest =
         MerchModel.builder().title("some merch").price(BigDecimal.valueOf(10.00)).build();
@@ -136,7 +138,7 @@ public class MerchControllerTest {
                 .content(mapper.writeValueAsString(merchRequest)))
         .andExpect(status().isCreated())
         .andExpect(header().exists(HttpHeaders.LOCATION))
-        .andExpect(header().string(HttpHeaders.LOCATION, String.format("/merch/%d", merchId)));
+        .andExpect(header().string(HttpHeaders.LOCATION, String.format("/merch/%s", merchId)));
   }
 
   @DisplayName("Controller validates the request object")

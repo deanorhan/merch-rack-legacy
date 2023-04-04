@@ -1,6 +1,7 @@
 package org.daemio.merch.steps;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -34,14 +35,14 @@ public final class GetMerchItemSteps {
     merch.setStatus(MerchStatus.LOADED);
     merch.setPrice(BigDecimal.valueOf(5));
 
-    this.merch = mapper.entityToModel(merchRepository.save(merch));
+    this.merch = mapper.entityToModel(merchRepository.saveAndFlush(merch));
     scenarioData.given().pathParam("merchId", this.merch.getMerchId());
   }
 
   @Given("a merch item doesn't exists")
   public void a_merch_item_doesn_t_exists() {
     merch = new MerchModel();
-    merch.setMerchId(-1L);
+    merch.setMerchId(UUID.randomUUID().toString());
 
     scenarioData.given().pathParam("merchId", merch.getMerchId());
   }
@@ -53,9 +54,6 @@ public final class GetMerchItemSteps {
 
   @Then("it's the merch item defined by the merch id")
   public void It_s_the_merch_item_defined_by_the_merch_id() {
-    scenarioData
-        .then()
-        .body("merchId", is(merch.getMerchId().intValue()))
-        .body("title", is(merch.getTitle()));
+    scenarioData.then().body("merchId", is(merch.getMerchId())).body("title", is(merch.getTitle()));
   }
 }

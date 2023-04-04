@@ -1,3 +1,11 @@
 spring:
-    jpa:
-        defer-datasource-initialization: true
+  datasource:
+    driver-class-name: org.sqlite.JDBC
+    url: jdbc:sqlite:sqlite-integ.db
+    username:
+    password:
+  jpa:
+    database-platform: org.hibernate.community.dialect.SQLiteDialect
+  liquibase:
+    enabled: true
+    drop-first: true

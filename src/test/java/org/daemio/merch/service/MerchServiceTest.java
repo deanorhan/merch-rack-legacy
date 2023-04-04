@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,7 +29,6 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -85,19 +85,18 @@ public class MerchServiceTest {
           + "when calling for merch with the given id, then return that specific merch item")
   @Test
   public void whenGettingSpecificMerch_thenReturnMerchItem() {
-    var merchId = 5;
     Merch expectedResult = new Merch();
-    expectedResult.setId(merchId);
+    expectedResult.setId(UUID.randomUUID());
     expectedResult.setCreatedTime(Instant.now());
     expectedResult.setModifiedTime(Instant.now());
 
-    when(merchRepository.findById(merchId)).thenReturn(Optional.of(expectedResult));
+    when(merchRepository.findById(expectedResult.getId())).thenReturn(Optional.of(expectedResult));
 
-    var actualResult = service.getMerch(merchId);
+    var actualResult = service.getMerch(expectedResult.getId().toString());
 
     assertNotNull(actualResult, "Merch item is null");
     assertEquals(
-        Long.valueOf(expectedResult.getId()),
+        expectedResult.getId().toString(),
         actualResult.getMerchId(),
         "Ids of the merch do not match");
   }
@@ -107,11 +106,11 @@ public class MerchServiceTest {
           + "the merch item then throw the merch not found exception")
   @Test
   public void givenMerchNotThere_whenGettingMerchItem_thenThrowNotFoundException() {
-    when(merchRepository.findById(anyInt())).thenReturn(Optional.empty());
+    when(merchRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
 
     assertThrows(
         MerchNotFoundException.class,
-        () -> service.getMerch(1),
+        () -> service.getMerch(UUID.randomUUID().toString()),
         "Exception not thrown when no merch");
   }
 }

@@ -2,6 +2,7 @@ package org.daemio.merch.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,10 +52,10 @@ public class MerchService {
     return mapper.pageToResponse(results);
   }
 
-  public MerchModel getMerch(int merchId) {
-    log.info("Getting a piece of merch from data");
+  public MerchModel getMerch(String merchId) {
+    log.info("Getting a piece of merch from data {}", merchId);
 
-    var merch = repo.findById(merchId);
+    var merch = repo.findById(UUID.fromString(merchId));
     if (merch.isEmpty()) {
       throw new MerchNotFoundException();
     }
@@ -66,7 +67,7 @@ public class MerchService {
     var merch = mapper.modelToEntity(merchRequest);
     merch.setStatus(MerchStatus.LOADED);
 
-    merch.getImages().forEach(i -> i.setMerch(merch));
+    // merch.getImages().forEach(i -> i.setMerch(merch));
 
     return mapper.entityToModel(repo.save(merch));
   }

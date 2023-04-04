@@ -1,11 +1,10 @@
 spring:
   datasource:
     driver-class-name: org.sqlite.JDBC
-    url: jdbc:sqlite:sqlite-dev.db
+    url: 'jdbc:sqlite::memory:'
     username:
     password:
   jpa:
     database-platform: org.hibernate.community.dialect.SQLiteDialect
   liquibase:
-    drop-first: true
     enabled: true

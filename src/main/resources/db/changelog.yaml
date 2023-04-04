@@ -1,0 +1,13 @@
+databaseChangeLog:
+  -  property:
+      dbms:  sqlite
+      name:  timestamp.type
+      value:  integer
+  -  property:
+      dbms:  mysql,postgresql
+      name:  timestamp.type
+      value:  timestamp
+  - include:
+      file: db/1.0.0/create_merch_table.yml
+  - include:
+      file: db/1.0.0/create_image_table.yml

@@ -1,0 +1,57 @@
+databaseChangeLog:
+  - changeSet:
+      id: create_merch_table
+      author: daemio
+      changes:
+        - createTable:
+            tableName: merch
+            remarks: pieces of merch
+            columns:
+            - column:
+                name: merch_id
+                type: uuid
+                constraints:
+                  primaryKey: true
+                  nullable: false
+                remarks: auto generated uuid
+            - column:
+                name: status
+                type: integer
+                constraints:
+                  nullable: false
+                remarks: the state the merch is in
+            - column:
+                name: vendor
+                type: uuid
+                constraints:
+                  nullable: true
+                remarks: vendor selling this merch
+            - column:
+                name: title
+                type: varchar(255)
+                constraints:
+                  nullable: false
+                remarks: title of the piece of merch
+            - column:
+                name: price
+                type: currency # number(40, 2)
+                constraints:
+                  nullable: false
+                remarks: price for the piece of merch
+            - column:
+                name: description
+                type: clob
+                remarks: long description of this merch
+            - column:
+                name: created_at
+                type: ${timestamp.type}
+                constraints:
+                  nullable: false
+                  updatable: false
+                remarks: time the merch was created
+            - column:
+                name: modified_at
+                type: ${timestamp.type}
+                constraints:
+                  nullable: false
+                remarks: time the merch was modified last
