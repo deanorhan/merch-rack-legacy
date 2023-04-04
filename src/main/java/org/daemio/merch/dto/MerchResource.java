@@ -1,4 +1,4 @@
-package org.daemio.merch.model;
+package org.daemio.merch.dto;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -14,6 +14,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import org.daemio.merch.model.MerchStatus;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,9 +24,12 @@ import lombok.NoArgsConstructor;
     value = {"createdTime", "modifiedTime"},
     allowGetters = true,
     ignoreUnknown = true)
-public class MerchModel {
+public class MerchResource {
 
   private String merchId;
+
+  @Schema(description = "The state of the piece of merch")
+  private MerchStatus status;
 
   @Schema(description = "Title of the piece of merch")
   @NotBlank

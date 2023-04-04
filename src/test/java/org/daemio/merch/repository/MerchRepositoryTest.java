@@ -13,8 +13,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
 import org.daemio.merch.config.PersistenceConfig;
-import org.daemio.merch.domain.Merch;
-import org.daemio.merch.domain.MerchStatus;
+import org.daemio.merch.model.Merch;
+import org.daemio.merch.model.MerchStatus;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

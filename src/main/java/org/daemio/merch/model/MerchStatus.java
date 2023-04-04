@@ -1,4 +1,4 @@
-package org.daemio.merch.domain;
+package org.daemio.merch.model;
 
 public enum MerchStatus {
   LOADED, // In the system but not for sale

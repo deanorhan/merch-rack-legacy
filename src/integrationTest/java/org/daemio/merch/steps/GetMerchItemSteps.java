@@ -11,10 +11,10 @@ import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.daemio.merch.data.ScenarioData;
-import org.daemio.merch.domain.Merch;
-import org.daemio.merch.domain.MerchStatus;
+import org.daemio.merch.dto.MerchResource;
 import org.daemio.merch.mapper.MerchMapper;
-import org.daemio.merch.model.MerchModel;
+import org.daemio.merch.model.Merch;
+import org.daemio.merch.model.MerchStatus;
 import org.daemio.merch.repository.MerchRepository;
 
 import static org.hamcrest.Matchers.is;
@@ -26,7 +26,7 @@ public final class GetMerchItemSteps {
   @Autowired private MerchRepository merchRepository;
 
   private MerchMapper mapper = Mappers.getMapper(MerchMapper.class);
-  private MerchModel merch;
+  private MerchResource merch;
 
   @Given("a merch item exists")
   public void a_merch_item_exists() {
@@ -41,7 +41,7 @@ public final class GetMerchItemSteps {
 
   @Given("a merch item doesn't exists")
   public void a_merch_item_doesn_t_exists() {
-    merch = new MerchModel();
+    merch = new MerchResource();
     merch.setMerchId(UUID.randomUUID().toString());
 
     scenarioData.given().pathParam("merchId", merch.getMerchId());

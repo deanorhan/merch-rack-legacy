@@ -24,10 +24,10 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import org.daemio.merch.config.RoleConfig;
 import org.daemio.merch.config.WebSecurityConfig;
+import org.daemio.merch.dto.MerchPage;
+import org.daemio.merch.dto.MerchResource;
 import org.daemio.merch.error.MerchNotFoundException;
 import org.daemio.merch.mapper.MerchMapperImpl;
-import org.daemio.merch.model.MerchModel;
-import org.daemio.merch.model.MerchPage;
 import org.daemio.merch.service.MerchService;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -54,7 +54,7 @@ public class MerchControllerTest {
           + "succussfully and the response should be an array of merch")
   @Test
   public void whenGetMerch_thenReturnSuccessfulList() throws Exception {
-    var merch = new MerchModel();
+    var merch = new MerchResource();
     var expectedResponse = new MerchPage();
     expectedResponse.setMerch(Arrays.asList(merch));
 
@@ -74,7 +74,7 @@ public class MerchControllerTest {
   @Test
   public void givenPageNo_whenGetMerch_thenReturnSuccessfulList() throws Exception {
     var page = 2;
-    var merch = new MerchModel();
+    var merch = new MerchResource();
     var expectedResponse = new MerchPage();
     expectedResponse.setMerch(Arrays.asList(merch));
     expectedResponse.setPage(page);
@@ -97,12 +97,12 @@ public class MerchControllerTest {
   @Test
   public void whenGetMerchItem_thenReturnSuccessfulItem() throws Exception {
     var merchId = UUID.randomUUID();
-    var merch = new MerchModel();
+    var merch = new MerchResource();
     merch.setTitle("Some dumb title");
     merch.setCreatedTime(Instant.now());
     merch.setModifiedTime(Instant.now());
 
-    when(merchService.getMerch(merchId.toString())).thenReturn(merch);
+    when(merchService.getMerch(merchId)).thenReturn(merch);
 
     mvc.perform(get("/merch/{merchId}", merchId))
         .andExpect(status().isOk())
@@ -117,7 +117,7 @@ public class MerchControllerTest {
   public void givenMerchNotThere_whenGetMerchItem_thenGetNotFoundResponse() throws Exception {
     var merchId = UUID.randomUUID();
 
-    when(merchService.getMerch(merchId.toString())).thenThrow(new MerchNotFoundException());
+    when(merchService.getMerch(merchId)).thenThrow(new MerchNotFoundException());
 
     mvc.perform(get("/merch/{merchId}", merchId)).andExpect(status().isNotFound());
   }
@@ -127,10 +127,10 @@ public class MerchControllerTest {
   public void whenPostMerch_thenGetBackLocation() throws Exception {
     var merchId = UUID.randomUUID();
     when(merchService.saveMerch(any()))
-        .thenReturn(MerchModel.builder().merchId(merchId.toString()).build());
+        .thenReturn(MerchResource.builder().merchId(merchId.toString()).build());
 
     var merchRequest =
-        MerchModel.builder().title("some merch").price(BigDecimal.valueOf(10.00)).build();
+        MerchResource.builder().title("some merch").price(BigDecimal.valueOf(10.00)).build();
 
     mvc.perform(
             post("/merch")
@@ -159,10 +159,10 @@ public class MerchControllerTest {
 
     return Stream.of(
         Arguments.of(
-            mapper.writeValueAsString(MerchModel.builder().title("title").build()), "price"),
+            mapper.writeValueAsString(MerchResource.builder().title("title").build()), "price"),
         Arguments.of(
             mapper.writeValueAsString(
-                MerchModel.builder().price(BigDecimal.valueOf(10.00)).build()),
+                MerchResource.builder().price(BigDecimal.valueOf(10.00)).build()),
             "title"));
   }
 }

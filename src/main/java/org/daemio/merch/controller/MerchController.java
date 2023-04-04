@@ -28,8 +28,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.daemio.merch.annotations.ApiAuthErrorResponse;
 import org.daemio.merch.annotations.ApiBadRequestResponse;
 import org.daemio.merch.annotations.ApiNotFoundReponse;
-import org.daemio.merch.model.MerchModel;
-import org.daemio.merch.model.MerchPage;
+import org.daemio.merch.dto.MerchPage;
+import org.daemio.merch.dto.MerchResource;
+import org.daemio.merch.model.MerchStatus;
 import org.daemio.merch.service.MerchService;
 
 @RestController
@@ -68,8 +69,10 @@ public class MerchController {
   @ApiBadRequestResponse
   @ApiAuthErrorResponse
   @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<Void> saveNewMerch(@Valid @RequestBody MerchModel newMerchModel) {
+  public ResponseEntity<Void> saveNewMerch(@Valid @RequestBody MerchResource newMerchModel) {
     log.info("Saving some merch");
+
+    newMerchModel.setStatus(MerchStatus.LOADED);
 
     var merch = merchService.saveMerch(newMerchModel);
 
@@ -84,7 +87,7 @@ public class MerchController {
   @ApiResponse(responseCode = "200", description = "OK")
   @ApiNotFoundReponse
   @GetMapping(path = "/{merchId}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<MerchModel> getMerchItem(@PathVariable UUID merchId) {
+  public ResponseEntity<MerchResource> getMerchItem(@PathVariable UUID merchId) {
     log.info("Getting piece of merch");
 
     var merch = merchService.getMerch(merchId);
@@ -100,11 +103,14 @@ public class MerchController {
   @ApiAuthErrorResponse
   @ApiNotFoundReponse
   @PutMapping(path = "/{merchId}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<Void> replaceMerchItem(
-      @PathVariable UUID merchId, @Valid @RequestBody MerchModel newMerchModel) {
+  public ResponseEntity<MerchResource> replaceMerchItem(
+      @PathVariable UUID merchId, @Valid @RequestBody MerchResource newMerchModel) {
     log.info("Replacing a piece of merch");
+
     newMerchModel.setMerchId(merchId.toString());
-    return ResponseEntity.ok().build();
+    var merch = merchService.updateMerch(newMerchModel);
+
+    return ResponseEntity.ok(merch);
   }
 
   @Operation(
@@ -115,11 +121,14 @@ public class MerchController {
   @ApiAuthErrorResponse
   @ApiNotFoundReponse
   @PatchMapping(path = "/{merchId}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<Void> patchMerchItem(
-      @PathVariable UUID merchId, @RequestBody MerchModel newMerchModel) {
+  public ResponseEntity<MerchResource> patchMerchItem(
+      @PathVariable UUID merchId, @RequestBody MerchResource newMerchModel) {
     log.info("Updating a piece of merch");
+
     newMerchModel.setMerchId(merchId.toString());
-    return ResponseEntity.ok().build();
+    var merch = merchService.mergeMerch(newMerchModel);
+
+    return ResponseEntity.ok(merch);
   }
 
   @Operation(
@@ -129,7 +138,7 @@ public class MerchController {
   @ApiBadRequestResponse
   @ApiAuthErrorResponse
   @ApiNotFoundReponse
-  @PatchMapping(path = "/{merchId}/status", produces = MediaType.APPLICATION_JSON_VALUE)
+  @PostMapping(path = "/{merchId}/status", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Void> updateMerchStatus(@PathVariable int merchId) {
     log.info("Updating merch status");
     return ResponseEntity.ok().build();

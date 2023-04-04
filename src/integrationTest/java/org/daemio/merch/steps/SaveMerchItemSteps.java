@@ -11,7 +11,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
 import org.daemio.merch.data.ScenarioData;
-import org.daemio.merch.model.MerchModel;
+import org.daemio.merch.dto.MerchResource;
+import org.daemio.merch.model.MerchStatus;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
@@ -22,7 +23,7 @@ public final class SaveMerchItemSteps {
 
   @Autowired private ScenarioData scenarioData;
   private String merchLocURI;
-  private MerchModel requestMerch;
+  private MerchResource requestMerch;
 
   @Given("I am a vendor and logged in")
   public void I_am_a_vendor() {
@@ -32,7 +33,7 @@ public final class SaveMerchItemSteps {
   @Given("there is a new piece of merch to save")
   public void there_is_a_new_piece_of_merch_to_save() {
     requestMerch =
-        MerchModel.builder().title("My Awesome merch").price(BigDecimal.valueOf(10.00)).build();
+        MerchResource.builder().title("My Awesome merch").price(BigDecimal.valueOf(10.00)).build();
     scenarioData.given().body(requestMerch);
   }
 
@@ -44,7 +45,7 @@ public final class SaveMerchItemSteps {
             .preemptive()
             .basic("test", "pass")
             .body(
-                MerchModel.builder()
+                MerchResource.builder()
                     .title("My Awesome merch")
                     .price(BigDecimal.valueOf(10.00))
                     .build())
@@ -68,6 +69,40 @@ public final class SaveMerchItemSteps {
     scenarioData.given().body(requestMerch);
   }
 
+  @Given("a piece of merch exists")
+  public void a_piece_of_merch_exists() {
+    requestMerch =
+        MerchResource.builder()
+            .status(MerchStatus.LOADED)
+            .title("My Awesome merch")
+            .price(BigDecimal.valueOf(10.00))
+            .build();
+
+    merchLocURI =
+        given()
+            .auth()
+            .preemptive()
+            .basic("test", "pass")
+            .body(requestMerch)
+            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+            .post("/merch")
+            .then()
+            .extract()
+            .header(HttpHeaders.LOCATION);
+  }
+
+  @Given("I update the title for the request")
+  public void I_update_the_title_for_the_request() {
+    requestMerch.setTitle("Not so awesome merch");
+    scenarioData.given().body(requestMerch);
+  }
+
+  @Given("I only send a new title")
+  public void I_only_send_a_new_title() {
+    requestMerch = MerchResource.builder().title("Not so awesome merch").build();
+    scenarioData.given().body(requestMerch);
+  }
+
   @When("the call to the save endpoint is made")
   public void the_call_to_the_save_endpoint_is_made() {
     scenarioData.post("/merch");
@@ -78,15 +113,29 @@ public final class SaveMerchItemSteps {
     scenarioData.get(merchLocURI);
   }
 
+  @When("the call to the update endpoint is made")
+  public void the_call_to_the_update_endpoint_is_made() {
+    scenarioData.put(merchLocURI);
+  }
+
+  @When("the call to the update with delta endpoint is made")
+  public void the_call_to_the_update_with_delta_endpoint_is_made() {
+    scenarioData.patch(merchLocURI);
+  }
+
   @Then("the location header is set")
   public void the_location_header_is_set() {
     scenarioData.then().header(HttpHeaders.LOCATION, is(notNullValue()));
-    // .header(HttpHeaders.LOCATION, matchesRegex("^/merch/\\d+$"));
   }
 
   @Then("the merch piece that was saved is returned")
   public void the_merch_piece_that_was_saved_is_returned() {
     scenarioData.then().body("title", is("My Awesome merch"));
+  }
+
+  @Then("the updated merch piece that was saved is returned")
+  public void the_updated_merch_piece_that_was_saved_is_returned() {
+    scenarioData.then().body("title", is("Not so awesome merch"));
   }
 
   @Then("the response describes the {string} as invalid")

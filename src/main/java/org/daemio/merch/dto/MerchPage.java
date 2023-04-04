@@ -1,4 +1,4 @@
-package org.daemio.merch.model;
+package org.daemio.merch.dto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,13 +11,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MerchPage {
 
-  @EqualsAndHashCode.Exclude private List<MerchModel> merch = new ArrayList<>();
+  @EqualsAndHashCode.Exclude private List<MerchResource> merch = new ArrayList<>();
 
   private int page;
   private int size;
   private int totalPages;
 
-  public void addMerch(MerchModel merchModel) {
+  public void addMerch(MerchResource merchModel) {
     merch.add(merchModel);
   }
 }

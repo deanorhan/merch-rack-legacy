@@ -58,6 +58,17 @@ public class ScenarioData {
     return response;
   }
 
+  public Response put(String uri, Object... pathParams) {
+    if (state != GIVEN) {
+      throw new IllegalStateException(
+          String.format("Must be in the GIVEN state to call, current state %d", state));
+    }
+
+    state = WHEN;
+    response = requestSpecification.put(uri, pathParams);
+    return response;
+  }
+
   public Response patch(String uri) {
     if (state != GIVEN) {
       throw new IllegalStateException(

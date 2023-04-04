@@ -17,11 +17,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort.Direction;
 
 import org.daemio.merch.data.ScenarioData;
-import org.daemio.merch.domain.Merch;
-import org.daemio.merch.domain.MerchStatus;
+import org.daemio.merch.dto.MerchPage;
+import org.daemio.merch.dto.MerchResource;
 import org.daemio.merch.mapper.MerchMapper;
-import org.daemio.merch.model.MerchModel;
-import org.daemio.merch.model.MerchPage;
+import org.daemio.merch.model.Merch;
+import org.daemio.merch.model.MerchStatus;
 import org.daemio.merch.repository.MerchRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -34,7 +34,7 @@ public final class ListMerchSteps {
   @Autowired private MerchRepository merchRepository;
 
   private MerchMapper mapper = Mappers.getMapper(MerchMapper.class);
-  private List<MerchModel> merchModels = new ArrayList<>();
+  private List<MerchResource> merchModels = new ArrayList<>();
   private Faker faker = new Faker();
 
   @Given("there are {int} merch items")
@@ -97,7 +97,7 @@ public final class ListMerchSteps {
     assertThat(result.getMerch()).isEqualTo(expectedOrder);
   }
 
-  private Comparator<MerchModel> getReflectiveBigDecimalSort(
+  private Comparator<MerchResource> getReflectiveBigDecimalSort(
       final String parameter, final Direction orderBy) {
     return (m1, m2) -> {
       try {

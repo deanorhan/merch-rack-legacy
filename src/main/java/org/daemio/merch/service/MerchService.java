@@ -9,13 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import org.daemio.merch.domain.Merch;
-import org.daemio.merch.domain.MerchStatus;
-import org.daemio.merch.domain.Merch_;
+import org.daemio.merch.dto.MerchPage;
+import org.daemio.merch.dto.MerchResource;
 import org.daemio.merch.error.MerchNotFoundException;
 import org.daemio.merch.mapper.MerchMapper;
-import org.daemio.merch.model.MerchModel;
-import org.daemio.merch.model.MerchPage;
+import org.daemio.merch.model.Merch;
+import org.daemio.merch.model.MerchStatus;
+import org.daemio.merch.model.Merch_;
 import org.daemio.merch.repository.MerchRepository;
 
 @Service
@@ -52,27 +52,54 @@ public class MerchService {
     return mapper.pageToResponse(results);
   }
 
-  public MerchModel getMerch(String merchId) {
+  public MerchResource getMerch(String merchId) {
     return getMerch(UUID.fromString(merchId));
   }
 
-  public MerchModel getMerch(UUID merchId) {
+  public MerchResource getMerch(UUID merchId) {
     log.info("Getting a piece of merch from data {}", merchId);
 
+    return mapper.entityToModel(getMerchById(merchId));
+  }
+
+  private Merch getMerchById(UUID merchId) {
     var merch = repo.findById(merchId);
     if (merch.isEmpty()) {
       throw new MerchNotFoundException();
     }
 
-    return mapper.entityToModel(merch.get());
+    return merch.get();
   }
 
-  public MerchModel saveMerch(MerchModel merchRequest) {
+  public MerchResource saveMerch(MerchResource merchRequest) {
     var merch = mapper.modelToEntity(merchRequest);
-    merch.setStatus(MerchStatus.LOADED);
 
     // merch.getImages().forEach(i -> i.setMerch(merch));
 
-    return mapper.entityToModel(repo.save(merch));
+    return mapper.entityToModel(save(merch));
+  }
+
+  public MerchResource updateMerch(MerchResource merchRequest) {
+    var existingMerch = getMerchById(UUID.fromString(merchRequest.getMerchId()));
+
+    var merch = mapper.modelToEntity(merchRequest);
+
+    mapper.update(existingMerch, merch);
+
+    return mapper.entityToModel(save(existingMerch));
+  }
+
+  public MerchResource mergeMerch(MerchResource merchRequest) {
+    var existingMerch = getMerchById(UUID.fromString(merchRequest.getMerchId()));
+
+    var merch = mapper.modelToEntity(merchRequest);
+
+    mapper.delta(existingMerch, merch);
+
+    return mapper.entityToModel(save(existingMerch));
+  }
+
+  private Merch save(Merch merch) {
+    return repo.save(merch);
   }
 }

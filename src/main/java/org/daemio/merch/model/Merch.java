@@ -1,4 +1,4 @@
-package org.daemio.merch.domain;
+package org.daemio.merch.model;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

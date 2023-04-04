@@ -17,10 +17,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
-import org.daemio.merch.domain.Merch;
+import org.daemio.merch.dto.MerchPage;
 import org.daemio.merch.error.MerchNotFoundException;
 import org.daemio.merch.mapper.MerchMapper;
-import org.daemio.merch.model.MerchPage;
+import org.daemio.merch.model.Merch;
 import org.daemio.merch.repository.MerchRepository;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;

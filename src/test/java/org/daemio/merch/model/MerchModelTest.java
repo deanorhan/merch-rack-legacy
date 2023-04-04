@@ -6,12 +6,14 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 import org.junit.jupiter.api.Test;
 
+import org.daemio.merch.dto.MerchResource;
+
 public class MerchModelTest {
 
   @Test
   public void testEquals() {
     EqualsVerifier.simple()
-        .forClass(MerchModel.class)
+        .forClass(MerchResource.class)
         .suppress(Warning.BIGDECIMAL_EQUALITY)
         .withIgnoredFields("createdTime", "modifiedTime")
         .verify();
@@ -19,6 +21,6 @@ public class MerchModelTest {
 
   @Test
   public void testToString() {
-    ToStringVerifier.forClass(MerchModel.class).withClassName(NameStyle.SIMPLE_NAME).verify();
+    ToStringVerifier.forClass(MerchResource.class).withClassName(NameStyle.SIMPLE_NAME).verify();
   }
 }

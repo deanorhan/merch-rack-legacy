@@ -9,8 +9,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
-import org.daemio.merch.domain.Merch;
-import org.daemio.merch.domain.MerchStatus;
+import org.daemio.merch.model.Merch;
+import org.daemio.merch.model.MerchStatus;
 
 public interface MerchRepository
     extends JpaRepository<Merch, UUID>, JpaSpecificationExecutor<Merch> {

@@ -1,4 +1,4 @@
-package org.daemio.merch.domain;
+package org.daemio.merch.model;
 
 import java.time.Instant;
 import jakarta.persistence.Column;
