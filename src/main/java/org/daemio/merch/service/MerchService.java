@@ -53,9 +53,13 @@ public class MerchService {
   }
 
   public MerchModel getMerch(String merchId) {
+    return getMerch(UUID.fromString(merchId));
+  }
+
+  public MerchModel getMerch(UUID merchId) {
     log.info("Getting a piece of merch from data {}", merchId);
 
-    var merch = repo.findById(UUID.fromString(merchId));
+    var merch = repo.findById(merchId);
     if (merch.isEmpty()) {
       throw new MerchNotFoundException();
     }

@@ -1,5 +1,4 @@
----
-openapi: 3.0.1
+openapi: 3.0.3
 info:
   title: Merch Service
   description: Where you get all the merch
@@ -7,9 +6,11 @@ info:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   version: 0.1.0
+
 servers:
 - url: http://localhost:8080
   description: Generated server url
+
 paths:
   "/merch":
     get:
@@ -94,6 +95,17 @@ paths:
         schema:
           type: integer
           format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - status
+              type: object
+              properties:
+                status:
+                  type: string
+                  description: Status that the merch must be updated to
       responses:
         '200':
           description: OK
@@ -142,6 +154,11 @@ paths:
         required: true
         schema:
           type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/MerchModel"
       responses:
         '200':
           description: OK
@@ -171,6 +188,11 @@ paths:
         required: true
         schema:
           type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/MerchModelDelta"
       responses:
         '200':
           description: OK
@@ -211,6 +233,7 @@ paths:
           "$ref": "#/components/responses/Unauthorized"
         '404':
           "$ref": "#/components/responses/NotFound"
+
 components:
   securitySchemes:
     bearerAuth:            # arbitrary name for the security scheme
@@ -243,22 +266,33 @@ components:
         application/json+problem:
           schema:
             "$ref": "#/components/schemas/ProblemDetail"
+
   schemas:
-    MerchModel:
-      required:
-      - price
-      - title
+    MerchModelDelta:
       type: object
       properties:
         merchId:
           type: integer
           format: int64
+        status:
+          type: string
+          description: Status the merch is in
         title:
           type: string
           description: Title of the piece of merch
         price:
           type: number
           description: Price of the piece of merch
+        description:
+          type: string
+          description: Long description of the merch
+    MerchModel:
+      allOf:
+        - $ref: '#/components/schemas/MerchModelDelta'
+        - type: object
+          required:
+            - title
+            - price
     ProblemDetail:
       type: object
       properties:

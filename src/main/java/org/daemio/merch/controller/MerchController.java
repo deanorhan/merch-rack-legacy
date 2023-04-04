@@ -1,6 +1,7 @@
 package org.daemio.merch.controller;
 
 import java.net.URI;
+import java.util.UUID;
 import jakarta.validation.Valid;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,11 +37,13 @@ import org.daemio.merch.service.MerchService;
 @Slf4j
 public class MerchController {
 
+  private static final String TAG = "merch";
+
   @Autowired private transient MerchService merchService;
 
   @Operation(
       summary = "Get a list of merch",
-      tags = {"merch"})
+      tags = {TAG})
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<MerchPage> getMerchList(
       @ParameterObject @PageableDefault(page = 0, size = 25) Pageable pageable) {
@@ -52,7 +56,7 @@ public class MerchController {
 
   @Operation(
       summary = "Save a new piece of merch",
-      tags = {"merch"})
+      tags = {TAG})
   @ApiResponse(
       responseCode = "201",
       description = "Created",
@@ -76,11 +80,11 @@ public class MerchController {
 
   @Operation(
       summary = "Get a piece of merch by id",
-      tags = {"merch"})
+      tags = {TAG})
   @ApiResponse(responseCode = "200", description = "OK")
   @ApiNotFoundReponse
   @GetMapping(path = "/{merchId}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<MerchModel> getMerchItem(@PathVariable String merchId) {
+  public ResponseEntity<MerchModel> getMerchItem(@PathVariable UUID merchId) {
     log.info("Getting piece of merch");
 
     var merch = merchService.getMerch(merchId);
@@ -89,8 +93,38 @@ public class MerchController {
   }
 
   @Operation(
+      summary = "Update a piece of merch fully",
+      tags = {TAG})
+  @ApiResponse(responseCode = "200", description = "OK")
+  @ApiBadRequestResponse
+  @ApiAuthErrorResponse
+  @ApiNotFoundReponse
+  @PutMapping(path = "/{merchId}", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<Void> replaceMerchItem(
+      @PathVariable UUID merchId, @Valid @RequestBody MerchModel newMerchModel) {
+    log.info("Replacing a piece of merch");
+    newMerchModel.setMerchId(merchId.toString());
+    return ResponseEntity.ok().build();
+  }
+
+  @Operation(
+      summary = "Update a piece of merch with the delta",
+      tags = {TAG})
+  @ApiResponse(responseCode = "200", description = "OK")
+  @ApiBadRequestResponse
+  @ApiAuthErrorResponse
+  @ApiNotFoundReponse
+  @PatchMapping(path = "/{merchId}", produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<Void> patchMerchItem(
+      @PathVariable UUID merchId, @RequestBody MerchModel newMerchModel) {
+    log.info("Updating a piece of merch");
+    newMerchModel.setMerchId(merchId.toString());
+    return ResponseEntity.ok().build();
+  }
+
+  @Operation(
       summary = "Update the status of a piece of merch",
-      tags = {"merch"})
+      tags = {TAG})
   @ApiResponse(responseCode = "200", description = "OK")
   @ApiBadRequestResponse
   @ApiAuthErrorResponse

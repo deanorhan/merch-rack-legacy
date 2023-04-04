@@ -15,6 +15,7 @@ public interface MerchMapper {
 
   @Mapping(target = "id", source = "merchId")
   @Mapping(target = "status", ignore = true)
+  @Mapping(target = "vendor", ignore = true)
   @Mapping(target = "images", ignore = true)
   @Mapping(target = "createdTime", ignore = true)
   @Mapping(target = "modifiedTime", ignore = true)

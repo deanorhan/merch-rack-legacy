@@ -33,6 +33,9 @@ public class MerchModel {
   @Schema(description = "Price of the piece of merch")
   @NotNull @Positive private BigDecimal price;
 
+  @Schema(description = "Long decription of the piece of merch")
+  private String description;
+
   @EqualsAndHashCode.Exclude private Instant createdTime;
 
   @EqualsAndHashCode.Exclude private Instant modifiedTime;

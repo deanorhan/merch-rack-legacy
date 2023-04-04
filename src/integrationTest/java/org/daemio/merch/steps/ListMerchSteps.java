@@ -10,7 +10,6 @@ import java.util.List;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import lombok.extern.slf4j.Slf4j;
 import net.datafaker.Faker;
 import org.junit.jupiter.api.DisplayName;
 import org.mapstruct.factory.Mappers;
@@ -28,7 +27,6 @@ import org.daemio.merch.repository.MerchRepository;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 
-@Slf4j
 @DisplayName("Feature: List of merch items")
 public final class ListMerchSteps {
 
