@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,9 +26,15 @@ public class MerchModel {
 
   private String merchId;
 
-  @NotBlank private String title;
+  @Schema(description = "Title of the piece of merch")
+  @NotBlank
+  private String title;
 
+  @Schema(description = "Price of the piece of merch")
   @NotNull @Positive private BigDecimal price;
+
+  @Schema(description = "Long decription of the piece of merch")
+  private String description;
 
   @EqualsAndHashCode.Exclude private Instant createdTime;
 
