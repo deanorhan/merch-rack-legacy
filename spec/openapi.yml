@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
-  title: Merch Service
-  description: Where you get all the merch
+  title: Merch Rack
+  description: The rack that holds all the merch
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html

@@ -5,4 +5,4 @@ pluginManagement {
     }
 }
 
-rootProject.name = 'merch'
+rootProject.name = 'merch-rack'
