@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,18 +35,26 @@ import org.daemio.merch.model.MerchStatus;
 import org.daemio.merch.service.MerchService;
 
 @RestController
-@RequestMapping("/merch")
+@RequestMapping("/api/v1/merch")
 @Slf4j
+@Tag(name = "Merch", description = "Services used to get and manipulate merch")
 public class MerchController {
-
-  private static final String TAG = "merch";
 
   @Autowired private transient MerchService merchService;
 
-  @Operation(
-      summary = "Get a list of merch",
-      tags = {TAG})
-  @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+  @Operation(summary = "Get a list of merch")
+  @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, headers = "accepts-version=2.0")
+  public ResponseEntity<MerchPage> getMerchListV2(
+      @ParameterObject @PageableDefault(page = 0, size = 25) Pageable pageable) {
+
+    log.info("Getting some merch from version 2");
+
+    var page = merchService.getMerchPage(pageable);
+    return ResponseEntity.ok(page);
+  }
+
+  @Operation(summary = "Get a list of merch")
+  @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, headers = "accepts-version!=2.0")
   public ResponseEntity<MerchPage> getMerchList(
       @ParameterObject @PageableDefault(page = 0, size = 25) Pageable pageable) {
 
@@ -55,9 +64,7 @@ public class MerchController {
     return ResponseEntity.ok(page);
   }
 
-  @Operation(
-      summary = "Save a new piece of merch",
-      tags = {TAG})
+  @Operation(summary = "Save a new piece of merch")
   @ApiResponse(
       responseCode = "201",
       description = "Created",
@@ -81,9 +88,7 @@ public class MerchController {
     return ResponseEntity.created(URI.create(location)).build();
   }
 
-  @Operation(
-      summary = "Get a piece of merch by id",
-      tags = {TAG})
+  @Operation(summary = "Get a piece of merch by id")
   @ApiResponse(responseCode = "200", description = "OK")
   @ApiNotFoundReponse
   @GetMapping(path = "/{merchId}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -95,9 +100,7 @@ public class MerchController {
     return ResponseEntity.ok(merch);
   }
 
-  @Operation(
-      summary = "Update a piece of merch fully",
-      tags = {TAG})
+  @Operation(summary = "Update a piece of merch fully")
   @ApiResponse(responseCode = "200", description = "OK")
   @ApiBadRequestResponse
   @ApiAuthErrorResponse
@@ -113,9 +116,7 @@ public class MerchController {
     return ResponseEntity.ok(merch);
   }
 
-  @Operation(
-      summary = "Update a piece of merch with the delta",
-      tags = {TAG})
+  @Operation(summary = "Update a piece of merch with the delta")
   @ApiResponse(responseCode = "200", description = "OK")
   @ApiBadRequestResponse
   @ApiAuthErrorResponse
@@ -131,9 +132,7 @@ public class MerchController {
     return ResponseEntity.ok(merch);
   }
 
-  @Operation(
-      summary = "Update the status of a piece of merch",
-      tags = {TAG})
+  @Operation(summary = "Update the status of a piece of merch")
   @ApiResponse(responseCode = "200", description = "OK")
   @ApiBadRequestResponse
   @ApiAuthErrorResponse

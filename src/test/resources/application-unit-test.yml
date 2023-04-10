@@ -1,3 +1,8 @@
+app:
+  security:
+    jwt:
+      secret-key: ${SECRET_KEY}
+
 spring:
   datasource:
     driver-class-name: org.sqlite.JDBC
@@ -6,5 +11,3 @@ spring:
     password:
   jpa:
     database-platform: org.hibernate.community.dialect.SQLiteDialect
-  liquibase:
-    enabled: true

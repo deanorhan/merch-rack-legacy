@@ -60,7 +60,7 @@ public class MerchControllerTest {
 
     when(merchService.getMerchPage(any())).thenReturn(expectedResponse);
 
-    mvc.perform(get("/merch"))
+    mvc.perform(get("/api/v1/merch"))
         .andExpect(status().isOk())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
         .andExpect(jsonPath("$.merch").isArray())
@@ -83,7 +83,7 @@ public class MerchControllerTest {
 
     when(merchService.getMerchPage(any())).thenReturn(expectedResponse);
 
-    mvc.perform(get("/merch").queryParam("page", Integer.toString(page)))
+    mvc.perform(get("/api/v1/merch").queryParam("page", Integer.toString(page)))
         .andExpect(status().isOk())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
         .andExpect(jsonPath("$.merch").isArray())
@@ -104,7 +104,7 @@ public class MerchControllerTest {
 
     when(merchService.getMerch(merchId)).thenReturn(merch);
 
-    mvc.perform(get("/merch/{merchId}", merchId))
+    mvc.perform(get("/api/v1/merch/{merchId}", merchId))
         .andExpect(status().isOk())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
         .andExpect(jsonPath("$.title").value(merch.getTitle()));
@@ -119,7 +119,7 @@ public class MerchControllerTest {
 
     when(merchService.getMerch(merchId)).thenThrow(new MerchNotFoundException());
 
-    mvc.perform(get("/merch/{merchId}", merchId)).andExpect(status().isNotFound());
+    mvc.perform(get("/api/v1/merch/{merchId}", merchId)).andExpect(status().isNotFound());
   }
 
   @WithMockUser(roles = {"VENDOR"})
@@ -133,7 +133,7 @@ public class MerchControllerTest {
         MerchResource.builder().title("some merch").price(BigDecimal.valueOf(10.00)).build();
 
     mvc.perform(
-            post("/merch")
+            post("/api/v1/merch")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(merchRequest)))
         .andExpect(status().isCreated())
@@ -147,7 +147,7 @@ public class MerchControllerTest {
   @MethodSource("argumentsForValidation")
   public void merchController_validates_request(String requestJson, String invalidParameter)
       throws JsonProcessingException, Exception {
-    mvc.perform(post("/merch").contentType(MediaType.APPLICATION_JSON).content(requestJson))
+    mvc.perform(post("/api/v1/merch").contentType(MediaType.APPLICATION_JSON).content(requestJson))
         .andExpect(status().isBadRequest())
         .andExpect(content().contentType(MediaType.APPLICATION_PROBLEM_JSON))
         .andExpect(jsonPath("$.errors").exists())

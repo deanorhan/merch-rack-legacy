@@ -9,7 +9,7 @@ plugins {
   id 'com.github.andygoossens.gradle-modernizer-plugin' version '1.7.0'
   id 'pmd'
   id 'com.github.ben-manes.versions' version '0.46.0'
-  id 'com.diffplug.spotless' version '6.17.0'
+  id 'com.diffplug.spotless' version '6.18.0'
   // Fucking buildship
   // id 'eclipse'
 
@@ -57,6 +57,11 @@ dependencies {
   annotationProcessor 'org.hibernate.orm:hibernate-jpamodelgen:6.2.0.Final'
   annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
+  // implementation 'io.jsonwebtoken:jjwt:0.9.1'
+  implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+  implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
+  implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
   // Bumping version due to CVE-2022-1471
   implementation 'org.yaml:snakeyaml:2.0'
 
@@ -66,7 +71,7 @@ dependencies {
   // runtimeOnly 'mysql:mysql-connector-java'
   // runtimeOnly 'org.postgresql:postgresql:42.6.0'
 
-  implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4'
+  implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
 
   testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
   testImplementation 'org.junit.platform:junit-platform-suite:1.9.2'
@@ -83,9 +88,9 @@ dependencies {
   testImplementation 'io.cucumber:cucumber-junit-platform-engine:7.11.2'
   testImplementation 'io.cucumber:cucumber-spring:7.11.2'
 
-  testImplementation 'org.testcontainers:testcontainers:1.17.6'
-  testImplementation 'org.testcontainers:junit-jupiter:1.17.6'
-  testImplementation 'org.testcontainers:postgresql:1.17.6'
+  testImplementation 'org.testcontainers:testcontainers:1.18.0'
+  testImplementation 'org.testcontainers:junit-jupiter:1.18.0'
+  testImplementation 'org.testcontainers:postgresql:1.18.0'
 
   integrationTestImplementation 'io.rest-assured:rest-assured:5.3.0'
 
