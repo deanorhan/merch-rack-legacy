@@ -21,8 +21,11 @@ public class JWTAuthorizationFilter implements HandlerInterceptor {
     if (handler instanceof HandlerMethod) {
       var handlerMethod = (HandlerMethod) handler;
 
-      Arrays.stream(handlerMethod.getMethodParameters()).forEach(p -> log.info("Handle : {}", p));
-      log.info("Handle : {}", handlerMethod.getBean());
+      Arrays.stream(handlerMethod.getMethodParameters())
+          .forEach(p -> log.info("Parameter : {}", p.getParameterName()));
+      log.info("Method : {}", handlerMethod.getMethod());
+      Arrays.stream(handlerMethod.getMethod().getAnnotations())
+          .forEach(a -> log.info("Annotation : {}", a));
     }
 
     return true;

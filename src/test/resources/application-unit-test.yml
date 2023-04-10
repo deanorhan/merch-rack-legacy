@@ -1,7 +1,7 @@
 app:
   security:
     jwt:
-      secret-key: ${SECRET_KEY}
+      secret-key: ${SECRET_KEY:mIAWni0nnXlQmCBOVZxwXi6+c4JKhzqJgXct8oBWX5B1mwZlVfqj/k6Z98XHrhtP}
 
 spring:
   datasource:

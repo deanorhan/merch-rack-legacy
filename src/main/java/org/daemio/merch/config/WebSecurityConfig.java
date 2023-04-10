@@ -33,7 +33,7 @@ public class WebSecurityConfig {
   @Autowired private transient RoleConfig roleConfig;
 
   @Value("${app.security.jwt.secret-key}")
-  private String secretKey;
+  private transient String secretKey;
 
   @Bean
   SecurityFilterChain securityFilterChain(

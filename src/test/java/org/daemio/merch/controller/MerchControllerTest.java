@@ -20,8 +20,10 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
+import org.daemio.merch.config.HandlerConfig;
 import org.daemio.merch.config.RoleConfig;
 import org.daemio.merch.config.WebSecurityConfig;
 import org.daemio.merch.dto.MerchPage;
@@ -40,8 +42,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(MerchController.class)
-@Import({WebSecurityConfig.class, RoleConfig.class, MerchMapperImpl.class})
+@Import({WebSecurityConfig.class, RoleConfig.class, MerchMapperImpl.class, HandlerConfig.class})
 @DisplayName("Merch controller tests")
+@ActiveProfiles("unit-test")
+@WithMockUser(roles = {"FAN"})
 public class MerchControllerTest {
 
   @Autowired private MockMvc mvc;
@@ -138,7 +142,8 @@ public class MerchControllerTest {
                 .content(mapper.writeValueAsString(merchRequest)))
         .andExpect(status().isCreated())
         .andExpect(header().exists(HttpHeaders.LOCATION))
-        .andExpect(header().string(HttpHeaders.LOCATION, String.format("/merch/%s", merchId)));
+        .andExpect(
+            header().string(HttpHeaders.LOCATION, String.format("/api/v1/merch/%s", merchId)));
   }
 
   @DisplayName("Controller validates the request object")

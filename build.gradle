@@ -109,6 +109,8 @@ task integrationTest(type: Test) {
   classpath = sourceSets.integrationTest.runtimeClasspath
 
   systemProperty "cucumber.plugin", "pretty, html:${buildDir}/reports/tests/cucumber/integration.html, json:${buildDir}/reports/tests/cucumber/integration.json, junit:${buildDir}/reports/tests/cucumber/integration.xml"
+  systemProperty "app.security.jwt.secret-key", "mIAWni0nnXlQmCBOVZxwXi6+c4JKhzqJgXct8oBWX5B1mwZlVfqj/k6Z98XHrhtP"
+  environment "SECRET_KEY", "mIAWni0nnXlQmCBOVZxwXi6+c4JKhzqJgXct8oBWX5B1mwZlVfqj/k6Z98XHrhtP"
 }
 
 tasks.withType(Test) {
