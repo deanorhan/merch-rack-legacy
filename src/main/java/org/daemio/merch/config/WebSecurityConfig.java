@@ -63,7 +63,7 @@ public class WebSecurityConfig {
               .requestMatchers(HttpMethod.GET, "/api/v1/merch/**")
               .permitAll()
               .requestMatchers("/api/v1/merch/**")
-              .hasRole(roleConfig.getVendor())
+              .hasRole(roleConfig.vendor())
               .requestMatchers(HttpMethod.GET, "/actuator/health/**", "/actuator/info")
               .permitAll();
         });

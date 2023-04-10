@@ -83,7 +83,7 @@ public class MerchController {
 
     var merch = merchService.saveMerch(newMerchModel);
 
-    var location = String.format("/merch/%s", merch.getMerchId());
+    var location = String.format("/api/v1/merch/%s", merch.getMerchId());
 
     return ResponseEntity.created(URI.create(location)).build();
   }

@@ -1,22 +1,17 @@
 package org.daemio.merch.steps;
 
 import java.math.BigDecimal;
-import java.time.Instant;
-import java.util.Date;
-import java.util.UUID;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
+import org.daemio.common.JwtUtil;
 import org.daemio.merch.data.ScenarioData;
 import org.daemio.merch.dto.MerchResource;
 import org.daemio.merch.model.MerchStatus;
@@ -35,21 +30,7 @@ public final class SaveMerchItemSteps {
 
   @Given("I am a vendor and logged in")
   public void I_am_a_vendor() {
-    scenarioData.given().auth().oauth2(getJwt());
-  }
-
-  private String getJwt() {
-    var clains = Jwts.claims();
-    clains.put("roles", "VENDOR");
-
-    return Jwts.builder()
-        .setClaims(clains)
-        .setIssuedAt(Date.from(Instant.now().minusSeconds(20)))
-        .setExpiration(Date.from(Instant.now().plusSeconds(60)))
-        .setId(UUID.randomUUID().toString())
-        .signWith(
-            Keys.hmacShaKeyFor(System.getenv("SECRET_KEY").getBytes()), SignatureAlgorithm.HS256)
-        .compact();
+    scenarioData.given().auth().oauth2(JwtUtil.getValidVendor());
   }
 
   @Given("there is a new piece of merch to save")
@@ -64,7 +45,7 @@ public final class SaveMerchItemSteps {
     merchLocURI =
         given()
             .auth()
-            .oauth2(getJwt())
+            .oauth2(JwtUtil.getValidVendor())
             .body(
                 MerchResource.builder()
                     .title("My Awesome merch")
@@ -74,7 +55,8 @@ public final class SaveMerchItemSteps {
             .post("/merch")
             .then()
             .extract()
-            .header(HttpHeaders.LOCATION);
+            .header(HttpHeaders.LOCATION)
+            .substring(7);
   }
 
   @Given("it doesn't have a {string}")
@@ -102,13 +84,14 @@ public final class SaveMerchItemSteps {
     merchLocURI =
         given()
             .auth()
-            .oauth2(getJwt())
+            .oauth2(JwtUtil.getValidVendor())
             .body(requestMerch)
             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
             .post("/merch")
             .then()
             .extract()
-            .header(HttpHeaders.LOCATION);
+            .header(HttpHeaders.LOCATION)
+            .substring(7);
   }
 
   @Given("I update the title for the request")

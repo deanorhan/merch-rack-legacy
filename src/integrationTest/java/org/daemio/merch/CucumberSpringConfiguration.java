@@ -5,7 +5,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import io.cucumber.java.After;
-import io.cucumber.java.AfterAll;
 import io.cucumber.java.Before;
 import io.cucumber.spring.CucumberContextConfiguration;
 import io.restassured.RestAssured;
@@ -39,6 +38,7 @@ public class CucumberSpringConfiguration {
   public void setUp() {
     log.info("Setting up RestAssured with port {}", port);
     RestAssured.port = port;
+    RestAssured.basePath = "/api/v1";
     merchRepository.deleteAll();
   }
 
@@ -48,7 +48,7 @@ public class CucumberSpringConfiguration {
     RestAssured.reset();
   }
 
-  @AfterAll
+  // @AfterAll
   public static void finish() throws IOException {
     Files.deleteIfExists(Path.of("sqlite-integ.db"));
   }

@@ -1,9 +1,10 @@
 app:
   security:
     role:
-      admin: "ADMIN"
+      admin: ADMIN
       fan: FAN
-      vendor: "VENDOR"
+      stan: STAN
+      vendor: VENDOR
 
 logging:
   level:
