@@ -14,11 +14,10 @@ import org.daemio.merch.data.ScenarioData;
 public final class CommonSteps {
 
   @Autowired private ScenarioData scenarioData;
-  @Autowired private RoleConfig roleConfig;
 
   @Given("a valid JWT for {string}")
   public void a_valid_JWT_for(String role) {
-    scenarioData.given().auth().oauth2(JwtUtil.getValidJwtForRole(roleConfig.fan()));
+    scenarioData.given().auth().oauth2(JwtUtil.getValidJwtForRole(RoleConfig.FAN));
   }
 
   @Given("the request content type is {string}")

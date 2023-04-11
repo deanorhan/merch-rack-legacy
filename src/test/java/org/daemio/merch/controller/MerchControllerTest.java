@@ -24,7 +24,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import org.daemio.merch.config.HandlerConfig;
-import org.daemio.merch.config.RoleConfig;
 import org.daemio.merch.config.WebSecurityConfig;
 import org.daemio.merch.dto.MerchPage;
 import org.daemio.merch.dto.MerchResource;
@@ -42,7 +41,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(MerchController.class)
-@Import({WebSecurityConfig.class, RoleConfig.class, MerchMapperImpl.class, HandlerConfig.class})
+@Import({WebSecurityConfig.class, MerchMapperImpl.class, HandlerConfig.class})
 @DisplayName("Merch controller tests")
 @ActiveProfiles("unit-test")
 @WithMockUser(roles = {"FAN"})

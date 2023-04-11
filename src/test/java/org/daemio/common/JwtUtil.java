@@ -11,17 +11,19 @@ import io.jsonwebtoken.security.Keys;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import org.daemio.merch.config.RoleConfig;
+
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class JwtUtil {
 
-  public static String getValidJwtForRole(String role) {
+  public static String getValidJwtForRole(RoleConfig role) {
     var claims = new HashMap<String, String>();
-    claims.put("roles", role);
+    claims.put("roles", role.getAuthority());
 
     return createJwt(claims);
   }
 
-  public static String getValidJwtForRole(String... roles) {
+  public static String getValidJwtForRole(RoleConfig... roles) {
     var claims = new HashMap<String, Object>();
     claims.put("roles", roles);
 

@@ -2,7 +2,6 @@ package org.daemio.merch.config;
 
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,8 +29,6 @@ public class WebSecurityConfig {
   /** */
   private static final String ROLES_CLAIM_NAME = "roles";
 
-  @Autowired private transient RoleConfig roleConfig;
-
   @Value("${app.security.jwt.secret-key}")
   private transient String secretKey;
 
@@ -54,16 +51,16 @@ public class WebSecurityConfig {
     //               .requestMatchers(HttpMethod.GET)
     //               .permitAll()
     //               .anyRequest()
-    //               .hasRole(roleConfig.getVendor());
+    //               .hasRole(RoleConfig.VENDOR.getAuthority());
     //         });
 
     http.authorizeHttpRequests(
         authz -> {
           authz
               .requestMatchers(HttpMethod.GET, "/api/v1/merch/**")
-              .hasRole(roleConfig.fan())
+              .hasRole(RoleConfig.FAN.getAuthority())
               .requestMatchers("/api/v1/merch/**")
-              .hasRole(roleConfig.vendor())
+              .hasRole(RoleConfig.VENDOR.getAuthority())
               .requestMatchers(HttpMethod.GET, "/actuator/health/**", "/actuator/info")
               .permitAll();
         });

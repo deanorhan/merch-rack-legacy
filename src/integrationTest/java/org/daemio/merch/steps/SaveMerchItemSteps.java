@@ -24,13 +24,12 @@ import static org.hamcrest.Matchers.notNullValue;
 public final class SaveMerchItemSteps {
 
   @Autowired private ScenarioData scenarioData;
-  @Autowired private RoleConfig roleConfig;
   private String merchLocURI;
   private MerchResource requestMerch;
 
   @Given("I am a vendor and logged in")
   public void I_am_a_vendor() {
-    scenarioData.given().auth().oauth2(JwtUtil.getValidJwtForRole(roleConfig.vendor()));
+    scenarioData.given().auth().oauth2(JwtUtil.getValidJwtForRole(RoleConfig.VENDOR));
   }
 
   @Given("there is a new piece of merch to save")
@@ -45,7 +44,7 @@ public final class SaveMerchItemSteps {
     merchLocURI =
         given()
             .auth()
-            .oauth2(JwtUtil.getValidJwtForRole(roleConfig.vendor()))
+            .oauth2(JwtUtil.getValidJwtForRole(RoleConfig.VENDOR))
             .body(
                 MerchResource.builder()
                     .title("My Awesome merch")
@@ -84,7 +83,7 @@ public final class SaveMerchItemSteps {
     merchLocURI =
         given()
             .auth()
-            .oauth2(JwtUtil.getValidJwtForRole(roleConfig.vendor()))
+            .oauth2(JwtUtil.getValidJwtForRole(RoleConfig.VENDOR))
             .body(requestMerch)
             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
             .post("/merch")
