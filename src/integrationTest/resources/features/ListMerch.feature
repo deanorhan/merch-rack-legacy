@@ -1,6 +1,9 @@
 Feature: List of merch items
   Paginated list of merch
 
+  Background:
+    Given a valid JWT for "fan"
+
   Rule: Results must be paginated
 
     Scenario Outline: paginating

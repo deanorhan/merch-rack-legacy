@@ -5,13 +5,13 @@ import java.math.BigDecimal;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
 import org.daemio.common.JwtUtil;
+import org.daemio.merch.config.RoleConfig;
 import org.daemio.merch.data.ScenarioData;
 import org.daemio.merch.dto.MerchResource;
 import org.daemio.merch.model.MerchStatus;
@@ -21,16 +21,16 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 
 @DisplayName("Save a piece of merch")
-@Slf4j
 public final class SaveMerchItemSteps {
 
   @Autowired private ScenarioData scenarioData;
+  @Autowired private RoleConfig roleConfig;
   private String merchLocURI;
   private MerchResource requestMerch;
 
   @Given("I am a vendor and logged in")
   public void I_am_a_vendor() {
-    scenarioData.given().auth().oauth2(JwtUtil.getValidVendor());
+    scenarioData.given().auth().oauth2(JwtUtil.getValidJwtForRole(roleConfig.vendor()));
   }
 
   @Given("there is a new piece of merch to save")
@@ -45,7 +45,7 @@ public final class SaveMerchItemSteps {
     merchLocURI =
         given()
             .auth()
-            .oauth2(JwtUtil.getValidVendor())
+            .oauth2(JwtUtil.getValidJwtForRole(roleConfig.vendor()))
             .body(
                 MerchResource.builder()
                     .title("My Awesome merch")
@@ -84,7 +84,7 @@ public final class SaveMerchItemSteps {
     merchLocURI =
         given()
             .auth()
-            .oauth2(JwtUtil.getValidVendor())
+            .oauth2(JwtUtil.getValidJwtForRole(roleConfig.vendor()))
             .body(requestMerch)
             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
             .post("/merch")

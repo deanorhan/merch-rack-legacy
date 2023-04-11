@@ -6,12 +6,20 @@ import org.junit.jupiter.api.DisplayName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 
+import org.daemio.common.JwtUtil;
+import org.daemio.merch.config.RoleConfig;
 import org.daemio.merch.data.ScenarioData;
 
 @DisplayName("Steps common to various scenarios")
 public final class CommonSteps {
 
   @Autowired private ScenarioData scenarioData;
+  @Autowired private RoleConfig roleConfig;
+
+  @Given("a valid JWT for {string}")
+  public void a_valid_JWT_for(String role) {
+    scenarioData.given().auth().oauth2(JwtUtil.getValidJwtForRole(roleConfig.fan()));
+  }
 
   @Given("the request content type is {string}")
   public void the_request_content_type_is(String contentType) {

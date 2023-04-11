@@ -19,7 +19,7 @@ public class RoleConfig {
   private String fan;
 
   @Value("${fan:STAN}")
-  private String STAN;
+  private String stan;
 
   @Value("${vendor:VENDOR}")
   private String vendor;

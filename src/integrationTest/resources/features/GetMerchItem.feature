@@ -1,6 +1,9 @@
 Feature: Get a merch item
 People should be able to get a piece of merch
 
+  Background:
+    Given a valid JWT for "fan"
+
   Scenario: Get a merch Item successfully
     Given a merch item exists
     When the call to the get item endpoint is made with a merch id

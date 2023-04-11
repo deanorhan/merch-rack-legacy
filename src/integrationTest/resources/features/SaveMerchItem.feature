@@ -16,6 +16,7 @@ Feature: Save a piece of merch
 
     Scenario: See the new merch
       Given I have saved a new merch piece
+      And a valid JWT for "fan"
       When the call is made to the returned location URI
       Then the endpoint returns 200
       And the merch piece that was saved is returned

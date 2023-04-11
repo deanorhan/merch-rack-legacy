@@ -14,23 +14,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class JwtUtil {
 
-  public static String getValidFan() {
+  public static String getValidJwtForRole(String role) {
     var claims = new HashMap<String, String>();
-    claims.put("roles", "FAN");
+    claims.put("roles", role);
 
     return createJwt(claims);
   }
 
-  public static String getValidStan() {
-    var claims = new HashMap<String, String>();
-    claims.put("roles", "STAN");
-
-    return createJwt(claims);
-  }
-
-  public static String getValidVendor() {
-    var claims = new HashMap<String, String>();
-    claims.put("roles", "VENDOR");
+  public static String getValidJwtForRole(String... roles) {
+    var claims = new HashMap<String, Object>();
+    claims.put("roles", roles);
 
     return createJwt(claims);
   }

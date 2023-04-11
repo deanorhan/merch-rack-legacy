@@ -61,7 +61,7 @@ public class WebSecurityConfig {
         authz -> {
           authz
               .requestMatchers(HttpMethod.GET, "/api/v1/merch/**")
-              .permitAll()
+              .hasRole(roleConfig.fan())
               .requestMatchers("/api/v1/merch/**")
               .hasRole(roleConfig.vendor())
               .requestMatchers(HttpMethod.GET, "/actuator/health/**", "/actuator/info")
