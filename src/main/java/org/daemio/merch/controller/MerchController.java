@@ -29,6 +29,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.daemio.merch.annotations.ApiAuthErrorResponse;
 import org.daemio.merch.annotations.ApiBadRequestResponse;
 import org.daemio.merch.annotations.ApiNotFoundReponse;
+import org.daemio.merch.annotations.ApiOKReponse;
+import org.daemio.merch.annotations.LoginRequired;
 import org.daemio.merch.dto.MerchPage;
 import org.daemio.merch.dto.MerchResource;
 import org.daemio.merch.model.MerchStatus;
@@ -89,7 +91,7 @@ public class MerchController {
   }
 
   @Operation(summary = "Get a piece of merch by id")
-  @ApiResponse(responseCode = "200", description = "OK")
+  @ApiOKReponse
   @ApiNotFoundReponse
   @GetMapping(path = "/{merchId}", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<MerchResource> getMerchItem(@PathVariable UUID merchId) {
@@ -101,11 +103,12 @@ public class MerchController {
   }
 
   @Operation(summary = "Update a piece of merch fully")
-  @ApiResponse(responseCode = "200", description = "OK")
+  @ApiOKReponse
   @ApiBadRequestResponse
   @ApiAuthErrorResponse
   @ApiNotFoundReponse
   @PutMapping(path = "/{merchId}", produces = MediaType.APPLICATION_JSON_VALUE)
+  @LoginRequired
   public ResponseEntity<MerchResource> replaceMerchItem(
       @PathVariable UUID merchId, @Valid @RequestBody MerchResource newMerchModel) {
     log.info("Replacing a piece of merch");
@@ -117,11 +120,12 @@ public class MerchController {
   }
 
   @Operation(summary = "Update a piece of merch with the delta")
-  @ApiResponse(responseCode = "200", description = "OK")
+  @ApiOKReponse
   @ApiBadRequestResponse
   @ApiAuthErrorResponse
   @ApiNotFoundReponse
   @PatchMapping(path = "/{merchId}", produces = MediaType.APPLICATION_JSON_VALUE)
+  @LoginRequired
   public ResponseEntity<MerchResource> patchMerchItem(
       @PathVariable UUID merchId, @RequestBody MerchResource newMerchModel) {
     log.info("Updating a piece of merch");
@@ -133,11 +137,12 @@ public class MerchController {
   }
 
   @Operation(summary = "Update the status of a piece of merch")
-  @ApiResponse(responseCode = "200", description = "OK")
+  @ApiOKReponse
   @ApiBadRequestResponse
   @ApiAuthErrorResponse
   @ApiNotFoundReponse
   @PostMapping(path = "/{merchId}/status", produces = MediaType.APPLICATION_JSON_VALUE)
+  @LoginRequired
   public ResponseEntity<Void> updateMerchStatus(@PathVariable int merchId) {
     log.info("Updating merch status");
     return ResponseEntity.ok().build();

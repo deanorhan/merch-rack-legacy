@@ -1,16 +1,20 @@
 package org.daemio.merch.config;
 
-import org.springframework.context.annotation.Bean;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.handler.MappedInterceptor;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import org.daemio.merch.filter.JWTAuthorizationFilter;
+import org.daemio.merch.filter.LoggedInMethodHandler;
 
 @Configuration
-public class HandlerConfig {
+@RequiredArgsConstructor
+public class HandlerConfig implements WebMvcConfigurer {
 
-  @Bean
-  MappedInterceptor jwtHandler() {
-    return new MappedInterceptor(new String[] {"/api/v1/**"}, new JWTAuthorizationFilter());
+  private final LoggedInMethodHandler loggedInMethodHandler;
+
+  @Override
+  public void addInterceptors(InterceptorRegistry registry) {
+    registry.addInterceptor(loggedInMethodHandler).addPathPatterns("/api/v1/**");
   }
 }

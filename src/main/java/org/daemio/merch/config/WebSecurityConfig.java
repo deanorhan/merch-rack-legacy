@@ -16,6 +16,7 @@ import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.context.annotation.RequestScope;
 
 @Configuration
 @EnableWebSecurity
@@ -84,5 +85,11 @@ public class WebSecurityConfig {
     var converter = new JwtAuthenticationConverter();
     converter.setJwtGrantedAuthoritiesConverter(authoritiesConverter);
     return converter;
+  }
+
+  @Bean
+  @RequestScope
+  UserContext userContext() {
+    return new UserContext();
   }
 }

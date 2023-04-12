@@ -1,6 +1,7 @@
 package org.daemio.common;
 
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.UUID;
@@ -19,6 +20,9 @@ public final class JwtUtil {
   public static String getValidJwtForRole(RoleConfig role) {
     var claims = new HashMap<String, String>();
     claims.put("roles", role.getAuthority());
+    if (RoleConfig.VENDOR == role) {
+      claims.put("userId", UUID.randomUUID().toString());
+    }
 
     return createJwt(claims);
   }
@@ -26,6 +30,10 @@ public final class JwtUtil {
   public static String getValidJwtForRole(RoleConfig... roles) {
     var claims = new HashMap<String, Object>();
     claims.put("roles", roles);
+
+    if (Arrays.stream(roles).filter(RoleConfig.VENDOR::equals).findFirst().isPresent()) {
+      claims.put("userId", UUID.randomUUID().toString());
+    }
 
     return createJwt(claims);
   }

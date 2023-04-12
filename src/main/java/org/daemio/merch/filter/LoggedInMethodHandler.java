@@ -1,31 +1,33 @@
 package org.daemio.merch.filter;
 
-import java.util.Arrays;
+import javax.security.auth.login.LoginException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-@Slf4j
+import org.daemio.merch.annotations.LoginRequired;
+import org.daemio.merch.config.UserContext;
+
 @Component
-public class JWTAuthorizationFilter implements HandlerInterceptor {
+@AllArgsConstructor
+public class LoggedInMethodHandler implements HandlerInterceptor {
+
+  private UserContext userContext;
 
   @Override
   public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
       throws Exception {
-    log.info("Handle : {}", handler.getClass());
 
     if (handler instanceof HandlerMethod) {
       var handlerMethod = (HandlerMethod) handler;
-
-      Arrays.stream(handlerMethod.getMethodParameters())
-          .forEach(p -> log.info("Parameter : {}", p.getParameterName()));
-      log.info("Method : {}", handlerMethod.getMethod());
-      Arrays.stream(handlerMethod.getMethod().getAnnotations())
-          .forEach(a -> log.info("Annotation : {}", a));
+      var loginAnnotation = handlerMethod.getMethod().getAnnotation(LoginRequired.class);
+      if (userContext.isPublicUser() && loginAnnotation != null) {
+        throw new LoginException("need to be logged in for this");
+      }
     }
 
     return true;
