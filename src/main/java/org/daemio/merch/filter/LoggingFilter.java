@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 @Slf4j
@@ -17,10 +18,14 @@ public class LoggingFilter extends OncePerRequestFilter {
       HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
       throws ServletException, IOException {
 
-    log.info("Request: ", request);
+    MDC.put("uri", request.getRequestURI());
+
+    log.info("Request: ", request.getRequestURI());
 
     filterChain.doFilter(request, response);
 
-    log.info("Response: ", response);
+    log.info("Response: {}", response.getStatus());
+
+    MDC.clear();
   }
 }

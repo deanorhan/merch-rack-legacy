@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <include resource="org/springframework/boot/logging/logback/base.xml"/>
+
+  <appender name="jsonfile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+
+    <file>logs/merch-rack.log</file>
+
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <FileNamePattern>logs/merch-rack.%d{yyyy-MM-dd}.%i.log.zip</FileNamePattern>
+      <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+        <!-- or whenever the file size reaches 100MB -->
+        <maxFileSize>100MB</maxFileSize>
+      </timeBasedFileNamingAndTriggeringPolicy>
+      <maxHistory>1</maxHistory>
+      <cleanHistoryOnStart>true</cleanHistoryOnStart>
+    </rollingPolicy>
+  </appender>
+
+
+  <springProfile name="dev">
+    <root level="TRACE">
+      <appender-ref ref="CONSOLE"/>
+      <appender-ref ref="jsonfile"/>
+    </root>
+  </springProfile>
+</configuration>
