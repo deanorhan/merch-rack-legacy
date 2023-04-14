@@ -24,7 +24,7 @@ databaseChangeLog:
                 name: vendor
                 type: uuid
                 constraints:
-                  nullable: true
+                  nullable: false
                 remarks: vendor selling this merch
             - column:
                 name: title
@@ -50,8 +50,21 @@ databaseChangeLog:
                   updatable: false
                 remarks: time the merch was created
             - column:
+                name: created_by
+                type: ${timestamp.type}
+                constraints:
+                  nullable: false
+                  updatable: false
+                remarks: who created this merch
+            - column:
                 name: modified_at
                 type: ${timestamp.type}
                 constraints:
                   nullable: false
                 remarks: time the merch was modified last
+
+        # - addUniqueConstraint:
+        #     tableName: merch
+        #     columnNames: vendor, merch_id
+        #     constraintName: vendor_to_merch_uidx
+        #     validate: true

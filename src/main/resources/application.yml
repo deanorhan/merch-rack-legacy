@@ -4,9 +4,7 @@ logging:
     root: info
     org.daemio: info
     org.hibernate: info
-  file:
-    name: spring-boot-logging.log
-
+    
 management:
   endpoints:
     enabled-by-default: false

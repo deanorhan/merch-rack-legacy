@@ -17,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+import org.daemio.merch.config.UserContext;
 import org.daemio.merch.dto.MerchPage;
 import org.daemio.merch.error.MerchNotFoundException;
 import org.daemio.merch.mapper.MerchMapper;
@@ -35,6 +36,7 @@ import static org.mockito.Mockito.when;
 @DisplayName("Merch service tests")
 public class MerchServiceTest {
 
+  @Mock private UserContext userContext;
   @Mock private MerchRepository merchRepository;
   @Spy private MerchMapper merchMapper = Mappers.getMapper(MerchMapper.class);
   @Mock private Page<Merch> page;

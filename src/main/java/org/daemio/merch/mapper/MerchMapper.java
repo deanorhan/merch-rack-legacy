@@ -20,6 +20,7 @@ public interface MerchMapper {
   @Mapping(target = "vendor", ignore = true)
   @Mapping(target = "images", ignore = true)
   @Mapping(target = "createdTime", ignore = true)
+  @Mapping(target = "createdBy", ignore = true)
   @Mapping(target = "modifiedTime", ignore = true)
   Merch modelToEntity(MerchResource model);
 
@@ -33,7 +34,9 @@ public interface MerchMapper {
       expression = "java(DateUtils.truncateToSeconds(entity.getCreatedTime()))")
   MerchResource entityToModel(Merch entity);
 
+  @Mapping(target = "vendor", ignore = true)
   @Mapping(target = "createdTime", ignore = true)
+  @Mapping(target = "createdBy", ignore = true)
   @Mapping(target = "modifiedTime", ignore = true)
   void update(@MappingTarget Merch existingMerch, Merch merch);
 

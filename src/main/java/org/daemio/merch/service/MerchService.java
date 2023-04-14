@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import org.daemio.merch.config.UserContext;
 import org.daemio.merch.dto.MerchPage;
 import org.daemio.merch.dto.MerchResource;
 import org.daemio.merch.error.MerchNotFoundException;
@@ -20,6 +21,7 @@ import org.daemio.merch.repository.MerchRepository;
 @Slf4j
 public class MerchService {
 
+  @Autowired private transient UserContext userContext;
   @Autowired private transient MerchRepository repo;
   @Autowired private transient MerchMapper mapper;
 
@@ -69,10 +71,20 @@ public class MerchService {
     return merch.get();
   }
 
+  private Merch getByMerchIdAndVendor(UUID merchId, UUID vendor) {
+    var merch = repo.findByIdAndVendor(merchId, vendor);
+
+    if (merch.isEmpty()) {
+      throw new MerchNotFoundException();
+    }
+
+    return merch.get();
+  }
+
   public MerchResource saveMerch(MerchResource merchRequest) {
     var merch = mapper.modelToEntity(merchRequest);
 
-    // merch.getImages().forEach(i -> i.setMerch(merch));
+    merch.setVendor(userContext.getUserId());
 
     return mapper.entityToModel(save(merch));
   }

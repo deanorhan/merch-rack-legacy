@@ -36,10 +36,33 @@ databaseChangeLog:
                 constraints:
                   nullable: false
                   updatable: false
-                remarks: time the merch was created
+                remarks: time the image was created
+            - column:
+                name: created_by
+                type: ${timestamp.type}
+                constraints:
+                  nullable: false
+                  updatable: false
+                remarks: who created this image
             - column:
                 name: modified_at
                 type: ${timestamp.type}
                 constraints:
                   nullable: false
-                remarks: time the merch was modified last
+                remarks: time the image was modified last
+
+        # - addUniqueConstraint:
+        #     tableName: image
+        #     columnNames: merch, image_id
+        #     constraintName: merch_to_image_uidx
+        #     validate: true
+
+        # - addForeignKeyConstraint:
+        #     baseColumnNames: merch
+        #     baseTableName: image
+        #     constraintName: image_to_merch_fk
+        #     onDelete: CASCADE
+        #     onUpdate: CASCADE
+        #     referencedColumnNames: merch_id
+        #     referencedTableName: merch
+        #     validate: true

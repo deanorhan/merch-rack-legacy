@@ -34,6 +34,7 @@ public final class GetMerchItemSteps {
     merch.setTitle("Amazing band shirt");
     merch.setStatus(MerchStatus.LOADED);
     merch.setPrice(BigDecimal.valueOf(5));
+    merch.setVendor(UUID.randomUUID());
 
     this.merch = mapper.entityToModel(merchRepository.saveAndFlush(merch));
     scenarioData.given().pathParam("merchId", this.merch.getMerchId());

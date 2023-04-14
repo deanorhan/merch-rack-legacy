@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.UUID;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -47,6 +48,7 @@ public final class ListMerchSteps {
       m.setTitle("Amazing band shirt");
       m.setStatus(MerchStatus.LOADED);
       m.setPrice(BigDecimal.valueOf(5));
+      m.setVendor(UUID.randomUUID());
 
       merchModels.add(mapper.entityToModel(merchRepository.save(m)));
     }

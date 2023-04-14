@@ -1,6 +1,7 @@
 package org.daemio.merch.repository;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 import lombok.extern.slf4j.Slf4j;
 import net.datafaker.Faker;
@@ -35,13 +36,14 @@ public class MerchRepositoryTest {
         new Merch()
             .setTitle(faker.book().title())
             .setStatus(MerchStatus.LOADED)
-            .setPrice(BigDecimal.valueOf(faker.number().randomDouble(2, 10, 50)));
+            .setPrice(BigDecimal.valueOf(faker.number().randomDouble(2, 10, 50)))
+            .setVendor(UUID.randomUUID());
 
     var savedMerch = repo.save(merch);
 
     assertThat(savedMerch)
         .usingRecursiveComparison()
-        .ignoringFields("merchId", "createdTime", "modifiedTime")
+        .ignoringFields("merchId", "createdTime", "createdBy", "modifiedTime")
         .isEqualTo(merch);
 
     assertThat(savedMerch.getId()).isNotNull();
@@ -55,7 +57,8 @@ public class MerchRepositoryTest {
         new Merch()
             .setTitle(faker.book().title())
             .setStatus(MerchStatus.LOADED)
-            .setPrice(BigDecimal.valueOf(faker.number().randomDouble(2, 10, 50)));
+            .setPrice(BigDecimal.valueOf(faker.number().randomDouble(2, 10, 50)))
+            .setVendor(UUID.randomUUID());
 
     repo.save(merch);
     log.info("1 Modified at {}", merch.getModifiedTime());
