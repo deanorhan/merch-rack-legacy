@@ -8,8 +8,10 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+@Component
 @Slf4j
 public class LoggingFilter extends OncePerRequestFilter {
 
@@ -19,12 +21,11 @@ public class LoggingFilter extends OncePerRequestFilter {
       throws ServletException, IOException {
 
     MDC.put("uri", request.getRequestURI());
-
-    log.info("Request: ", request.getRequestURI());
+    MDC.put("http-method", request.getMethod());
 
     filterChain.doFilter(request, response);
 
-    log.info("Response: {}", response.getStatus());
+    log.info("Response {}", response.getStatus());
 
     MDC.clear();
   }

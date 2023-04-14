@@ -3,7 +3,11 @@
   <include resource="org/springframework/boot/logging/logback/base.xml"/>
 
   <appender name="jsonfile" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+    <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+      <fieldNames>
+        <levelValue>[ignore]</levelValue>
+      </fieldNames>
+    </encoder>
 
     <file>logs/merch-rack.log</file>
 
@@ -18,8 +22,9 @@
     </rollingPolicy>
   </appender>
 
-
   <springProfile name="dev">
+    <logger name="javax.management" level="WARN"/>
+    
     <root level="TRACE">
       <appender-ref ref="CONSOLE"/>
       <appender-ref ref="jsonfile"/>

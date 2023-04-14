@@ -2,8 +2,8 @@
 logging:
   level:
     root: info
-    '[org.daemio]': info
-    '[org.hibernate]': info
+    org.daemio: info
+    org.hibernate: info
   file:
     name: spring-boot-logging.log
 
@@ -15,6 +15,7 @@ management:
         include:
         - health
         - info
+        - prometheus
   endpoint:
     health:
       enabled: true
@@ -24,6 +25,8 @@ management:
       show-details: when-authorized
     info:
       enabled: true
+  tracing:
+    enabled: true
 
 spring:
   profiles:

@@ -1,6 +1,7 @@
 package org.daemio.merch.filter;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
@@ -41,7 +42,7 @@ public class JwtAuthFilter implements Filter {
 
       var roles = jwtAuth.getTokenAttributes().get("roles");
       if (userId == null
-          && (roles instanceof String[] || !RoleConfig.FAN.getAuthority().equals((String) roles))) {
+          && (roles instanceof List || !RoleConfig.FAN.getAuthority().equals((String) roles))) {
         throw new AuthorizationServiceException("too many rolles for a public user");
       }
 
