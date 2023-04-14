@@ -4,7 +4,7 @@ databaseChangeLog:
       name:  timestamp.type
       value:  integer
   - property:
-      dbms:  mysql,postgresql
+      dbms:  mysql,postgresql,hsqldb
       name:  timestamp.type
       value:  timestamp
   - include:

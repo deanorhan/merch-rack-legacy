@@ -5,9 +5,9 @@ app:
 
 spring:
   datasource:
-    driver-class-name: org.sqlite.JDBC
-    url: 'jdbc:sqlite::memory:'
-    username:
+    driver-class-name: org.hsqldb.jdbc.JDBCDriver
+    url: jdbc:hsqldb:mem:testdb;DB_CLOSE_DELAY=-1
+    username: sa
     password:
   jpa:
-    database-platform: org.hibernate.community.dialect.SQLiteDialect
+    database-platform: org.hibernate.dialect.HSQLDialect

@@ -73,8 +73,9 @@ dependencies {
   implementation 'org.yaml:snakeyaml:2.0'
 
   implementation 'org.liquibase:liquibase-core:4.20.0'
-  implementation 'org.hibernate.orm:hibernate-community-dialects'
-  runtimeOnly 'org.xerial:sqlite-jdbc:3.41.2.1'
+  // implementation 'org.hibernate.orm:hibernate-community-dialects'
+  // runtimeOnly 'org.xerial:sqlite-jdbc:3.41.2.1'
+  runtimeOnly 'org.hsqldb:hsqldb:2.7.1'
   // runtimeOnly 'mysql:mysql-connector-java'
   // runtimeOnly 'org.postgresql:postgresql:42.6.0'
 

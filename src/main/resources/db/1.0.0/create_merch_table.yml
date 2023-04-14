@@ -51,7 +51,7 @@ databaseChangeLog:
                 remarks: time the merch was created
             - column:
                 name: created_by
-                type: ${timestamp.type}
+                type: varchar(25)
                 constraints:
                   nullable: false
                   updatable: false
@@ -63,8 +63,8 @@ databaseChangeLog:
                   nullable: false
                 remarks: time the merch was modified last
 
-        # - addUniqueConstraint:
-        #     tableName: merch
-        #     columnNames: vendor, merch_id
-        #     constraintName: vendor_to_merch_uidx
-        #     validate: true
+        - addUniqueConstraint:
+            tableName: merch
+            columnNames: vendor, merch_id
+            constraintName: vendor_to_merch_uidx
+            validate: true

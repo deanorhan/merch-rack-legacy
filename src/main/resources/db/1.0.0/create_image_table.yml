@@ -20,6 +20,8 @@ databaseChangeLog:
                 constraints:
                   foreignKeyName: merch_id_fk
                   references: merch(merch_id)
+                  deleteCascade: true
+                  nullable: false
             - column:
                 name: title
                 type: varchar(255)
@@ -39,7 +41,7 @@ databaseChangeLog:
                 remarks: time the image was created
             - column:
                 name: created_by
-                type: ${timestamp.type}
+                type: varchar(25)
                 constraints:
                   nullable: false
                   updatable: false
@@ -51,18 +53,8 @@ databaseChangeLog:
                   nullable: false
                 remarks: time the image was modified last
 
-        # - addUniqueConstraint:
-        #     tableName: image
-        #     columnNames: merch, image_id
-        #     constraintName: merch_to_image_uidx
-        #     validate: true
-
-        # - addForeignKeyConstraint:
-        #     baseColumnNames: merch
-        #     baseTableName: image
-        #     constraintName: image_to_merch_fk
-        #     onDelete: CASCADE
-        #     onUpdate: CASCADE
-        #     referencedColumnNames: merch_id
-        #     referencedTableName: merch
-        #     validate: true
+        - addUniqueConstraint:
+            tableName: image
+            columnNames: merch, image_id
+            constraintName: merch_to_image_uidx
+            validate: true

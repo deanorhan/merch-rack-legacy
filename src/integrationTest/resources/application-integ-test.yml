@@ -11,11 +11,9 @@ app:
 
 spring:
   datasource:
-    driver-class-name: org.sqlite.JDBC
-    url: jdbc:sqlite:sqlite-integ.db
-    username:
+    driver-class-name: org.hsqldb.jdbc.JDBCDriver
+    url: jdbc:hsqldb:mem:testdb;DB_CLOSE_DELAY=-1
+    username: sa
     password:
   jpa:
-    database-platform: org.hibernate.community.dialect.SQLiteDialect
-  liquibase:
-    drop-first: false
+    database-platform: org.hibernate.dialect.HSQLDialect
