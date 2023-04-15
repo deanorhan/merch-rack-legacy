@@ -90,7 +90,8 @@ public class MerchService {
   }
 
   public MerchResource updateMerch(MerchResource merchRequest) {
-    var existingMerch = getMerchById(UUID.fromString(merchRequest.getMerchId()));
+    var existingMerch =
+        getByMerchIdAndVendor(UUID.fromString(merchRequest.getMerchId()), userContext.getUserId());
 
     var merch = mapper.modelToEntity(merchRequest);
 
@@ -100,7 +101,8 @@ public class MerchService {
   }
 
   public MerchResource mergeMerch(MerchResource merchRequest) {
-    var existingMerch = getMerchById(UUID.fromString(merchRequest.getMerchId()));
+    var existingMerch =
+        getByMerchIdAndVendor(UUID.fromString(merchRequest.getMerchId()), userContext.getUserId());
 
     var merch = mapper.modelToEntity(merchRequest);
 

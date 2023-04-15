@@ -26,10 +26,12 @@ public final class SaveMerchItemSteps {
   @Autowired private ScenarioData scenarioData;
   private String merchLocURI;
   private MerchResource requestMerch;
+  private String vendorJwt;
 
   @Given("I am a vendor and logged in")
   public void I_am_a_vendor() {
-    scenarioData.given().auth().oauth2(JwtUtil.getValidJwtForRole(RoleConfig.VENDOR));
+    vendorJwt = JwtUtil.getValidJwtForRole(RoleConfig.VENDOR);
+    scenarioData.given().auth().oauth2(vendorJwt);
   }
 
   @Given("there is a new piece of merch to save")
@@ -44,7 +46,7 @@ public final class SaveMerchItemSteps {
     merchLocURI =
         given()
             .auth()
-            .oauth2(JwtUtil.getValidJwtForRole(RoleConfig.VENDOR))
+            .oauth2(vendorJwt)
             .body(
                 MerchResource.builder()
                     .title("My Awesome merch")
@@ -83,7 +85,7 @@ public final class SaveMerchItemSteps {
     merchLocURI =
         given()
             .auth()
-            .oauth2(JwtUtil.getValidJwtForRole(RoleConfig.VENDOR))
+            .oauth2(vendorJwt)
             .body(requestMerch)
             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
             .post("/merch")
