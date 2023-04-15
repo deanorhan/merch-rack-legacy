@@ -41,7 +41,7 @@ public class Merch extends Auditable {
   @NotNull @Enumerated(EnumType.ORDINAL)
   private MerchStatus status;
 
-  private UUID vendor;
+  @NotNull private UUID vendor;
 
   @NotBlank
   @Column(nullable = false)
