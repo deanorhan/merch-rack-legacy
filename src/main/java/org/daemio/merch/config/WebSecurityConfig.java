@@ -39,8 +39,7 @@ public class WebSecurityConfig {
     log.info("Initializing security chain");
 
     http.cors(AbstractHttpConfigurer::disable).csrf(AbstractHttpConfigurer::disable);
-
-    http.headers(headers -> headers.cacheControl().disable());
+    http.headers(headers -> headers.cacheControl(cache -> cache.disable()));
     http.sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
     // security matcher way of doing it. if we go this route then the space controller
@@ -67,7 +66,7 @@ public class WebSecurityConfig {
         });
 
     http.oauth2ResourceServer(
-        server -> server.jwt().jwtAuthenticationConverter(authenticationConverter));
+        server -> server.jwt(jwt -> jwt.jwtAuthenticationConverter(authenticationConverter)));
 
     return http.build();
   }
