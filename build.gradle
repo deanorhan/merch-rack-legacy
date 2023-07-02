@@ -4,12 +4,12 @@ plugins {
   id 'java'
   id 'jacoco'
   id 'org.liquibase.gradle' version '2.2.0'
-  id 'io.freefair.lombok' version '8.0.1'
-  id 'org.owasp.dependencycheck' version '8.2.1'
+  id 'io.freefair.lombok' version '8.1.0'
+  id 'org.owasp.dependencycheck' version '8.3.1'
   id 'com.github.andygoossens.gradle-modernizer-plugin' version '1.8.0'
   id 'pmd'
-  id 'com.github.ben-manes.versions' version '0.46.0'
-  id 'com.diffplug.spotless' version '6.18.0'
+  id 'com.github.ben-manes.versions' version '0.47.0'
+  id 'com.diffplug.spotless' version '6.19.0'
   // Fucking buildship
   // id 'eclipse'
 
@@ -53,15 +53,15 @@ dependencies {
 
   implementation 'io.opentracing.contrib:opentracing-spring-cloud-starter:0.5.9'
 
-  implementation 'ch.qos.logback:logback-classic:1.4.7'
+  implementation 'ch.qos.logback:logback-classic:1.4.8'
   implementation 'ch.qos.logback.contrib:logback-json-classic:0.1.5'
   implementation 'ch.qos.logback.contrib:logback-jackson:0.1.5'
-  implementation 'net.logstash.logback:logstash-logback-encoder:7.3'
+  implementation 'net.logstash.logback:logstash-logback-encoder:7.4'
 
   implementation 'org.mapstruct:mapstruct:1.5.5.Final'
   annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
 
-  annotationProcessor 'org.hibernate.orm:hibernate-jpamodelgen:6.2.3.Final'
+  annotationProcessor 'org.hibernate.orm:hibernate-jpamodelgen:6.2.6.Final'
   annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
   implementation 'io.micrometer:micrometer-registry-prometheus'
@@ -74,10 +74,10 @@ dependencies {
   // Bumping version due to CVE-2022-1471
   implementation 'org.yaml:snakeyaml:2.0'
 
-  implementation 'org.liquibase:liquibase-core:4.22.0'
+  implementation 'org.liquibase:liquibase-core:4.23.0'
   // implementation 'org.hibernate.orm:hibernate-community-dialects'
   // runtimeOnly 'org.xerial:sqlite-jdbc:3.41.2.1'
-  runtimeOnly 'org.hsqldb:hsqldb:2.7.1'
+  runtimeOnly 'org.hsqldb:hsqldb:2.7.2'
   // runtimeOnly 'mysql:mysql-connector-java'
   // runtimeOnly 'org.postgresql:postgresql:42.6.0'
 
@@ -89,25 +89,25 @@ dependencies {
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
   testImplementation 'org.springframework.security:spring-security-test'
 
-  testImplementation 'net.datafaker:datafaker:1.9.0'
+  testImplementation 'net.datafaker:datafaker:2.0.1'
 
-  testImplementation 'nl.jqno.equalsverifier:equalsverifier:3.14.1'
+  testImplementation 'nl.jqno.equalsverifier:equalsverifier:3.14.3'
   testImplementation 'com.jparams:to-string-verifier:1.4.8'
 
-  testImplementation 'io.cucumber:cucumber-java:7.12.0'
-  testImplementation 'io.cucumber:cucumber-junit-platform-engine:7.12.0'
-  testImplementation 'io.cucumber:cucumber-spring:7.12.0'
+  testImplementation 'io.cucumber:cucumber-java:7.12.1'
+  testImplementation 'io.cucumber:cucumber-junit-platform-engine:7.12.1'
+  testImplementation 'io.cucumber:cucumber-spring:7.12.1'
 
-  testImplementation 'org.testcontainers:testcontainers:1.18.1'
-  testImplementation 'org.testcontainers:junit-jupiter:1.18.1'
-  testImplementation 'org.testcontainers:postgresql:1.18.1'
+  testImplementation 'org.testcontainers:testcontainers:1.18.3'
+  testImplementation 'org.testcontainers:junit-jupiter:1.18.3'
+  testImplementation 'org.testcontainers:postgresql:1.18.3'
 
-  integrationTestImplementation 'io.rest-assured:rest-assured:5.3.0'
+  integrationTestImplementation 'io.rest-assured:rest-assured:5.3.1'
 
   // Dependencies specific to the Liquibase life cycle
-  liquibaseRuntime 'org.liquibase:liquibase-core:4.22.0'
-  liquibaseRuntime 'info.picocli:picocli:4.7.3'
-  liquibaseRuntime 'org.xerial:sqlite-jdbc:3.41.2.2'
+  liquibaseRuntime 'org.liquibase:liquibase-core:4.23.0'
+  liquibaseRuntime 'info.picocli:picocli:4.7.4'
+  liquibaseRuntime 'org.xerial:sqlite-jdbc:3.42.0.0'
 }
 
 task integrationTest(type: Test) {
