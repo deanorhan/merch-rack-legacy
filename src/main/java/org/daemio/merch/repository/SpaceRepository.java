@@ -5,7 +5,7 @@ import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-import org.daemio.merch.model.Space;
+import org.daemio.merch.model.RackSpace;
 
 public interface SpaceRepository
-    extends JpaRepository<Space, UUID>, JpaSpecificationExecutor<Space> {}
+    extends JpaRepository<RackSpace, UUID>, JpaSpecificationExecutor<RackSpace> {}

@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
 import org.daemio.merch.config.PersistenceConfig;
-import org.daemio.merch.model.Space;
+import org.daemio.merch.model.RackSpace;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -26,7 +26,7 @@ public class SpaceRepositoryTest {
 
   @Test
   public void shouldSaveSpace() {
-    var space = new Space().setName(faker.book().title());
+    var space = new RackSpace().setName(faker.book().title());
 
     var savedSpace = repo.save(space);
 
