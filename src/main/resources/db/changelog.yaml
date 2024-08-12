@@ -12,4 +12,4 @@ databaseChangeLog:
   - include:
       file: db/1.0.0/create_image_table.yml
   - include:
-      file: db/1.0.0/create_space_table.yml
+      file: db/1.0.0/create_rackspace_table.yml
