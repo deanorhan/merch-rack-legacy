@@ -1,0 +1,56 @@
+databaseChangeLog:
+  - changeSet:
+      id: create_rackspace_table
+      author: daemio
+      changes:
+        - createTable:
+            tableName: rackspace
+            remarks: Space on the rack
+            columns:
+            - column:
+                name: rackspace_id
+                type: uuid
+                constraints:
+                  primaryKey: true
+                  nullable: false
+                remarks: auto generated uuid
+            - column:
+                name: parent
+                type: uuid
+                constraints:
+                  foreignKeyName: parent_fk
+                  references: rackspace(rackspace_id)
+                  deleteCascade: true
+                remarks: the parent space
+            - column:
+                name: name
+                type: varchar(255)
+                constraints:
+                  nullable: false
+                remarks: name of the space
+            - column:
+                name: created_at
+                type: ${timestamp.type}
+                constraints:
+                  nullable: false
+                  updatable: false
+                remarks: time the space was created
+            - column:
+                name: created_by
+                type: varchar(25)
+                constraints:
+                  nullable: false
+                  updatable: false
+                remarks: who created this space
+            - column:
+                name: modified_at
+                type: ${timestamp.type}
+                constraints:
+                  nullable: false
+                remarks: time the space was modified last
+
+        - addUniqueConstraint:
+            tableName: rackspace
+            columnNames: parent, rackspace_id
+            constraintName: parent_to_child_rackspace_uidx
+            validate: true
