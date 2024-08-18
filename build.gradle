@@ -83,7 +83,7 @@ dependencies {
 
   implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
 
-  testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0-M1'
+  testImplementation 'org.junit.jupiter:junit-jupiter-api:5.11.0-M2'
   testImplementation 'org.junit.platform:junit-platform-suite:1.10.0-M1'
 
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
